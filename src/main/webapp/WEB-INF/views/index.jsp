@@ -9,6 +9,7 @@
 
     <div class="pagetitle">
       <h1>${test}</h1>
+      <h1>${test}</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
