@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.7</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>com.shinjin</groupId>
+    <artifactId>Twone</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Twone</name>
+    <description>Twone</description>
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+    <dependencies>
+
+        <!--
+        Build web, including RESTful, applications using Spring MVC. Uses Apache Tomcat as the default embedded container.
+        Spring MVC를 사용하여 RESTful을 포함한 웹 애플리케이션을 빌드합니다. Apache Tomcat을 기본 내장 컨테이너로 사용합니다.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--
+        Facilitates contract-first SOAP development. Allows for the creation of flexible web services using one of the many ways to manipulate XML payloads.
+        계약 우선 SOAP 개발을 촉진합니다. XML 페이로드를 조작하는 여러 방법 중 하나를 사용하여 유연한 웹 서비스를 생성할 수 있습니다.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web-services</artifactId>
+        </dependency>
+
+        <!--
+        Build WebSocket applications with SockJS and STOMP.
+        SockJS 및 STOMP로 WebSocket 애플리케이션을 구축합니다.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <!--
+        Persistence framework with support for custom SQL, stored procedures and advanced mappings.
+        MyBatis couples objects with stored procedures or SQL statements using a XML descriptor or annotations.
+        사용자 지정 SQL, 저장 프로시저 및 고급 매핑을 지원하는 지속성 프레임워크입니다.
+        MyBatis는 XML 설명자 또는 주석을 사용하여 저장 프로시저 또는 SQL 문과 개체를 연결합니다.
+        -->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
+        <!--
+        Provides an API and implementations for managing user session information.
+        사용자 세션 정보를 관리하기 위한 API 및 구현을 제공합니다.
+        -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-core</artifactId>
+        </dependency>
+
+        <!--
+        Provides fast application restarts, LiveReload, and configurations for enhanced development experience.
+        빠른 애플리케이션 재시작, LiveReload 및 향상된 개발 경험을 위한 구성을 제공합니다.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <!--<scope>runtime</scope>-->
+            <optional>true</optional>
+        </dependency>
+
+        <!--
+        MySQL JDBC and R2DBC driver.
+        MySQL JDBC 및 R2DBC 드라이버.
+        -->
+        <dependency>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!--
+        Generate metadata for developers to offer contextual help and "code completion" when working with custom configuration keys
+        (ex.application.properties/.yml files).
+        사용자 지정 구성 키로 작업할 때 개발자가 상황에 맞는 도움말 및 "코드 완성"을 제공할 수 있도록 메타데이터를 생성합니다.
+        (예: application.properties/.yml 파일)
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--
+        Java annotation library which helps to reduce boilerplate code.
+        상용구 코드를 줄이는 데 도움이 되는 Java 주석 라이브러리입니다.
+        -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!--
+        JUnit Jupiter, Hamcrest 및 Mockito를 포함한 라이브러리로 Spring Boot 애플리케이션을 테스트하기 위한 스타터
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        
+        <!-- jstl -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+        </dependency>
+
+        <!--
+        Core Tomcat implementation
+        스프링 부트의 내장 톰캣이 JSP를 지원하도록 해주는 의존성
+        -->
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-jasper</artifactId>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
