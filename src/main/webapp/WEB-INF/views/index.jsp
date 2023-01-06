@@ -8,7 +8,7 @@
 <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>${test}</h1>
+      <h1>${test.testValue}</h1>
 
       <nav>
         <ol class="breadcrumb">
