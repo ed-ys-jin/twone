@@ -13,7 +13,6 @@ public class MemDTO {
     private Date memPwexpiry;
     private int memDelcheck;
     private String memName;
-    private String memNick;
     private String memImage;
     private String memPosition;
     private String memDept;
