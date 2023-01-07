@@ -12,7 +12,6 @@ public class TestController {
     @Autowired
     private TestService testService;
 
-    // DB데이터를 불러오는 controller
     @RequestMapping("/")
     public String viewIndex(Model model) {
 
