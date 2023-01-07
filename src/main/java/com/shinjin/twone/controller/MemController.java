@@ -11,4 +11,9 @@ public class MemController {
         return "/login/login";
     }
 
+    @RequestMapping("/register")
+    public String viewRegister(){
+        return "/login/register";
+    }
+
 }
