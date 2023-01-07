@@ -1,6 +1,6 @@
 package com.shinjin.twone.controller;
 
-import com.shinjin.twone.dao.TestDAO;
+import com.shinjin.twone.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class TestController {
 
     @Autowired
-    private TestDAO testDao;
+    private TestService testService;
 
     // DB데이터를 불러오는 controller
     @RequestMapping("/")
     public String viewIndex(Model model) {
 
-        model.addAttribute("test", testDao.selectList());
+        model.addAttribute("test", testService.selectList());
 
         return "index";
     }
