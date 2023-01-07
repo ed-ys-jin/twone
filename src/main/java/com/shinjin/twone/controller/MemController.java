@@ -8,12 +8,17 @@ public class MemController {
 
     @RequestMapping("/login")
     public String viewLogin(){
-        return "/login/login";
+        return "/member/login";
     }
 
     @RequestMapping("/register")
     public String viewRegister(){
-        return "/login/register";
+        return "/member/register";
+    }
+
+    @RequestMapping("/profile")
+    public String viewProfile(){
+        return "member/profile";
     }
 
 }
