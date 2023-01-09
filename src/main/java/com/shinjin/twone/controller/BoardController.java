@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class BoardController {
 
-    @RequestMapping("/board")
+    @RequestMapping("project/board")
     public String viewBoard(){
-        return "board/board";
+        return "project/board";
     }
 
 }

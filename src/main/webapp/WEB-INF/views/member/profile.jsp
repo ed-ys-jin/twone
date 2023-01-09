@@ -3,19 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ include file="../layouts/header.jsp"%>
-<%@ include file="../layouts/sidebar.jsp"%>
 
   <main id="main" class="main">
 
+    <h5 class="card-title"></h5>
+
     <div class="pagetitle">
       <h1>프로필</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">홈</a></li>
-          <li class="breadcrumb-item active">프로필</li>
-        </ol>
-      </nav>
-    </div><!-- End Page Title -->
+    </div><br><!-- End Page Title -->
 
     <section class="section profile">
       <div class="row">
@@ -47,10 +42,6 @@
                 <li class="nav-item">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">정보 수정</button>
                 </li>
-
-<%--                <li class="nav-item">--%>
-<%--                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Settings</button>--%>
-<%--                </li>--%>
 
                 <li class="nav-item">
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">비밀번호 변경</button>
@@ -140,48 +131,6 @@
                       <button type="submit" class="btn btn-primary">변경사항 저장</button>
                     </div>
                   </form><!-- End Profile Edit Form -->
-
-                </div>
-
-                <div class="tab-pane fade pt-3" id="profile-settings">
-                  <h5 class="card-title"></h5>
-                  <!-- Settings Form -->
-<%--                  <form>--%>
-
-<%--                    <div class="row mb-3">--%>
-<%--                      <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email Notifications</label>--%>
-<%--                      <div class="col-md-8 col-lg-9">--%>
-<%--                        <div class="form-check">--%>
-<%--                          <input class="form-check-input" type="checkbox" id="changesMade" checked>--%>
-<%--                          <label class="form-check-label" for="changesMade">--%>
-<%--                            Changes made to your account--%>
-<%--                          </label>--%>
-<%--                        </div>--%>
-<%--                        <div class="form-check">--%>
-<%--                          <input class="form-check-input" type="checkbox" id="newProducts" checked>--%>
-<%--                          <label class="form-check-label" for="newProducts">--%>
-<%--                            Information on new products and services--%>
-<%--                          </label>--%>
-<%--                        </div>--%>
-<%--                        <div class="form-check">--%>
-<%--                          <input class="form-check-input" type="checkbox" id="proOffers">--%>
-<%--                          <label class="form-check-label" for="proOffers">--%>
-<%--                            Marketing and promo offers--%>
-<%--                          </label>--%>
-<%--                        </div>--%>
-<%--                        <div class="form-check">--%>
-<%--                          <input class="form-check-input" type="checkbox" id="securityNotify" checked disabled>--%>
-<%--                          <label class="form-check-label" for="securityNotify">--%>
-<%--                            Security alerts--%>
-<%--                          </label>--%>
-<%--                        </div>--%>
-<%--                      </div>--%>
-<%--                    </div>--%>
-
-<%--                    <div class="text-center">--%>
-<%--                      <button type="submit" class="btn btn-primary">Save Changes</button>--%>
-<%--                    </div>--%>
-                  </form><!-- End settings Form -->
 
                 </div>
 
