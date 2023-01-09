@@ -11,4 +11,9 @@ public class ProjectController {
         return "project/project";
     }
 
+    @RequestMapping("/project/setting")
+    public String viewSettingDetail(){
+        return "project/setting";
+    }
+
 }

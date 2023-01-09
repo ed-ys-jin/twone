@@ -65,7 +65,15 @@
                 <i class="bi bi-person"></i>
                 <span>프로젝트 설정</span>
             </a>
-        </li><!-- End Profile Page Nav -->
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="../../../../../../../../../Downloads/NiceAdmin/users-profile.html">
+                <i class="bi bi-person"></i>
+                <span>엑세스</span>
+            </a>
+        </li>
+        <!-- End Profile Page Nav -->
+
 
     </ul>
 

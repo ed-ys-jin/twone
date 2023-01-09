@@ -3,15 +3,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ include file="../layouts/header.jsp"%>
-<%@ include file="boardsidebar.jsp"%>
+<%@ include file="projectsidebar.jsp"%>
 
-<main id="main" class="main">
+  <main id="main" class="main">
+
+    <h5 class="card-title"></h5>
 
     <div class="pagetitle">
       <h1>보드</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="/">프로젝트</a></li>
+          <li class="breadcrumb-item"><a href="/project">프로젝트</a></li>
           <li class="breadcrumb-item active">보드</li>
         </ol>
       </nav>

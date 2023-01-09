@@ -10,7 +10,7 @@
 
     <div class="pagetitle">
       <h1>프로젝트</h1>
-    </div><!-- End Page Title -->
+    </div><br><!-- End Page Title -->
 
     <section class="section">
       <div class="row">
