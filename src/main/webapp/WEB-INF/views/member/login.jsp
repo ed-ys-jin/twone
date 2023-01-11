@@ -78,6 +78,12 @@
                     </div>
 
                     <div class="col-12">
+                      <label for="confirmPassword" class="form-label">비밀번호 확인</label>
+                      <input type="password" name="password" class="form-control" id="confirmPassword" required>
+                      <div class="invalid-feedback">비밀번호를 재입력해 주세요.</div>
+                    </div>
+
+                    <div class="col-12">
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
                         <label class="form-check-label" for="rememberMe">아이디 저장</label>
@@ -89,7 +95,7 @@
                     </div>
 
                     <div class="col-12">
-                      <p class="small mb-0">Twone이 처음이신가요? <a href="${twone}/register">회원가입</a></p>
+                      <p class="small mb-0">Twone이 처음이신가요? <a href="${twone}/signup">회원가입</a></p>
                     </div>
 
                   </form>
