@@ -61,38 +61,34 @@
                         </a>
                     </div><!-- End Logo -->
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <!--
+                  modelAttribute="memDto"
+                    : 회원가입 실패시, 할당된 dto를 form의 modelAttribute 애트리뷰트로 할당해줍니다.
+                  -->
+                  <form class="row g-3" method="post" action="${twone}/member/signupProc" modelAttribute="memDto" novalidate>
 
                     <div class="col-12">
-                      <label for="yourEmail" class="form-label">이메일</label>
-                      <input type="email" name="email" class="form-control" id="yourEmail" required>
-                      <div class="invalid-feedback">이메일을 입력해 주세요.</div>
+                      <label for="email" class="form-label">이메일</label>
+                      <input type="email" name="memEmail" class="form-control" value="${memDto.memEmail}" id="email">
+                      <div style="color: #cc0000"><span>${valid_memEmail}</span></div>
                     </div>
 
                     <div class="col-12">
-                      <label for="yourName" class="form-label">이름</label>
-                      <input type="text" name="name" class="form-control" id="yourName" required>
-                      <div class="invalid-feedback">이름을 입력해 주세요.</div>
+                      <label for="name" class="form-label">이름</label>
+                      <input type="text" name="memName" class="form-control" value="${memDto.memName}" id="name">
+                        <div style="color: #cc0000"><span>${valid_memName}</span></div>
                     </div>
 
                     <div class="col-12">
-                      <label for="yourPassword" class="form-label">비밀번호</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
-                      <div class="invalid-feedback">비밀번호를 입력해 주세요.</div>
+                      <label for="password" class="form-label">비밀번호</label>
+                      <input type="password" name="memPw" class="form-control" placeholder="8~16자 영문 대/소문자, 숫자, 특수문자" id="password">
+                        <div style="color: #cc0000"><span>${valid_memPw}</span></div>
                     </div>
-
-                      <div class="col-12">
-                          <label for="yourPassword" class="form-label">비밀번호 확인</label>
-                          <input type="password" name="password" class="form-control" id="confirmPassword" required>
-                          <div class="invalid-feedback">비밀번호를 확인해 주세요.</div>
-                      </div>
 
 <%--                    <div class="col-12">--%>
-<%--                      <div class="form-check">--%>
-<%--                        <input class="form-check-input" name="terms" type="checkbox" value="" id="acceptTerms" required>--%>
-<%--                        <label class="form-check-label" for="acceptTerms">I agree and accept the <a href="#">terms and conditions</a></label>--%>
-<%--                        <div class="invalid-feedback">You must agree before submitting.</div>--%>
-<%--                      </div>--%>
+<%--                      <label for="confirmPassword" class="form-label">비밀번호 확인</label>--%>
+<%--                      <input type="password" name="confirmPw" class="form-control" id="confirmPassword" required>--%>
+<%--                      <div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>--%>
 <%--                    </div>--%>
 
                     <div class="col-12">
