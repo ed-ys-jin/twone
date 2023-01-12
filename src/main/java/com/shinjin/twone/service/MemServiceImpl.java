@@ -1,6 +1,7 @@
 package com.shinjin.twone.service;
 
 import com.shinjin.twone.dao.MemDAO;
+import com.shinjin.twone.dto.MemDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -27,5 +28,25 @@ public class MemServiceImpl implements MemService{
         }
         return validatorResult;
     }
+
+    /* 중복 이메일 확인 */
+    @Override
+    public int checkWithdraw(String email) throws Exception {
+        int result = -1;
+        try {
+            result = memDao.checkWithdraw(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /* 회원등록 */
+    @Override
+    public int signup(MemDTO memDto) {
+        return memDao.signup(memDto);
+    }
+
+
 
 }

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="twone" value="${ pageContext.request.contextPath }"/>
 
 <!DOCTYPE html>
@@ -65,7 +66,7 @@
                   modelAttribute="memDto"
                     : 회원가입 실패시, 할당된 dto를 form의 modelAttribute 애트리뷰트로 할당해줍니다.
                   -->
-                  <form class="row g-3" method="post" action="${twone}/member/signupProc" modelAttribute="memDto" novalidate>
+                  <form class="row g-3" method="post" action="${twone}/signup" modelAttribute="memDto" novalidate>
 
                     <div class="col-12">
                       <label for="email" class="form-label">이메일</label>
@@ -84,12 +85,6 @@
                       <input type="password" name="memPw" class="form-control" placeholder="8~16자 영문 대/소문자, 숫자, 특수문자" id="password">
                         <div style="color: #cc0000"><span>${valid_memPw}</span></div>
                     </div>
-
-<%--                    <div class="col-12">--%>
-<%--                      <label for="confirmPassword" class="form-label">비밀번호 확인</label>--%>
-<%--                      <input type="password" name="confirmPw" class="form-control" id="confirmPassword" required>--%>
-<%--                      <div class="invalid-feedback">비밀번호가 일치하지 않습니다.</div>--%>
-<%--                    </div>--%>
 
                     <div class="col-12">
                       <button class="btn btn-primary w-100" type="submit">회원 가입</button>
