@@ -64,7 +64,6 @@
                 </div><!-- End Logo -->
 
                 <form method="post" action="${twone}/project/create" modelAttribute="projectDto" class="row g-3 needs-validation" novalidate>
-                  <input type="hidden" name="memSeq" value="${memSeq}" />
                   <div class="col-12">
                     <label for="pName" class="form-label">프로젝트 명</label>
                     <input type="text" name="projectName" class="form-control" id="pName" required>
