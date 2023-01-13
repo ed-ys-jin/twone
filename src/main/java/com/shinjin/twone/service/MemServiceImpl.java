@@ -31,10 +31,10 @@ public class MemServiceImpl implements MemService{
 
     /* 중복 이메일 확인 */
     @Override
-    public int checkWithdraw(String email) throws Exception {
+    public int checkDupl(String email) throws Exception {
         int result = -1;
         try {
-            result = memDao.checkWithdraw(email);
+            result = memDao.checkDupl(email);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,10 +43,39 @@ public class MemServiceImpl implements MemService{
 
     /* 회원등록 */
     @Override
-    public int signup(MemDTO memDto) {
-        return memDao.signup(memDto);
+    public int signup(MemDTO memDto) throws Exception {
+        int result = -1;
+        try {
+            result = memDao.signup(memDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
+    /* 로그인 */
+    @Override
+    public MemDTO login(MemDTO memDto) throws Exception {
+        MemDTO dto = null;
+        try {
+            dto = memDao.login(memDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dto;
+    }
+
+    /* 회원탈퇴 */
+    @Override
+    public int withdraw(MemDTO memDto) throws Exception {
+        int result = 0;
+        try {
+            result = memDao.withdraw(memDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 
 }

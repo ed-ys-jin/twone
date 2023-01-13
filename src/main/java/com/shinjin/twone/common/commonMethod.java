@@ -6,9 +6,17 @@ import javax.servlet.http.HttpServletRequest;
 
 public class commonMethod {
 
+    public static void setAttribute(Model model, String url) {
+        model.addAttribute("url", url);
+        return;
+    }
     public static void setAttribute(Model model, String url, String msg) {
         model.addAttribute("url", url);
         model.addAttribute("msg", msg);
+        return;
+    }
+    public static void setAttribute(HttpServletRequest request, String url) {
+        request.setAttribute("url", url);
         return;
     }
     public static void setAttribute(HttpServletRequest request, String url, String msg) {

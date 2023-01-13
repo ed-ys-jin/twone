@@ -13,10 +13,22 @@
             , null, null, null, null)
     </insert>
 
-    <select id="checkWithdraw" parameterType="String" resultType="int">
+    <select id="checkDupl" parameterType="String" resultType="int">
         SELECT mem_delcheck
         FROM t_mem
         WHERE mem_email = #{memEmail}
     </select>
+
+    <select id="login" parameterType="MemDTO" resultType="MemDTO">
+        SELECT *
+        FROM t_mem
+        WHERE mem_email = #{memEmail} and mem_delcheck = 0
+    </select>
+
+    <update id="withdraw" parameterType="MemDTO">
+        UPDATE t_mem
+        SET mem_delCheck = 1
+        WHERE mem_seq = #{memSeq} and mem_pw = #{memPw}
+    </update>
 
 </mapper>
