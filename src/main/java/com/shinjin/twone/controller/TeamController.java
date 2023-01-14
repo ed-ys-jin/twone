@@ -24,9 +24,11 @@ public class TeamController {
 
     model.addAttribute("teamList",teamList);
     model.addAttribute("leader",leader);
-
-//    TestDTO teamList1 = teamService.selectList();
-//    model.addAttribute("test",teamList1);
     return "/team/member";
+  }
+
+  @RequestMapping("/project/changeAllow")
+  public void chageAllow(){
+    System.out.println("hi");
   }
 }
