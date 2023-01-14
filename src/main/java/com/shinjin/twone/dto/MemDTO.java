@@ -38,6 +38,7 @@ public class MemDTO {
 
     private String memCompany;
 
+
     /*팀 권한*/
     private int teamAllow;
 }
