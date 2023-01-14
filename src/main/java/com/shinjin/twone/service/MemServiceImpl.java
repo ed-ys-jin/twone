@@ -77,5 +77,37 @@ public class MemServiceImpl implements MemService{
         return result;
     }
 
+    /* memDTO 불러오기 */
+    @Override
+    public MemDTO getDto(int memSeq){
+        return memDao.getDto(memSeq);
+    }
+
+    @Override
+    public int updateMemInfo(MemDTO memDto) throws Exception {
+        int result = -1;
+        try {
+            result = memDao.updateMemInfo(memDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public String getPw(int memSeq) {
+        return memDao.getPw(memSeq);
+    }
+
+    @Override
+    public int changePw(MemDTO memDto) throws Exception {
+        int result = -1;
+        try {
+            result = memDao.changePw(memDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
 }

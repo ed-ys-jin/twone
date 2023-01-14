@@ -62,6 +62,7 @@
 
         <!--
         빠른 애플리케이션 재시작, LiveReload 및 향상된 개발 경험을 위한 구성을 제공합니다.
+        https://www.notion.so/Spring-Boot-Devtools-ddd30ef91b144a408119dc7c9e688912
         -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -122,7 +123,8 @@
         </dependency>
 
         <!--
-        스프링부트 Validation
+        스프링부트 유효성 검사
+        https://www.notion.so/Spring-Boot-Valid-5d8413644fcf4c83a33f0f1c27181a84
         -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
