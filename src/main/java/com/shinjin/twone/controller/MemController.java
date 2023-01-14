@@ -19,9 +19,7 @@ public class MemController {
 
     /* 로그인 */
     @RequestMapping("/login")
-    public String loginView(){
-        return "/member/login";
-    }
+    public String loginView(){ return "/member/login"; }
 
     /* 회원가입 */
     @RequestMapping("/signup")
