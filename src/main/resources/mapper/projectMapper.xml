@@ -6,4 +6,9 @@
         INSERT into t_project values(nextval('project_seq'),#{memSeq},#{projectName},#{projectKey},null)
     </insert>
 
+    <select id="getList" parameterType="int" resultType="projectDTO">
+        select * from t_project where mem_seq = #{memSeq}
+    </select>
+
+
 </mapper>

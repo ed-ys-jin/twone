@@ -63,12 +63,7 @@
                   </a>
                 </div><!-- End Logo -->
 
-                <form class="row g-3" method="post" action="${twone}/login" novalidate>
-
-                  <div class="col-12">
-                    <label for="email" class="form-label">이메일</label>
-                    <input type="email" name="memEmail" class="form-control" id="email" value="${saveid}">
-                  </div>
+                <form class="row g-3" method="post" action="${twone}/withdraw" novalidate>
 
                   <div class="col-12">
                     <label for="password" class="form-label">비밀번호</label>
@@ -76,25 +71,7 @@
                   </div>
 
                   <div class="col-12">
-                    <div class="form-check">
-                      <c:choose>
-                        <c:when test="${flag}"><!-- 아이디 저장 체크 [ON] -->
-                          <input class="form-check-input" type="checkbox" name="saveid" value="true" id="rememberMe" checked>
-                        </c:when>
-                        <c:otherwise><!-- 아이디 저장 체크 [OFF] -->
-                          <input class="form-check-input" type="checkbox" name="saveid" value="true" id="rememberMe">
-                        </c:otherwise>
-                      </c:choose>
-                      <label class="form-check-label" for="rememberMe">아이디 저장</label>
-                    </div>
-                  </div>
-
-                  <div class="col-12">
-                    <button class="btn btn-primary w-100" type="submit">로그인</button>
-                  </div>
-
-                  <div class="col-12">
-                    <p class="small mb-0">Twone이 처음이신가요? <a href="${twone}/signup">회원가입</a></p>
+                    <button class="btn btn-primary w-100" type="submit">회원탈퇴</button>
                   </div>
 
                 </form>

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class ProjectController {
@@ -26,25 +27,30 @@ public class ProjectController {
     }
 
     @RequestMapping("/project")
-    public String viewProjectList(){
+    public String viewProjectList(HttpServletRequest request, Model model){
+        int mem_seq = (int) request.getSession().getAttribute("login");
+        MemDTO memDTO = memService.getDto(mem_seq);
+        model.addAttribute("memDTO", memDTO);
+
+        List<ProjectDTO> plist = projectService.getList(mem_seq);
         return "project/project";
     }
 
     @RequestMapping("/project/createForm")
     public String createProjectForm(HttpServletRequest request, Model model) {
-//        int mem_seq = (int) request.getSession().getAttribute("login");
-//        MemDTO memDTO = memService.selectOne(mem_seq);
-//        model.addAttribute("memDTO", memDTO);
+        int mem_seq = (int) request.getSession().getAttribute("login");
+        MemDTO memDTO = memService.getDto(mem_seq);
+        model.addAttribute("memDTO", memDTO);
 
         return "project/createForm";
     }
 
     @RequestMapping("/project/create")
-    public String createProject(HttpServletRequest request, ProjectDTO projectDto) {
-//        int mem_seq = (int) request.getSession().getAttribute("login");
-//        MemDTO memDTO = memService.selectOne(mem_seq);
-//        model.addAttribute("memDTO", memDTO);
-//        projectDto.setMemSeq(mem_seq);
+    public String createProject(HttpServletRequest request, ProjectDTO projectDto, Model model) {
+        int mem_seq = (int) request.getSession().getAttribute("login");
+        MemDTO memDTO = memService.getDto(mem_seq);
+        model.addAttribute("memDTO", memDTO);
+        projectDto.setMemSeq(mem_seq);
         int num = projectService.createProject(projectDto);
 
         return "project/createForm";
