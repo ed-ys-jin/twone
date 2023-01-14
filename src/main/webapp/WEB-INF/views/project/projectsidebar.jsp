@@ -58,7 +58,21 @@
         </li><!-- End Components Nav -->
 
         <h5 class="card-title"></h5>
+        <li class="nav-heading">사용자</li>
+<%--        <c:if test=""></c:if>--%>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="${twone}/project/team">
+                <i class="bi bi-person"></i>
+                <span>사용자 관리</span>
+            </a>
+        </li>
+
+
+
+
+        <h5 class="card-title"></h5>
         <li class="nav-heading">설정</li>
+
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="../../../../../../../../../Downloads/NiceAdmin/users-profile.html">
