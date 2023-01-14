@@ -24,9 +24,10 @@ public class TeamController {
 
     model.addAttribute("teamList",teamList);
     model.addAttribute("leader",leader);
-
+    model.addAttribute("navType", "team");
 //    TestDTO teamList1 = teamService.selectList();
 //    model.addAttribute("test",teamList1);
+
     return "/team/member";
   }
 }

@@ -10,10 +10,21 @@
         <li class="nav-heading">프로젝트</li>
 
         <li class="nav-item">
-            <a class="nav-link " href="index.html">
-                <i class="bi bi-grid"></i>
-                <span>프로젝트 1</span>
-            </a>
+            <c:choose>
+                <c:when test="${navtype == project}">
+                    <a class="nav-link " href="index.html">
+                        <i class="bi bi-grid"></i>
+                        <span>프로젝트 1</span>
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <a class="nav-link collapse" href="index.html">
+                        <i class="bi bi-grid"></i>
+                        <span>프로젝트 1</span>
+                    </a>
+                </c:otherwise>
+            </c:choose>
+
         </li><!-- End Dashboard Nav -->
 
         <h5 class="card-title"></h5>
@@ -61,10 +72,21 @@
         <li class="nav-heading">사용자</li>
 <%--        <c:if test=""></c:if>--%>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="${twone}/project/team">
-                <i class="bi bi-person"></i>
-                <span>사용자 관리</span>
-            </a>
+            <c:choose>
+                <c:when test="${navType == team}">
+                    <a class="nav-link" href="${twone}/project/team">
+                        <i class="bi bi-person"></i>
+                        <span>사용자 관리</span>
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <a class="nav-link collapse" href="${twone}/project/team">
+                        <i class="bi bi-person"></i>
+                        <span>사용자 관리</span>
+                    </a>
+                </c:otherwise>
+            </c:choose>
+
         </li>
 
 
