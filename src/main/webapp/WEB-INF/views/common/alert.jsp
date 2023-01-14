@@ -3,8 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <script>
-  let msg = "<c:out value='${msg}'/>";
-  let url = "<c:out value='${url}'/>";
-  alert(msg);
-  location.href = url;
+    let msg = "<c:out value='${msg}'/>";
+    let url = "<c:out value='${url}'/>";
+    alert(msg);
+    location.href = url;
 </script>

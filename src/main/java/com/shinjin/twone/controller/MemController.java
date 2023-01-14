@@ -56,7 +56,7 @@ public class MemController {
         // 회원 등록 성공
         if(memService.signup(memDto) != -1) {
             commonMethod.setAttribute(model, "/login?email=" + memDto.getMemEmail(), "TWONE 회원이 되었습니다. 로그인을 진행해 주세요.");
-            // 회원 등록 실패
+        // 회원 등록 실패
         } else {
             commonMethod.setAttribute(model, "/signup", "회원가입에 실패하였습니다. 관리자에게 문의해 주세요.");
         }
@@ -103,7 +103,7 @@ public class MemController {
         if(dto == null){
             commonMethod.setAttribute(request, "/login", "존재하지 않는 이메일 계정입니다.");
             return "/common/alert";
-            // 일치하는 이메일은 존재하나, 비밀번호 다름
+        // 일치하는 이메일은 존재하나, 비밀번호 다름
         } else if(!dto.getMemPw().equals(memDto.getMemPw())) {
             commonMethod.setAttribute(request, "/login", "비밀번호가 일치하지 않습니다.");
             return "common/alert";
@@ -137,7 +137,7 @@ public class MemController {
                 cookie.setPath("/"); // root 경로 설정
                 cookie.setMaxAge(60 * 60 * 24 * 30);  // 30일동안 유효
                 response.addCookie(cookie);
-                // 기존 쿠키 값이 존재
+            // 기존 쿠키 값이 존재
             } else {
                 // 기존 쿠키 값과 다름
                 if(!cookie.getValue().equals(dto.getMemEmail())){
@@ -145,7 +145,7 @@ public class MemController {
                     response.addCookie(cookie);
                 }
             }
-            // 아이디 저장이 체크되어 있지 않음
+        // 아이디 저장이 체크되어 있지 않음
         } else if (saveid == false) {
             cookie = new Cookie("saveid", null); // 쿠키 값 null로 설정
             cookie.setMaxAge(0);  // 남은 유효시간 0으로 설정
@@ -187,7 +187,7 @@ public class MemController {
         // 회원탈퇴 성공
         if(memService.withdraw(memDto) != 0){
             commonMethod.setAttribute(model, "/login", "회원탈퇴 처리가 완료되었습니다. 그동안 TWONE 서비스를 이용해 주셔서 감사합니다. 더욱더 노력하고 발전하는 TWONE이 되도록 노력하겠습니다.");
-            // 회원탈퇴 실패
+        // 회원탈퇴 실패
         } else {
             commonMethod.setAttribute(model, "/withdraw", "비밀번호 불일치 등의 이유로 회원탈퇴 처리에 실패했습니다. 담당자에게 문의해 주세요.");
         }
@@ -207,7 +207,7 @@ public class MemController {
         return "/member/profile";
     }
 
-    @RequestMapping("/editprofile")
+    @PostMapping("/editprofile")
     public String editProfileProc(MemDTO memDto, Model model, HttpSession session) throws Exception {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
@@ -217,13 +217,14 @@ public class MemController {
         /* 회원정보 수정 */
         if(memService.updateMemInfo(memDto) == -1){ // 정보 수정 실패
             commonMethod.setAttribute(model, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
+            return "/common/alert";
         }
 
         return "/common/noalert";
     }
 
-    @RequestMapping("/changepassword")
-    public String chengPassword(@Valid MemDTO memDto, Errors errors, HttpServletRequest request, HttpSession session) throws Exception {
+    @PostMapping("/changepassword")
+    public String chengPasswordProc(@Valid MemDTO memDto, Errors errors, HttpServletRequest request, HttpSession session) throws Exception {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
 
