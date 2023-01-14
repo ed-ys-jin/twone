@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.TeamDAO" >
+
+    <select id="selectList" resultType="TestDTO">
+        SELECT * FROM test
+    </select>
+
+    <select id="selectTeamList" resultType="MemDTO">
+        SELECT m.*
+        FROM t_team t, t_mem m
+        where t.mem_seq = m.mem_seq and t.project_seq = 1;
+    </select>
+
+    <select id="leaderSeq" resultType="int">
+        select t_project.mem_seq
+        from t_project
+        where project_seq = 1;
+    </select>
+</mapper>
