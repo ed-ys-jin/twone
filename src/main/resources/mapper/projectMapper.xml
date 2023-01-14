@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.ProjectDAO" >
+
+    <insert id="createProject" parameterType="projectDTO">
+        INSERT into t_project values(nextval('project_seq'),#{memSeq},#{projectName},#{projectKey},null)
+    </insert>
+
+    <select id="getList" parameterType="int" resultType="projectDTO">
+        select * from t_project where mem_seq = #{memSeq}
+    </select>
+
+
+</mapper>

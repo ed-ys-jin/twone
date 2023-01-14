@@ -3,8 +3,6 @@ package com.shinjin.twone.dao;
 import com.shinjin.twone.dto.MemDTO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
-
 @Mapper
 public interface MemDAO {
     public int signup(MemDTO memDto) throws Exception; // 회원 등록
