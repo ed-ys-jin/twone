@@ -30,7 +30,7 @@ public class MemController {
     }
 
     @PostMapping("/signup")
-    public String signupProc(@Valid MemDTO memDto, Errors errors, Model model) throws Exception {
+    public String signupProc(@Valid MemDTO memDto, Errors errors, Model model) {
 
         /* 유효성 검사 */
         if(errors.hasErrors()){ // 유효성 검사 실패
@@ -94,7 +94,7 @@ public class MemController {
     }
 
     @PostMapping("/login")
-    public String loginProc(MemDTO memDto, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public String loginProc(MemDTO memDto, HttpServletRequest request, HttpServletResponse response) {
 
         MemDTO dto = memService.login(memDto); // DTO 불러오기
 
@@ -177,11 +177,10 @@ public class MemController {
     }
 
     @PostMapping("/withdraw")
-    public String withdrawProc(MemDTO memDto, Model model, HttpSession session) throws Exception {
+    public String withdrawProc(MemDTO memDto, Model model, HttpSession session) {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
-        System.out.println("memSeq : " + memSeq);
-        System.out.println("memPw : " + memDto.getMemPw());
+
         memDto.setMemSeq(memSeq); // memDto(memSeq, memPw)
 
         // 회원탈퇴 성공
@@ -200,6 +199,7 @@ public class MemController {
     public String profileView(Model model, HttpSession session) {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
+
         MemDTO memDto = memService.getDto(memSeq); // memDTO 불러오기
 
         model.addAttribute("memDto", memDto);
@@ -207,8 +207,8 @@ public class MemController {
         return "/member/profile";
     }
 
-    @PostMapping("/editprofile")
-    public String editProfileProc(MemDTO memDto, Model model, HttpSession session) throws Exception {
+    @RequestMapping("/editprofile")
+    public String editProfileProc(MemDTO memDto, Model model, HttpSession session) {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
 
@@ -220,11 +220,13 @@ public class MemController {
             return "/common/alert";
         }
 
+        commonMethod.setAttribute(model, "/profile");
+
         return "/common/noalert";
     }
 
     @PostMapping("/changepassword")
-    public String chengPasswordProc(@Valid MemDTO memDto, Errors errors, HttpServletRequest request, HttpSession session) throws Exception {
+    public String chengPasswordProc(@Valid MemDTO memDto, Errors errors, HttpServletRequest request, HttpSession session) {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
 
