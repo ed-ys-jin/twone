@@ -9,7 +9,14 @@
     <h5 class="card-title"></h5>
 
     <div class="pagetitle">
-      <h1>프로젝트</h1>
+      <h1>프로젝트
+        <button type="button" class="btn btn-light" style="float: right;" onclick="location.href='${twone}/project/createForm'">
+          <img src="../resources/bootstrap/img/attach-link.png" width="25"/>
+          <span>프로젝트 생성</span>
+        </button>
+      </h1>
+
+
     </div><br><!-- End Page Title -->
 
     <section class="section">
