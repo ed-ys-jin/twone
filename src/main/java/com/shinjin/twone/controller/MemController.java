@@ -207,7 +207,7 @@ public class MemController {
         return "/member/profile";
     }
 
-    @RequestMapping("/editprofile")
+    @PostMapping("/editprofile")
     public String editProfileProc(MemDTO memDto, Model model, HttpSession session) throws Exception {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
@@ -217,13 +217,14 @@ public class MemController {
         /* 회원정보 수정 */
         if(memService.updateMemInfo(memDto) == -1){ // 정보 수정 실패
             commonMethod.setAttribute(model, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
+            return "/common/alert";
         }
 
         return "/common/noalert";
     }
 
-    @RequestMapping("/changepassword")
-    public String chengPassword(@Valid MemDTO memDto, Errors errors, HttpServletRequest request, HttpSession session) throws Exception {
+    @PostMapping("/changepassword")
+    public String chengPasswordProc(@Valid MemDTO memDto, Errors errors, HttpServletRequest request, HttpSession session) throws Exception {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
 
