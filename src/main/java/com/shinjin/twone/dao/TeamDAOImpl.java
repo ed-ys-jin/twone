@@ -5,6 +5,7 @@ import com.shinjin.twone.dto.TeamDTO;
 import com.shinjin.twone.dto.TestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class TeamDAOImpl implements TeamDAO{
@@ -25,7 +26,12 @@ public class TeamDAOImpl implements TeamDAO{
     return changeAllow(dto);
   }
 
-  public int memberAdd(String email){
-    return memberAdd(email);
+  @Override
+  public int memberAdd(HashMap<String, Object> map) {
+    return memberAdd(map);
   }
+
+//  public int memberAdd(String email){
+//    return memberAdd(email);
+//  }
 }

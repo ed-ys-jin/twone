@@ -7,6 +7,7 @@ import com.shinjin.twone.dto.TestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -26,13 +27,19 @@ public class TeamServiceImpl implements TeamService {
   }
 
   @Override
-  public int leaderSeq(){
-    return teamDao.leaderSeq();
+  public int leaderSeq() throws Exception{
+    int result = -1;
+    try{
+      result = teamDao.leaderSeq();
+    }catch (Exception e){
+      e.printStackTrace();
+    }
+    return result;
   }
 
   @Override
-  public int memberAdd(String email) {
-    return teamDao.memberAdd(email);
+  public int memberAdd(HashMap<String, Object> map) {
+    return teamDao.memberAdd(map);
   }
 
 }

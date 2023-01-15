@@ -2,9 +2,37 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+
 <%@ include file="../layouts/header.jsp" %>
 <%@ include file="../project/projectsidebar.jsp" %>
 
+<script>
+    <%-- 권한 변경 --%>
+    function change_allow(name,idx){
+        let select = confirm(name+"님의 권한을 변경하시겠습니까?");
+
+        if(select){
+            document.getElementById("input"+idx).submit();
+        }else{
+            return location.href= "/project/team";
+        }
+    }
+
+    function check(f){
+        const emailCheck = "^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+        let email = f.email;
+        alert(emailCheck.test(email.value));
+        if(email.value == ""){
+            alert("추가할 사용자의 이메일 적어주세요");
+            email.focus();
+            return false;
+        }else if(!emailCheck.test(email.value)){
+            alert("이메일을 형식을 확인해주세요.");
+            email.focus();
+        }
+        return true;
+    }
+</script>
 
 <main id="main" class="main">
 
@@ -71,25 +99,5 @@
 </main>
 <!-- End #main -->
 
-<script>
-    <%-- 권한 변경 --%>
-    function change_allow(name,idx){
-        let select = confirm(name+"님의 권한을 변경하시겠습니까?");
 
-        if(select){
-            document.getElementById("input"+idx).submit();
-        }else{
-            return location.href= "/project/team";
-        }
-    }
-
-    function check(f){
-        if(f.email.value == ""){
-            alert("추가할 사용자의 이메일 적어주세요");
-            f.email.focus();
-            return false;
-        }
-        return true;
-    }
-</script>
 <%@ include file="../layouts/footer.jsp" %>

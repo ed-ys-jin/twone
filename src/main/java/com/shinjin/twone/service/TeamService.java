@@ -4,6 +4,7 @@ import com.shinjin.twone.dto.MemDTO;
 import com.shinjin.twone.dto.TeamDTO;
 import com.shinjin.twone.dto.TestDTO;
 
+import java.util.HashMap;
 import java.util.List;
 
 public interface TeamService {
@@ -12,7 +13,11 @@ public interface TeamService {
 
   public int changeAllow(TeamDTO dto);
 
-  public int leaderSeq();
+  public int leaderSeq() throws Exception;
 
-  public int memberAdd(String eamil);
+  public int memberAdd(HashMap<String, Object> map);
+
+//  public int memberAdd(String eamil,int seq);
+
+
 }

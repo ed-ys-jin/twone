@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -20,7 +21,7 @@ public class TeamController {
 
 // 사용자 페이지로 이동
   @RequestMapping("/project/team")
-  public String teamView(Model model){
+  public String teamView(Model model) throws Exception{
 
     List<MemDTO> teamList = teamService.selectTeamList();
     int leader = teamService.leaderSeq();
@@ -52,14 +53,24 @@ public class TeamController {
 
   //사용자 추가
   @RequestMapping("/project/memberAdd")
-  public void memberAdd(HttpServletRequest request){
-    System.out.println("hi");
-    System.out.println(request.getParameter("email"));
+  public String memberAdd(HttpServletRequest request){
     String email = request.getParameter("email");
+    int projectSeq = 21;
 //    int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
 
-    int check = teamService.memberAdd(email);
 
+    HashMap<String, Object> map = new HashMap<String, Object>();
+    map.put("email", email);
+    map.put("pSeq",projectSeq);
+    int check = teamService.memberAdd(map);
+    System.out.println(check);
+
+    if(check == -1 ){
+      commonMethod.setAttribute(request,"/project/team","사용자를 다시 확인해주세요.");
+    }else{
+      commonMethod.setAttribute(request, "/project/team","사용자를 추가하었습니다.");
+    }
+    return "/common/alert";
   }
 
 }

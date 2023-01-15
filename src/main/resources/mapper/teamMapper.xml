@@ -6,14 +6,15 @@
     <select id="selectTeamList" resultType="MemDTO">
         SELECT m.*, t.team_allow
         FROM t_team t, t_mem m
-        where t.mem_seq = m.mem_seq and t.project_seq = 2;
+        where t.mem_seq = m.mem_seq and t.project_seq = 21
+        order by team_allow asc;
     </select>
 
     <!-- 팀의 리더 seq 가져오기    -->
     <select id="leaderSeq" resultType="int">
         select t_project.mem_seq
         from t_project
-        where project_seq = 2;
+        where project_seq = 21;
     </select>
 
     <!-- 권한 변경   -->
@@ -22,8 +23,9 @@
     </update>
 
     <!-- 팀 사용자 추가   -->
-    <insert id="memberAdd" parameterType="String">
-        insert into
+    <insert id="memberAdd" parameterType="Hashmap">
+        insert into t_team (team_seq, project_seq, mem_seq, team_allow)
+        values ((select nextval('team_seq') from dual), #{pSeq}, (select t_mem.mem_seq from t_mem where mem_email =#{email}),2);
 
     </insert>
 
