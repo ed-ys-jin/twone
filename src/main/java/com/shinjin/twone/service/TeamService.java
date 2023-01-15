@@ -1,28 +1,18 @@
 package com.shinjin.twone.service;
 
-import com.shinjin.twone.dao.TeamDAO;
 import com.shinjin.twone.dto.MemDTO;
+import com.shinjin.twone.dto.TeamDTO;
 import com.shinjin.twone.dto.TestDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class TeamService {
-  @Autowired
-  private TeamDAO teamDao;
+public interface TeamService {
 
-  public TestDTO selectList(){
-    return teamDao.selectList();
-  }
+  public List<MemDTO> selectTeamList();
 
+  public int changeAllow(TeamDTO dto);
 
-  public List<MemDTO> selectTeamList() {
-    return teamDao.selectTeamList();
-  }
+  public int leaderSeq();
 
-  public int leaderSeq() {
-    return teamDao.leaderSeq();
-  }
+  public int memberAdd(String eamil);
 }

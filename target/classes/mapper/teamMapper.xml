@@ -6,15 +6,26 @@
     <select id="selectTeamList" resultType="MemDTO">
         SELECT m.*, t.team_allow
         FROM t_team t, t_mem m
-        where t.mem_seq = m.mem_seq and t.project_seq = 1;
+        where t.mem_seq = m.mem_seq and t.project_seq = 2;
     </select>
 
     <!-- 팀의 리더 seq 가져오기    -->
     <select id="leaderSeq" resultType="int">
         select t_project.mem_seq
         from t_project
-        where project_seq = 1;
+        where project_seq = 2;
     </select>
+
+    <!-- 권한 변경   -->
+    <update id="changeAllow" parameterType="TeamDTO">
+        update t_team set team_allow = #{teamAllow} where mem_seq = #{memSeq}
+    </update>
+
+    <!-- 팀 사용자 추가   -->
+    <insert id="memberAdd" parameterType="String">
+        insert into
+
+    </insert>
 
 
 </mapper>

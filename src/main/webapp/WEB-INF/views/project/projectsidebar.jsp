@@ -10,7 +10,7 @@
         <li class="nav-heading">프로젝트</li>
 
         <li class="nav-item">
-            <a class="nav-link " href="index.html">
+            <a class="nav-link ${navType == 'project'? '':'collapsed'}" href="index.html">
                 <i class="bi bi-grid"></i>
                 <span>프로젝트 1</span>
             </a>
@@ -20,7 +20,7 @@
         <li class="nav-heading">보드</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link ${navType == 'board'? '':'collapsed'}" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>보드</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
@@ -59,9 +59,9 @@
 
         <h5 class="card-title"></h5>
         <li class="nav-heading">사용자</li>
-<%--        <c:if test=""></c:if>--%>
+
         <li class="nav-item">
-            <a class="nav-link collapsed" href="${twone}/project/team">
+            <a class="nav-link ${navType == 'team'? '':'collapsed'}" href="${twone}/project/team">
                 <i class="bi bi-person"></i>
                 <span>사용자 관리</span>
             </a>
@@ -75,13 +75,13 @@
 
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="../../../../../../../../../Downloads/NiceAdmin/users-profile.html">
+            <a class="nav-link ${navType == 'setting'? '':'collapsed'}" href="../../../../../../../../../Downloads/NiceAdmin/users-profile.html">
                 <i class="bi bi-person"></i>
                 <span>프로젝트 설정</span>
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="../../../../../../../../../Downloads/NiceAdmin/users-profile.html">
+            <a class="nav-link ${navType == 'access'? '':'collapsed'}" href="../../../../../../../../../Downloads/NiceAdmin/users-profile.html">
                 <i class="bi bi-person"></i>
                 <span>엑세스</span>
             </a>
