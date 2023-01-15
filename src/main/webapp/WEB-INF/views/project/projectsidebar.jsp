@@ -12,15 +12,15 @@
         <li class="nav-item">
             <c:choose>
                 <c:when test="${navtype == project}">
-                    <a class="nav-link " href="index.html">
+                    <a class="nav-link" href="index.html">
                         <i class="bi bi-grid"></i>
-                        <span>프로젝트 1</span>
+                        <span>${pdto.projectName}</span>
                     </a>
                 </c:when>
                 <c:otherwise>
                     <a class="nav-link collapse" href="index.html">
                         <i class="bi bi-grid"></i>
-                        <span>프로젝트 1</span>
+                        <span>${pdto.projectName}</span>
                     </a>
                 </c:otherwise>
             </c:choose>
@@ -97,10 +97,21 @@
 
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="../../../../../../../../../Downloads/NiceAdmin/users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>프로젝트 설정</span>
-            </a>
+            <c:choose>
+                <c:when test="${navType == setting}">
+                    <a class="nav-link" href="${twone}/project/setting?projectSeq=${pdto.projectSeq}">
+                        <i class="bi bi-person"></i>
+                        <span>프로젝트 설정</span>
+                    </a>
+                </c:when>
+                <c:otherwise>
+                    <a class="nav-link collapsed" href="${twone}/project/setting?projectSeq=${pdto.projectSeq}">
+                        <i class="bi bi-person"></i>
+                        <span>프로젝트 설정</span>
+                    </a>
+                </c:otherwise>
+            </c:choose>
+
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" href="../../../../../../../../../Downloads/NiceAdmin/users-profile.html">

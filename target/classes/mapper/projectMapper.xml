@@ -2,13 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.ProjectDAO" >
 
-    <insert id="createProject" parameterType="projectDTO">
-        INSERT into t_project values(nextval('project_seq'),#{memSeq},#{projectName},#{projectKey},null)
+    <insert id="createProject" useGeneratedKeys="true" keyProperty="projectSeq" parameterType="projectDTO">
+        <selectKey keyProperty="projectSeq" resultType="int" order="BEFORE">
+            SELECT nextval('project_seq') AS project_seq FROM dual
+        </selectKey>
+        INSERT into t_project values(#{projectSeq},#{memSeq},#{projectName},#{projectKey},null)
+    </insert>
+
+    <insert id="insertMasterTeam" parameterType="projectDTO">
+        INSERT into t_team values(nextval('team_seq'),#{projectSeq},#{memSeq},1)
     </insert>
 
     <select id="getList" parameterType="int" resultType="projectDTO">
-        select * from t_project where mem_seq = #{memSeq}
+        select tp.*,
+               (select tm.mem_name from t_mem tm where tp.mem_seq = tm.mem_seq) mem_name
+        from t_project tp
+        WHERE tp.project_seq in (SELECT tt.project_seq from t_team tt where tt.mem_seq = #{memSeq})
     </select>
 
+    <select id="selectOne" parameterType="int" resultType="projectDTO">
+        select * from t_project where project_seq = #{projectSeq}
+    </select>
+
+    <delete id="deleteOne" parameterType="int">
+        delete from t_project where project_seq = #{projectSeq}
+    </delete>
+
+    <select id="checkSetting" parameterType="Map" resultType="int">
+        select tt.team_allow
+        from t_team tt
+        WHERE project_seq = #{projectSeq} and mem_seq = #{memSeq};
+    </select>
 
 </mapper>
