@@ -5,9 +5,9 @@
     <!-- 회원가입 -->
     <insert id="signup" parameterType="MemDTO">
         INSERT INTO t_mem
-            (mem_seq, mem_email, mem_name, mem_pw
-            , mem_cert, mem_pwexpiry, mem_delcheck
-            , mem_image, mem_position, mem_dept, mem_company)
+        (mem_seq, mem_email, mem_name, mem_pw
+        , mem_cert, mem_pwexpiry, mem_delcheck
+        , mem_image, mem_position, mem_dept, mem_company)
         VALUES
             ((SELECT nextval('mem_seq') AS mem_seq FROM dual), #{memEmail}, #{memName}, #{memPw}
             , 0, (SELECT DATE_ADD(NOW(), INTERVAL 6 MONTH)), 0
