@@ -1,6 +1,9 @@
 # Default ignored files
 /shelf/
 /.idea/workspace.xml
+/.idea/
+/target/
+
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files
@@ -150,4 +153,3 @@ hs_err_pid*
 replay_pid*
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java
-.idea/
