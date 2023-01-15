@@ -22,6 +22,7 @@ public class TeamController {
 
     model.addAttribute("teamList",teamList);
     model.addAttribute("leader",leader);
+
     return "/team/member";
   }
 

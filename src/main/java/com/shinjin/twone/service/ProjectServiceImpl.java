@@ -21,13 +21,32 @@ public class ProjectServiceImpl implements ProjectService{
 
     @Override
     public int createProject(ProjectDTO projectDTO) {
+        projectDAO.createProject(projectDTO);
+        return projectDTO.getProjectSeq();
+    }
 
-        int num = projectDAO.createProject(projectDTO);
-        return num;
+    @Override
+    public int insertMasterTeam(ProjectDTO projectDTO) {
+        return projectDAO.insertMasterTeam(projectDTO);
     }
 
     @Override
     public List<ProjectDTO> getList(int memSeq) {
         return projectDAO.getList(memSeq);
+    }
+
+    @Override
+    public ProjectDTO selectOne(int projectSeq) {
+        return projectDAO.selectOne(projectSeq);
+    }
+
+    @Override
+    public int deleteOne(int projectSeq) {
+        return projectDAO.deleteOne(projectSeq);
+    }
+
+    @Override
+    public int checkSetting(Map<String, Integer> map) {
+        return projectDAO.checkSetting(map);
     }
 }
