@@ -109,8 +109,11 @@ public class MemController {
             return "common/alert";
         }
 
-        /* 로그인 성공 */
-        request.getSession().setAttribute("login", dto.getMemSeq()); // memSeq를 login 세션 저장
+        /* 로그인 성공 & 세션 업로드 */
+        request.getSession().setAttribute("login", dto.getMemSeq()); // member seq
+        request.getSession().setAttribute("username", dto.getMemName()); // member name
+        request.getSession().setAttribute("userposition", dto.getMemPosition()); // member position
+        request.getSession().setAttribute("userimage", dto.getMemImage()); // member image
 
         /* 아이디 저장 */
         boolean saveid = Boolean.parseBoolean(request.getParameter("saveid")); // 아이디 저장 flag 값 받기
@@ -208,7 +211,7 @@ public class MemController {
     }
 
     @RequestMapping("/editprofile")
-    public String editProfileProc(MemDTO memDto, Model model, HttpSession session) {
+    public String editProfileProc(MemDTO memDto, HttpServletRequest request, HttpSession session) {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
 
@@ -216,11 +219,16 @@ public class MemController {
 
         /* 회원정보 수정 */
         if(memService.updateMemInfo(memDto) == -1){ // 정보 수정 실패
-            commonMethod.setAttribute(model, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
+            commonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
             return "/common/alert";
         }
 
-        commonMethod.setAttribute(model, "/profile");
+        /* 변경사항 세션에 업로드 */
+        request.getSession().setAttribute("username", memDto.getMemName()); // member name
+        request.getSession().setAttribute("userposition", memDto.getMemPosition()); // member position
+        request.getSession().setAttribute("userimage", memDto.getMemImage()); // member image
+
+        commonMethod.setAttribute(request, "/profile");
 
         return "/common/noalert";
     }
