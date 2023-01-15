@@ -34,7 +34,7 @@
                     <th scope="col">#</th>
                     <th scope="col">프로젝트 명</th>
                     <th scope="col">프로젝트 키</th>
-                    <th scope="col">관리자</th>
+                    <th scope="col">프로젝트 리더</th>
                   </tr>
                 </thead>
                 <tbody>
