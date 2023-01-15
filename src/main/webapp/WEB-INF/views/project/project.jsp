@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ include file="../layouts/header.jsp"%>
-
+<c:set var="idx" value="1"/>
   <main id="main" class="main">
 
     <h5 class="card-title"></h5>
@@ -32,42 +32,21 @@
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">이름</th>
-                    <th scope="col">키</th>
-                    <th scope="col">리드</th>
+                    <th scope="col">프로젝트 명</th>
+                    <th scope="col">프로젝트 키</th>
+                    <th scope="col">프로젝트 리더</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Brandon Jacob</td>
-                    <td>Designer</td>
-                    <td>2016-05-25</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Bridie Kessler</td>
-                    <td>Developer</td>
-                    <td>2014-12-05</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Ashleigh Langosh</td>
-                    <td>Finance</td>
-                    <td>2011-08-12</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">4</th>
-                    <td>Angus Grady</td>
-                    <td>HR</td>
-                    <td>2012-06-11</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">5</th>
-                    <td>Raheem Lehner</td>
-                    <td>Dynamic Division Officer</td>
-                    <td>2011-04-19</td>
-                  </tr>
+                  <c:forEach var="plist" items="${plist}">
+                    <tr onclick="location.href='${twone}/project/board?projectSeq=${plist.projectSeq}'">
+                      <th scope="row">${idx}</th>
+                      <td>${plist.projectName}</td>
+                      <td>${plist.projectKey}</td>
+                      <td>${plist.memName}</td>
+                    </tr>
+                    <c:set var="idx" value="${idx + 1}"/>
+                  </c:forEach>
                 </tbody>
               </table>
               <!-- End Table with hoverable rows -->

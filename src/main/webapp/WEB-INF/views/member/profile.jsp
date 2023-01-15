@@ -160,42 +160,21 @@
                     <div class="row mb-3">
                       <label for="position" class="col-md-4 col-lg-3 col-form-label">직위</label>
                       <div class="col-md-8 col-lg-9">
-                        <c:choose>
-                          <c:when test="${!empty memDto.memPosition}">
-                            <input name="memPosition" type="text" class="form-control" id="position" value="${memDto.memPosition}">
-                          </c:when>
-                          <c:otherwise>
-                            <input name="memPosition" type="text" class="form-control" id="position" placeholder="직위">
-                          </c:otherwise>
-                        </c:choose>
+                          <input name="memPosition" type="text" class="form-control" id="position" placeholder="직위" value="${memDto.memPosition}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="dept" class="col-md-4 col-lg-3 col-form-label">부서</label>
                       <div class="col-md-8 col-lg-9">
-                        <c:choose>
-                          <c:when test="${!empty memDto.memDept}">
-                            <input name="memDept" type="text" class="form-control" id="dept" value="${memDto.memDept}">
-                          </c:when>
-                          <c:otherwise>
-                            <input name="memDept" type="text" class="form-control" id="dept" placeholder="부서">
-                          </c:otherwise>
-                        </c:choose>
+                          <input name="memDept" type="text" class="form-control" id="dept" placeholder="부서" value="${memDto.memDept}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="country" class="col-md-4 col-lg-3 col-form-label">조직</label>
                       <div class="col-md-8 col-lg-9">
-                        <c:choose>
-                          <c:when test="${!empty memDto.memCompany}">
-                            <input name="memCompany" type="text" class="form-control" id="country" value="${memDto.memCompany}">
-                          </c:when>
-                          <c:otherwise>
-                            <input name="memCompany" type="text" class="form-control" id="country" placeholder="조직">
-                          </c:otherwise>
-                        </c:choose>
+                          <input name="memCompany" type="text" class="form-control" id="country" placeholder="조직" value="${memDto.memCompany}">
                       </div>
                     </div>
 

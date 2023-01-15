@@ -12,7 +12,7 @@
         <li class="nav-item">
             <a class="nav-link ${navType == 'project'? '':'collapsed'}" href="index.html">
                 <i class="bi bi-grid"></i>
-                <span>프로젝트 1</span>
+                <span>${pdto.projectName}</span>
             </a>
         </li><!-- End Dashboard Nav -->
 
@@ -75,7 +75,7 @@
 
 
         <li class="nav-item">
-            <a class="nav-link ${navType == 'setting'? '':'collapsed'}" href="../../../../../../../../../Downloads/NiceAdmin/users-profile.html">
+            <a class="nav-link ${navType == 'setting'? '':'collapsed'}" href="${twone}/project/setting?projectSeq=${pdto.projectSeq}">
                 <i class="bi bi-person"></i>
                 <span>프로젝트 설정</span>
             </a>

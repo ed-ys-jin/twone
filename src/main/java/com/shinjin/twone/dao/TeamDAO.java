@@ -2,7 +2,6 @@ package com.shinjin.twone.dao;
 
 import com.shinjin.twone.dto.MemDTO;
 import com.shinjin.twone.dto.TeamDTO;
-import com.shinjin.twone.dto.TestDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;

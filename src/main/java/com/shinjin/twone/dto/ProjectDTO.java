@@ -9,4 +9,6 @@ public class ProjectDTO {
     private String projectName;
     private String projectKey;
     private String projectIcon;
+    private String memName;
+
 }

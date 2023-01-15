@@ -2,7 +2,6 @@ package com.shinjin.twone.service;
 
 import com.shinjin.twone.dto.MemDTO;
 import com.shinjin.twone.dto.TeamDTO;
-import com.shinjin.twone.dto.TestDTO;
 
 import java.util.HashMap;
 import java.util.List;
