@@ -31,50 +31,26 @@ public class MemServiceImpl implements MemService{
 
     /* 중복 이메일 확인 */
     @Override
-    public int checkDupl(String email) throws Exception {
-        int result = -1;
-        try {
-            result = memDao.checkDupl(email);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    public int checkDupl(String email) {
+        return memDao.checkDupl(email);
     }
 
     /* 회원등록 */
     @Override
-    public int signup(MemDTO memDto) throws Exception {
-        int result = -1;
-        try {
-            result = memDao.signup(memDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    public int signup(MemDTO memDto) {
+        return memDao.signup(memDto);
     }
 
     /* 로그인 */
     @Override
-    public MemDTO login(MemDTO memDto) throws Exception {
-        MemDTO dto = null;
-        try {
-            dto = memDao.login(memDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return dto;
+    public MemDTO login(MemDTO memDto) {
+        return memDao.login(memDto);
     }
 
     /* 회원탈퇴 */
     @Override
-    public int withdraw(MemDTO memDto) throws Exception {
-        int result = 0;
-        try {
-            result = memDao.withdraw(memDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    public int withdraw(MemDTO memDto) {
+        return memDao.withdraw(memDto);
     }
 
     /* memDTO 불러오기 */
@@ -83,31 +59,22 @@ public class MemServiceImpl implements MemService{
         return memDao.getDto(memSeq);
     }
 
+    /* 회원정보 수정 */
     @Override
-    public int updateMemInfo(MemDTO memDto) throws Exception {
-        int result = -1;
-        try {
-            result = memDao.updateMemInfo(memDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    public int updateMemInfo(MemDTO memDto) {
+        return memDao.updateMemInfo(memDto);
     }
 
+    /* 비밀번호 불러오기 */
     @Override
     public String getPw(int memSeq) {
         return memDao.getPw(memSeq);
     }
 
+    /* 비밀번호 변경 */
     @Override
-    public int changePw(MemDTO memDto) throws Exception {
-        int result = -1;
-        try {
-            result = memDao.changePw(memDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+    public int changePw(MemDTO memDto) {
+        return memDao.changePw(memDto);
     }
 
 }

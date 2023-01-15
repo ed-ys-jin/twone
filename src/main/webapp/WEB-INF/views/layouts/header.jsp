@@ -215,14 +215,24 @@
             <li class="nav-item dropdown pe-3">
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                    <img src="../resources/bootstrap/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">K. Anderson</span>
+                    <c:choose>
+                        <c:when test="${!empty userimage}">
+                            <img src="${userimage}" alt="Profile" class="rounded-circle">
+                        </c:when>
+                        <c:otherwise>
+                            <img src="../resources/bootstrap/img/no_image.png" alt="Profile" class="rounded-circle">
+                        </c:otherwise>
+                    </c:choose>
                 </a><!-- End Profile Iamge Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6>Kevin Anderson</h6>
-                        <span>Web Designer</span>
+                        <h6>${username}</h6>
+                        <c:choose>
+                            <c:when test="${!empty userposition}">
+                                <span>${userposition}</span>
+                            </c:when>
+                        </c:choose>
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -231,7 +241,7 @@
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="${twone}/profile">
                             <i class="bi bi-person"></i>
-                            <span>My Profile</span>
+                            <span>내 프로필</span>
                         </a>
                     </li>
                     <li>
@@ -239,9 +249,9 @@
                     </li>
 
                     <li>
-                        <a class="dropdown-item d-flex align-items-center" href="#">
+                        <a class="dropdown-item d-flex align-items-center" href="${twone}/logout">
                             <i class="bi bi-box-arrow-right"></i>
-                            <span>Sign Out</span>
+                            <span>로그아웃</span>
                         </a>
                     </li>
 
