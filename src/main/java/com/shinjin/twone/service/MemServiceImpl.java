@@ -14,7 +14,7 @@ import java.util.Map;
 public class MemServiceImpl implements MemService{
 
     @Autowired
-    private MemDAO memDao;
+    private MemDAO memDAO;
 
     /* 유효성 검사 */
     @Override
@@ -32,49 +32,49 @@ public class MemServiceImpl implements MemService{
     /* 중복 이메일 확인 */
     @Override
     public int checkDupl(String email) {
-        return memDao.checkDupl(email);
+        return memDAO.checkDupl(email);
     }
 
     /* 회원등록 */
     @Override
-    public int signup(MemDTO memDto) {
-        return memDao.signup(memDto);
+    public int signup(MemDTO memDTO) {
+        return memDAO.signup(memDTO);
     }
 
     /* 로그인 */
     @Override
-    public MemDTO login(MemDTO memDto) {
-        return memDao.login(memDto);
+    public MemDTO login(MemDTO memDTO) {
+        return memDAO.login(memDTO);
     }
 
     /* 회원탈퇴 */
     @Override
-    public int withdraw(MemDTO memDto) {
-        return memDao.withdraw(memDto);
+    public int withdraw(MemDTO memDTO) {
+        return memDAO.withdraw(memDTO);
     }
 
     /* memDTO 불러오기 */
     @Override
     public MemDTO getDto(int memSeq){
-        return memDao.getDto(memSeq);
+        return memDAO.getDto(memSeq);
     }
 
     /* 회원정보 수정 */
     @Override
-    public int updateMemInfo(MemDTO memDto) {
-        return memDao.updateMemInfo(memDto);
+    public int updateMemInfo(MemDTO memDTO) {
+        return memDAO.updateMemInfo(memDTO);
     }
 
     /* 비밀번호 불러오기 */
     @Override
     public String getPw(int memSeq) {
-        return memDao.getPw(memSeq);
+        return memDAO.getPw(memSeq);
     }
 
     /* 비밀번호 변경 */
     @Override
-    public int changePw(MemDTO memDto) {
-        return memDao.changePw(memDto);
+    public int changePw(MemDTO memDTO) {
+        return memDAO.changePw(memDTO);
     }
 
 }

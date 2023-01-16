@@ -2,8 +2,6 @@ package com.shinjin.twone.dao;
 
 import com.shinjin.twone.dto.MemDTO;
 import com.shinjin.twone.dto.TeamDTO;
-import com.shinjin.twone.dto.TestDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.List;
