@@ -71,7 +71,7 @@ ZIRA, JANDI 등 과 같은 협업툴 구현해보기
 		<tr align="center">
 			<td>문서 작성</td>
 			<td>에디터</td>
-			<td>[Google Drive](https://drive.google.com/drive/folders/17bybIQVKNMG0I_cRHtDqgadOedEauMU6),<br/>
+			<td>[Google Drive](https://drive.google.com/drive/folders/17bybIQVKNMG0I_cRHtDqgadOedEauMU6)<br/>
 				[Notion](https://www.notion.so/2-1-twone-e0a1d4c6cdf343daa27994d19a11cea1)<br/>
 			</td>
 		</tr>
