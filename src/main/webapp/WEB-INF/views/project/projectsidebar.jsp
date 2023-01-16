@@ -10,7 +10,7 @@
         <li class="nav-heading">프로젝트</li>
 
         <li class="nav-item">
-            <a class="nav-link ${navType == 'project'? '':'collapsed'}" href="index.html">
+            <a class="nav-link ${navType == 'project'? '':'collapsed'}" href="${twone}/project/board?projectSeq=${pdto.projectSeq}">
                 <i class="bi bi-grid"></i>
                 <span>${pdto.projectName}</span>
             </a>
@@ -61,7 +61,7 @@
         <li class="nav-heading">사용자</li>
 
         <li class="nav-item">
-            <a class="nav-link ${navType == 'team'? '':'collapsed'}" href="${twone}/project/team">
+            <a class="nav-link ${navType == 'team'? '':'collapsed'}" href="${twone}/project/team?projectSeq=${pdto.projectSeq}">
                 <i class="bi bi-person"></i>
                 <span>사용자 관리</span>
             </a>

@@ -46,6 +46,16 @@ public class ProjectServiceImpl implements ProjectService{
     }
 
     @Override
+    public int checkKey(ProjectDTO pdto) {
+        return projectDAO.checkKey(pdto);
+    }
+
+    @Override
+    public String checkLeaderPw(int memSeq) {
+        return projectDAO.checkLeaderPw(memSeq);
+    }
+
+    @Override
     public int checkSetting(Map<String, Integer> map) {
         return projectDAO.checkSetting(map);
     }

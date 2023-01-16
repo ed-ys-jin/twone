@@ -2,8 +2,10 @@ package com.shinjin.twone.controller;
 
 import com.shinjin.twone.common.commonMethod;
 import com.shinjin.twone.dto.MemDTO;
+import com.shinjin.twone.dto.ProjectDTO;
 import com.shinjin.twone.dto.TeamDTO;
 
+import com.shinjin.twone.service.ProjectService;
 import com.shinjin.twone.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,13 +21,19 @@ public class TeamController {
 
   @Autowired
   TeamService teamService;
+  @Autowired
+  ProjectService projectService;
 
 // 사용자 페이지로 이동
   @RequestMapping("/project/team")
-  public String teamView(Model model) throws Exception{
+  public String teamView(Model model, HttpServletRequest request) throws Exception{
 
     List<MemDTO> teamList = teamService.selectTeamList();
     int leader = teamService.leaderSeq();
+
+    int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
+    ProjectDTO pdto = projectService.selectOne(projectSeq);
+    model.addAttribute("pdto", pdto);
 
     model.addAttribute("teamList",teamList);
     model.addAttribute("leader",leader);
