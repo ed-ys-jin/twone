@@ -3,7 +3,6 @@ package com.shinjin.twone.service;
 import com.shinjin.twone.dao.TeamDAO;
 import com.shinjin.twone.dto.MemDTO;
 import com.shinjin.twone.dto.TeamDTO;
-import com.shinjin.twone.dto.TestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +16,8 @@ public class TeamServiceImpl implements TeamService {
   private TeamDAO teamDao;
 
   @Override
-  public List<MemDTO> selectTeamList() {
-    return teamDao.selectTeamList();
+  public List<MemDTO> selectTeamList(int seq) {
+    return teamDao.selectTeamList(seq);
   }
 
   @Override
@@ -27,10 +26,10 @@ public class TeamServiceImpl implements TeamService {
   }
 
   @Override
-  public int leaderSeq() throws Exception{
+  public int leaderSeq(int seq) throws Exception{
     int result = -1;
     try{
-      result = teamDao.leaderSeq();
+      result = teamDao.leaderSeq(seq);
     }catch (Exception e){
       e.printStackTrace();
     }
@@ -41,5 +40,21 @@ public class TeamServiceImpl implements TeamService {
   public int memberAdd(HashMap<String, Object> map) {
     return teamDao.memberAdd(map);
   }
+
+  @Override
+  public Integer checkMember(String email) {
+    return teamDao.checkMember(email);
+  }
+
+  @Override
+  public TeamDTO selectOne(HashMap<String, Object> map) {
+    return teamDao.selectOne(map);
+  }
+
+  @Override
+  public int deleteMember(TeamDTO dto) {
+    return teamDao.deleteMember(dto);
+  }
+
 
 }

@@ -1305,3 +1305,22 @@ h6 {
 .member-info{
   padding-bottom: 10px;
 }
+
+.teamtitle{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.delete-bnt{
+  height: 38px;
+}
+
+.x{
+  padding-left: 124px
+}
+
+.team-from{
+  height: 58px;
+}

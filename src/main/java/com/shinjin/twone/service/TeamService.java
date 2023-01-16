@@ -8,15 +8,19 @@ import java.util.List;
 
 public interface TeamService {
 
-  public List<MemDTO> selectTeamList();
+  public List<MemDTO> selectTeamList(int seq);
 
   public int changeAllow(TeamDTO dto);
 
-  public int leaderSeq() throws Exception;
+  public int leaderSeq(int seq) throws Exception;
 
   public int memberAdd(HashMap<String, Object> map);
 
-//  public int memberAdd(String eamil,int seq);
+
+  public Integer checkMember(String email);
+
+  public TeamDTO selectOne(HashMap<String, Object> map);
 
 
+  public int deleteMember(TeamDTO dto);
 }
