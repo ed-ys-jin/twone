@@ -21,7 +21,7 @@ ZIRA, JANDI 등 과 같은 협업툴 구현해보기
 
 **3. 개발 일정**
 
-[개발 캘린더](https://www.notion.so/baf9f0af8501482cb91c18ca9b801f20)
+[개발 캘린더]
 
 
 **4. 주요 개발자원 (S/W)**
@@ -73,7 +73,6 @@ ZIRA, JANDI 등 과 같은 협업툴 구현해보기
 			<td>에디터</td>
 			<td>
 			[Google Drive](https://drive.google.com/drive/folders/17bybIQVKNMG0I_cRHtDqgadOedEauMU6) <br/>
-			[Notion](https://www.notion.so/2-1-twone-e0a1d4c6cdf343daa27994d19a11cea1) <br/>
 			</td>
 		</tr>
 		<tr align="center">
