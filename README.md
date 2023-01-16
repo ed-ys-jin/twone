@@ -1,6 +1,6 @@
 # Twone(2 > 1) Project
+### *two heads are better than one*
 ---
-#### two heads are better than one
 
 **1. 프로젝트 팀명: 신진봉(SJB)**
 	
