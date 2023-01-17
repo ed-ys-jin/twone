@@ -24,24 +24,24 @@ public class TeamController {
   @Autowired
   ProjectService projectService;
 
-  // 사용자 페이지로 이동
+// 사용자 페이지로 이동
   @RequestMapping("/project/team")
-  public String teamView(HttpServletRequest request, Model model) throws Exception{
+  public String teamView(Model model, HttpServletRequest request) throws Exception{
 
-    int pSeq = Integer.parseInt(request.getParameter("projectSeq"));
-    int leader = teamService.leaderSeq(pSeq);
-    ProjectDTO pdto = projectService.selectOne(pSeq);
-//    List<MemDTO> teamList = teamService.selectTeamList(pSeq);
-    List<HashMap<String,Object>> teamList = teamService.selectTeamList(pSeq);
+    List<MemDTO> teamList = teamService.selectTeamList();
+    int leader = teamService.leaderSeq();
+
+    int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
+    ProjectDTO pdto = projectService.selectOne(projectSeq);
+    model.addAttribute("pdto", pdto);
 
     model.addAttribute("teamList",teamList);
     model.addAttribute("leader",leader);
     model.addAttribute("navType","team");
-    model.addAttribute("pdto", pdto);
     return "/team/team";
   }
 
-  //  권한 변경
+//  권한 변경
   @RequestMapping("/project/changeAllow")
   public String chageAllow(HttpServletRequest request){
     int allow = Integer.parseInt(request.getParameter("allow"));
@@ -57,7 +57,7 @@ public class TeamController {
     }else{
       commonMethod.setAttribute(request, "/project/team","변경이 완료되었습니다.");
     }
-    return "/common/alert";
+      return "/common/alert";
   }
 
   //사용자 추가

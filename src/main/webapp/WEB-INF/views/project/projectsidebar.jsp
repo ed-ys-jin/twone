@@ -10,7 +10,7 @@
         <li class="nav-heading">프로젝트</li>
 
         <li class="nav-item">
-            <a class="nav-link ${navType == 'project'? '':'collapsed'}" href="index.html">
+            <a class="nav-link ${navType == 'project'? '':'collapsed'}" href="${twone}/project/board?projectSeq=${pdto.projectSeq}">
                 <i class="bi bi-grid"></i>
                 <span>${pdto.projectName}</span>
             </a>

@@ -59,12 +59,12 @@ public class ProjectController {
         // 프로젝트 시퀀스 가져온걸 다시 보내기
         projectDto.setProjectSeq(projectSeq);
         projectService.insertMasterTeam(projectDto);
-        
+
         return "redirect:/project";
     }
 
     @RequestMapping("/project/setting")
-    public String projectSetting(HttpServletRequest request, Model model){
+    public String projectSetting(HttpServletRequest request, Model model) {
         int memSeq = (int) request.getSession().getAttribute("login");
         MemDTO memDTO = memService.getDto(memSeq);
         model.addAttribute("memDTO", memDTO);
@@ -78,23 +78,24 @@ public class ProjectController {
         map.put("memSeq", memSeq);
         map.put("projectSeq", projectSeq);
         int check = projectService.checkSetting(map);
+        model.addAttribute("check", check);
 
-        if(check == 1) {
-            model.addAttribute("navType", "setting");
-            return "project/setting";
-        }else{
-            String msg = "프로젝트 설정 권한이 없습니다. 관리자에게 문의 하세요";
-            commonMethod.setAttribute(model, "/project/board?projectSeq=" + projectSeq, msg);
-            return "common/alert";
-        }
-
+        return "project/setting";
     }
 
     @RequestMapping("/project/delete")
-    public String deleteProject(HttpServletRequest request){
-        int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
-        projectService.deleteOne(projectSeq);
-
+    public String deleteProject(Model model, HttpServletRequest request, ProjectDTO pdto){
+        String memPw = request.getParameter("memPw");
+        int memSeq = (int) request.getSession().getAttribute("login");
+        //ajax 로 처리
+//        int check1 = projectService.checkKey(pdto);
+//        
+//        if(check1 == 0) {
+//            commonMethod.setAttribute(request, "re", "존재하지 않는 이메일 계정입니다.");
+//            return "/common/alert";
+//        }
+//
+//        projectService.deleteOne(pdto.getProjectSeq());
         return "redirect:/project";
     }
 }
