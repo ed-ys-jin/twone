@@ -20,13 +20,28 @@ public class BoardServiceImpl implements BoardService {
         return boardDAO.addBoard(boardDTO);
     }
 
+    /* 보드 리스트 불러오기 */
     @Override
     public List<BoardDTO> getBoardList() {
         return boardDAO.getBoardList();
     }
 
+    /* 최근 생성한 BoardDTO 불러오기 */
     @Override
-    public BoardDTO getLatestBoardDTO(BoardDTO boardDTO) {
-        return boardDAO.getLatestBoardDTO(boardDTO);
+    public BoardDTO getLatestBoardDTO(int projectSeq) {
+        return boardDAO.getLatestBoardDTO(projectSeq);
     }
+
+    /* BoardDTO 불러오기 */
+    @Override
+    public BoardDTO getBoardDTO(int boardSeq) {
+        return boardDAO.getBoardDTO(boardSeq);
+    }
+
+    /* 보드 삭제 */
+    @Override
+    public int deleteBoard(int boardSeq) {
+        return boardDAO.deleteBoard(boardSeq);
+    }
+
 }

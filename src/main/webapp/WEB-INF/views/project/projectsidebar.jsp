@@ -30,7 +30,7 @@
                 <!-- Board List -->
                 <c:forEach var="blist" items="${blist}">
                     <li>
-                        <a href="${twone}/project/board?boardSeq=${blist.boardSeq}">
+                        <a href="${twone}/project/board?projectSeq=${pdto.projectSeq}&boardSeq=${blist.boardSeq}">
                             </i><span>${blist.boardName}</span>
                         </a>
                     </li>
@@ -45,7 +45,7 @@
             <br>
             <!-- Board Creation Input Box -->
             <div class="col-sm-12">
-                <input type="text" class="form-control" id="bnameinput" style="display: none" placeholder="보드 이름 입력 후 엔터" onkeyup="addboard(this)">
+                <input type="text" class="form-control" id="bnameinput" style="display: none" placeholder="보드 이름 입력 후 엔터 (최대 30자)" onkeyup="addboard(this)">
             </div>
         </li>
 
@@ -86,6 +86,15 @@
 
     <!-- 보드 생성 -->
     function addboard(obj){
+
+        // 입력 글자수 제어
+        if(obj.value.length > 30) {
+            alert("최대 30자까지만 작성할 수 있습니다.");
+            const inputbox = document.getElementById("bnameinput");
+            inputbox.value = obj.value.substring(0, 28); // 문자열 29자로 자르기
+            return;
+        }
+
         // 엔터키 입력 시 IF문 실행
         if (window.event.keyCode == 13){
 
@@ -96,7 +105,7 @@
             }
 
             // URL(+ 파라미터) 만들기
-            let url = "/project/addboard?bname=" + encodeURIComponent(obj.value) + "&pseq=" + ${pdto.projectSeq};
+            let url = "/project/addboard?boardName=" + encodeURIComponent(obj.value) + "&projectSeq=" + ${pdto.projectSeq};
 
             // 연결 작업
             const xhttp = new XMLHttpRequest();
@@ -110,9 +119,9 @@
             };
 
             // input 클리어 & 숨기기
-            const btn = document.getElementById("bnameinput")
-            btn.value = null;
-            btn.style.display = "none";
+            const inputbox = document.getElementById("bnameinput");
+            inputbox.value = null;
+            inputbox.style.display = "none";
 
             // 결과값 받음
             xhttp.send();
@@ -120,14 +129,17 @@
     }
 
     <!-- 보드 이름 입력창 보이기 / 숨기기 -->
-    function togglebnameinput(){
-        const btn = document.getElementById("bnameinput");
+    function togglebnameinput() {
+        const inputbox = document.getElementById("bnameinput");
 
         // input toggle
-        if(btn.style.display != "none") {
-            btn.style.display = "none";
+        if(inputbox.style.display != "none") {
+            // 입력창 숨길때 입력값 삭제
+            const inputbox = document.getElementById("bnameinput");
+            inputbox.value = null;
+            inputbox.style.display = "none";
         } else {
-            btn.style.display = "block";
+            inputbox.style.display = "block";
         }
     }
 

@@ -10,19 +10,32 @@
             ((SELECT nextval('board_seq') AS board_seq FROM dual), #{projectSeq}, #{boardName})
     </insert>
 
-    <!-- 보드 리스트 받기 -->
+    <!-- 보드 리스트 불러오기 -->
     <select id="getBoardList" resultType="BoardDTO">
         SELECT *
         FROM t_board
         ORDER BY board_seq DESC
     </select>
 
-    <!-- 최근 생성한 boardDTO 받기 -->
-    <select id="getLatestBoardDTO" parameterType="BoardDTO" resultType="BoardDTO">
+    <!-- 최근 생성한 boardDTO 불러오기 -->
+    <select id="getLatestBoardDTO" parameterType="int" resultType="BoardDTO">
         SELECT *
         FROM t_board
         WHERE project_seq = #{projectSeq}
           and board_seq = (SELECT MAX(board_seq) FROM t_board)
     </select>
+
+    <!-- boardDTO 불러오기 -->
+    <select id="getBoardDTO" parameterType="int" resultType="BoardDTO">
+        SELECT *
+        FROM t_board
+        WHERE board_seq = #{boardSeq}
+    </select>
+
+    <!-- 보드 삭제 -->
+    <delete id="deleteBoard" parameterType="int">
+        DELETE FROM t_board
+        WHERE board_seq = #{boardSeq}
+    </delete>
 
 </mapper>

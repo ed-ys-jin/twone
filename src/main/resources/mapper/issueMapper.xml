@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.IssueDAO" >
+
+    <!-- IssueList 불러오기 -->
+    <select id="getIssueList" parameterType="int" resultType="IssueDTO">
+        SELECT *
+        FROM t_issue
+        WHERE col_seq = #{colSeq}
+        ORDER BY issue_seq DESC
+    </select>
+
+</mapper>
