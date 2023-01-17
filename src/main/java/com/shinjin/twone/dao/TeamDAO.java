@@ -10,7 +10,8 @@ import java.util.List;
 @Mapper
 public interface TeamDAO {
 
-  public List<MemDTO> selectTeamList(int seq);
+//  public List<MemDTO> selectTeamList(int seq);
+  public List<HashMap<String,Object>> selectTeamList(int seq);
 
   public int leaderSeq(int seq) throws Exception;
 
@@ -20,7 +21,8 @@ public interface TeamDAO {
 
   public Integer checkMember(String email);
 
-  public TeamDTO selectOne(HashMap<String, Object> map);
+  public TeamDTO checkOne(HashMap<String, Object> map);
+  public HashMap<String, Object> selectOne(HashMap<String, Object> map);
 
   public int deleteMember(TeamDTO dto);
 }

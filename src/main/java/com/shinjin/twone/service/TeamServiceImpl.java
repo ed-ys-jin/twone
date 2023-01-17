@@ -15,8 +15,12 @@ public class TeamServiceImpl implements TeamService {
   @Autowired
   private TeamDAO teamDao;
 
+//  @Override
+//  public List<MemDTO> selectTeamList(int seq) {
+//    return teamDao.selectTeamList(seq);
+//  }
   @Override
-  public List<MemDTO> selectTeamList(int seq) {
+  public List<HashMap<String,Object>> selectTeamList(int seq) {
     return teamDao.selectTeamList(seq);
   }
 
@@ -47,7 +51,11 @@ public class TeamServiceImpl implements TeamService {
   }
 
   @Override
-  public TeamDTO selectOne(HashMap<String, Object> map) {
+  public TeamDTO checkOne(HashMap<String, Object> map) {
+    return teamDao.checkOne(map);
+  }
+  @Override
+  public HashMap<String, Object> selectOne(HashMap<String, Object> map) {
     return teamDao.selectOne(map);
   }
 

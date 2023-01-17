@@ -1321,6 +1321,24 @@ h6 {
   padding-left: 124px
 }
 
-.team-from{
-  height: 58px;
+.form-select{
+  height: 42px !important;
+  margin: 0px !important;
+  padding: 7px 0 7px 7px !important;
+  width: 86px !important;
+}
+
+#manager, #member, #reder{
+  display: flex;
+}
+.line{
+  padding: 10px;
+  border-bottom: 1px solid #cddfff;
+}
+.line-end{
+  padding: 10px;
+}
+
+.allowTitle{
+  padding-bottom: 10px;
 }

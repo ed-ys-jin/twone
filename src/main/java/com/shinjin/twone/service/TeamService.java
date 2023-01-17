@@ -8,7 +8,8 @@ import java.util.List;
 
 public interface TeamService {
 
-  public List<MemDTO> selectTeamList(int seq);
+//  public List<MemDTO> selectTeamList(int seq);
+  public List<HashMap<String,Object>> selectTeamList(int seq);
 
   public int changeAllow(TeamDTO dto);
 
@@ -19,7 +20,8 @@ public interface TeamService {
 
   public Integer checkMember(String email);
 
-  public TeamDTO selectOne(HashMap<String, Object> map);
+  public TeamDTO checkOne(HashMap<String, Object> map);
+  public HashMap<String, Object> selectOne(HashMap<String, Object> map);
 
 
   public int deleteMember(TeamDTO dto);

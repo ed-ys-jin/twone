@@ -10,9 +10,14 @@ public class TeamDAOImpl implements TeamDAO{
 
 
   @Override
-  public List<MemDTO> selectTeamList(int seq) {
+  public List<HashMap<String,Object>> selectTeamList(int seq) {
     return selectTeamList(seq);
   }
+
+//  @Override
+//  public List<MemDTO> selectTeamList(int seq) {
+//    return selectTeamList(seq);
+//  }
 
   @Override
   public int leaderSeq(int seq) {
@@ -35,7 +40,11 @@ public class TeamDAOImpl implements TeamDAO{
   }
 
   @Override
-  public TeamDTO selectOne(HashMap<String, Object> map) {
+  public TeamDTO checkOne(HashMap<String, Object> map) {
+    return checkOne(map);
+  }
+  @Override
+  public HashMap<String, Object> selectOne(HashMap<String, Object> map) {
     return selectOne(map);
   }
 
