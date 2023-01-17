@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.BoardDAO" >
+
+    <!-- 보드 생성 -->
+    <insert id="addBoard" parameterType="BoardDTO">
+        INSERT INTO t_board
+            (board_seq, project_seq, board_name)
+        VALUES
+            ((SELECT nextval('board_seq') AS board_seq FROM dual), #{projectSeq}, #{boardName})
+    </insert>
+
+    <!-- 보드 리스트 받기 -->
+    <select id="getBoardList" resultType="BoardDTO">
+        SELECT *
+        FROM t_board
+        ORDER BY board_seq DESC
+    </select>
+
+    <!-- 최근 생성한 boardDTO 받기 -->
+    <select id="getLatestBoardDTO" parameterType="BoardDTO" resultType="BoardDTO">
+        SELECT *
+        FROM t_board
+        WHERE project_seq = #{projectSeq}
+          and board_seq = (SELECT MAX(board_seq) FROM t_board)
+    </select>
+
+</mapper>

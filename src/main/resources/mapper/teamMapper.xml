@@ -3,10 +3,25 @@
 <mapper namespace="com.shinjin.twone.dao.TeamDAO" >
 
     <!-- 팀 구성원 리스트 -->
-    <select id="selectTeamList" resultType="MemDTO">
-        SELECT m.*, t.team_allow
+    <!--    <select id="selectTeamList" parameterType="int" resultType="MemDTO">-->
+    <!--        SELECT m.*, t.team_allow-->
+    <!--        FROM t_team t, t_mem m-->
+    <!--        where t.mem_seq = m.mem_seq and t.project_seq =#{seq}-->
+    <!--        order by team_allow asc;-->
+    <!--    </select>-->
+
+    <!-- 팀 구성원 리스트 -->
+    <!--    <select id="selectTeamList" parameterType="int" resultType="Hashmap">-->
+    <!--        SELECT m.-->
+    <!--        FROM t_team t, t_mem m-->
+    <!--        where t.mem_seq = m.mem_seq and t.project_seq =#{seq}-->
+    <!--        order by team_allow asc;-->
+    <!--    </select>-->
+    <!--팀 구성원 리스트 -->
+    <select id="selectTeamList" parameterType="int" resultType="Hashmap">
+        SELECT ifnull(m.mem_image,"") mem_image,ifnull(m.mem_position,"") mem_position,ifnull(m.mem_dept,"") mem_dept,ifnull(m.mem_company,"") mem_company,m.mem_seq,m.mem_email,m.mem_cert,m.mem_delcheck,m.mem_name, t.team_allow
         FROM t_team t, t_mem m
-        where t.mem_seq = m.mem_seq and t.project_seq = 21
+        where t.mem_seq = m.mem_seq and t.project_seq =#{seq}
         order by team_allow asc;
     </select>
 
@@ -14,20 +29,41 @@
     <select id="leaderSeq" resultType="int">
         select t_project.mem_seq
         from t_project
-        where project_seq = 21;
+        where project_seq =#{seq};
     </select>
 
     <!-- 권한 변경   -->
     <update id="changeAllow" parameterType="TeamDTO">
-        update t_team set team_allow = #{teamAllow} where mem_seq = #{memSeq}
+        update t_team set team_allow = #{teamAllow} where mem_seq = #{memSeq} and project_seq=#{projectSeq}
     </update>
 
     <!-- 팀 사용자 추가   -->
     <insert id="memberAdd" parameterType="Hashmap">
         insert into t_team (team_seq, project_seq, mem_seq, team_allow)
-        values ((select nextval('team_seq') from dual), #{pSeq}, (select t_mem.mem_seq from t_mem where mem_email =#{email}),2);
+        values ((select nextval('team_seq') from dual), #{pSeq},#{mSeq},2);
 
     </insert>
+
+    <!-- 사용자 존재 여부-->
+    <select id="checkMember" parameterType="String" resultType="int">
+        select t_mem.mem_seq from t_mem where mem_email=#{email}
+    </select>
+
+    <!-- 팀 테이블 한 레코드 가져오기-->
+    <select id="checkOne" parameterType="Hashmap" resultType="TeamDTO">
+        select * from t_team where project_seq=#{pSeq} and mem_seq=#{mSeq};
+    </select>
+
+    <select id="selectOne" parameterType="Hashmap" resultType="Hashmap">
+        select * from t_team where project_seq=#{pSeq} and mem_seq=#{mSeq};
+    </select>
+
+    <!-- 팀사용자 삭제 -->
+    <delete id="deleteMember" parameterType="TeamDTO">
+        delete from t_team where project_seq=#{projectSeq} and mem_seq=#{memSeq};
+    </delete>
+
+
 
 
 </mapper>

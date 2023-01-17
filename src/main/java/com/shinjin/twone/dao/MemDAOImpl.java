@@ -18,10 +18,10 @@ public class MemDAOImpl implements MemDAO {
 
     /* 회원등록 */
     @Override
-    public int signup(MemDTO memDto) {
+    public int signup(MemDTO memDTO) {
         int result = -1;
         try {
-            result = signup(memDto);
+            result = signup(memDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -30,10 +30,10 @@ public class MemDAOImpl implements MemDAO {
 
     /* 로그인 */
     @Override
-    public MemDTO login(MemDTO memDto) {
+    public MemDTO login(MemDTO memDTO) {
         MemDTO dto = null;
         try {
-            dto = login(memDto);
+            dto = login(memDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -42,10 +42,10 @@ public class MemDAOImpl implements MemDAO {
 
     /* 회원탈퇴 */
     @Override
-    public int withdraw(MemDTO memDto) {
+    public int withdraw(MemDTO memDTO) {
         int result = 0;
         try {
-            result = withdraw(memDto);
+            result = withdraw(memDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,10 +60,10 @@ public class MemDAOImpl implements MemDAO {
 
     /* 회원정보 수정 */
     @Override
-    public int updateMemInfo(MemDTO memDto) {
+    public int updateMemInfo(MemDTO memDTO) {
         int result = -1;
         try {
-            result = updateMemInfo(memDto);
+            result = updateMemInfo(memDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,10 +78,10 @@ public class MemDAOImpl implements MemDAO {
 
     /* 비밀번호 변경 */
     @Override
-    public int changePw(MemDTO memDto) {
+    public int changePw(MemDTO memDTO) {
         int result = -1;
         try {
-            result = changePw(memDto);
+            result = changePw(memDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }

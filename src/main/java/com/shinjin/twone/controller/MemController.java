@@ -30,12 +30,12 @@ public class MemController {
     }
 
     @PostMapping("/signup")
-    public String signupProc(@Valid MemDTO memDto, Errors errors, Model model) {
+    public String signupProc(@Valid MemDTO memDTO, Errors errors, Model model) {
 
         /* 유효성 검사 */
         if(errors.hasErrors()){ // 유효성 검사 실패
             // 회원가입 실패시 입력 데이터 값을 유지
-            model.addAttribute("memDto", memDto);
+            model.addAttribute("memDTO", memDTO);
 
             Map<String, String> validatorResult = memService.validatorHandling(errors);
             for(String key : validatorResult.keySet()){
@@ -47,16 +47,16 @@ public class MemController {
 
         /* 중복 이메일 확인 */
         // 기등록된 이메일이 존재하며, 가입중 상태인 경우 (가입중 : 0, 탈퇴 : 1)
-        if(memService.checkDupl(memDto.getMemEmail()) == 0){
+        if(memService.checkDupl(memDTO.getMemEmail()) == 0){
             commonMethod.setAttribute(model, "/signup", "이미 등록된 이메일 계정입니다.");
             return "/common/alert";
         }
 
         /* 회원 등록 */
         // 회원 등록 성공
-        if(memService.signup(memDto) != -1) {
-            commonMethod.setAttribute(model, "/login?email=" + memDto.getMemEmail(), "TWONE 회원이 되었습니다. 로그인을 진행해 주세요.");
-        // 회원 등록 실패
+        if(memService.signup(memDTO) != -1) {
+            commonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "TWONE 회원이 되었습니다. 로그인을 진행해 주세요.");
+            // 회원 등록 실패
         } else {
             commonMethod.setAttribute(model, "/signup", "회원가입에 실패하였습니다. 관리자에게 문의해 주세요.");
         }
@@ -94,17 +94,17 @@ public class MemController {
     }
 
     @PostMapping("/login")
-    public String loginProc(MemDTO memDto, HttpServletRequest request, HttpServletResponse response) {
+    public String loginProc(MemDTO memDTO, HttpServletRequest request, HttpServletResponse response) {
 
-        MemDTO dto = memService.login(memDto); // DTO 불러오기
+        MemDTO dto = memService.login(memDTO); // DTO 불러오기
 
         /* 로그인 가능 여부 확인 */
         // 일치하는 ('가입중' 상태의) 이메일 계정이 없음
         if(dto == null){
             commonMethod.setAttribute(request, "/login", "존재하지 않는 이메일 계정입니다.");
             return "/common/alert";
-        // 일치하는 이메일은 존재하나, 비밀번호 다름
-        } else if(!dto.getMemPw().equals(memDto.getMemPw())) {
+            // 일치하는 이메일은 존재하나, 비밀번호 다름
+        } else if(!dto.getMemPw().equals(memDTO.getMemPw())) {
             commonMethod.setAttribute(request, "/login", "비밀번호가 일치하지 않습니다.");
             return "common/alert";
         }
@@ -140,7 +140,7 @@ public class MemController {
                 cookie.setPath("/"); // root 경로 설정
                 cookie.setMaxAge(60 * 60 * 24 * 30);  // 30일동안 유효
                 response.addCookie(cookie);
-            // 기존 쿠키 값이 존재
+                // 기존 쿠키 값이 존재
             } else {
                 // 기존 쿠키 값과 다름
                 if(!cookie.getValue().equals(dto.getMemEmail())){
@@ -148,28 +148,24 @@ public class MemController {
                     response.addCookie(cookie);
                 }
             }
-        // 아이디 저장이 체크되어 있지 않음
+            // 아이디 저장이 체크되어 있지 않음
         } else if (saveid == false) {
             cookie = new Cookie("saveid", null); // 쿠키 값 null로 설정
             cookie.setMaxAge(0);  // 남은 유효시간 0으로 설정
             response.addCookie(cookie);
         }
 
-        commonMethod.setAttribute(request, "/project");
-
-        return "/common/noalert";
+        return "redirect:/project";
     }
 
 
     /*** 로그아웃 ***/
     @RequestMapping("/logout")
-    public String logoutProc(Model model, HttpSession session) {
+    public String logoutProc(HttpSession session) {
 
         session.invalidate(); // 세션 해제
 
-        commonMethod.setAttribute(model, "/login"); // 로그인 페이지로 이동
-
-        return "/common/noalert";
+        return "redirect:/login";
     }
 
 
@@ -180,16 +176,16 @@ public class MemController {
     }
 
     @PostMapping("/withdraw")
-    public String withdrawProc(MemDTO memDto, Model model, HttpSession session) {
+    public String withdrawProc(MemDTO memDTO, Model model, HttpSession session) {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
 
-        memDto.setMemSeq(memSeq); // memDto(memSeq, memPw)
+        memDTO.setMemSeq(memSeq); // memDTO(memSeq, memPw)
 
         // 회원탈퇴 성공
-        if(memService.withdraw(memDto) != 0){
+        if(memService.withdraw(memDTO) != 0){
             commonMethod.setAttribute(model, "/login", "회원탈퇴 처리가 완료되었습니다. 그동안 TWONE 서비스를 이용해 주셔서 감사합니다. 더욱더 노력하고 발전하는 TWONE이 되도록 노력하겠습니다.");
-        // 회원탈퇴 실패
+            // 회원탈퇴 실패
         } else {
             commonMethod.setAttribute(model, "/withdraw", "비밀번호 불일치 등의 이유로 회원탈퇴 처리에 실패했습니다. 담당자에게 문의해 주세요.");
         }
@@ -203,38 +199,36 @@ public class MemController {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
 
-        MemDTO memDto = memService.getDto(memSeq); // memDTO 불러오기
+        MemDTO memDTO = memService.getDto(memSeq); // memDTO 불러오기
 
-        model.addAttribute("memDto", memDto);
+        model.addAttribute("memDTO", memDTO);
 
         return "/member/profile";
     }
 
     @RequestMapping("/editprofile")
-    public String editProfileProc(MemDTO memDto, HttpServletRequest request, HttpSession session) {
+    public String editProfileProc(MemDTO memDTO, HttpServletRequest request, HttpSession session) {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
 
-        memDto.setMemSeq(memSeq); // 수정할 정보를 담은 memDTO 만들기
+        memDTO.setMemSeq(memSeq); // 수정할 정보를 담은 memDTO 만들기
 
         /* 회원정보 수정 */
-        if(memService.updateMemInfo(memDto) == -1){ // 정보 수정 실패
+        if(memService.updateMemInfo(memDTO) == -1){ // 정보 수정 실패
             commonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
             return "/common/alert";
         }
 
         /* 변경사항 세션에 업로드 */
-        request.getSession().setAttribute("username", memDto.getMemName()); // member name
-        request.getSession().setAttribute("userposition", memDto.getMemPosition()); // member position
-        request.getSession().setAttribute("userimage", memDto.getMemImage()); // member image
+        request.getSession().setAttribute("username", memDTO.getMemName()); // member name
+        request.getSession().setAttribute("userposition", memDTO.getMemPosition()); // member position
+        request.getSession().setAttribute("userimage", memDTO.getMemImage()); // member image
 
-        commonMethod.setAttribute(request, "/profile");
-
-        return "/common/noalert";
+        return "redirect:/profile";
     }
 
     @PostMapping("/changepassword")
-    public String chengPasswordProc(@Valid MemDTO memDto, Errors errors, HttpServletRequest request, HttpSession session) {
+    public String chengPasswordProc(@Valid MemDTO memDTO, Errors errors, HttpServletRequest request, HttpSession session) {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
 
@@ -256,8 +250,8 @@ public class MemController {
         }
 
         /* 비밀번호 변경 */
-        memDto.setMemSeq(memSeq); // 수정할 정보를 담은 memDTO 만들기
-        if(memService.changePw(memDto) != -1) { // 정보 수정 성공
+        memDTO.setMemSeq(memSeq); // 수정할 정보를 담은 memDTO 만들기
+        if(memService.changePw(memDTO) != -1) { // 정보 수정 성공
             commonMethod.setAttribute(request, "/profile", "비밀번호가 변경되었습니다.");
         } else { // 정보 수정 실패
             commonMethod.setAttribute(request, "/profile", "비밀번호 변경에 실패하였습니다. 관리자에게 문의해 주세요.");

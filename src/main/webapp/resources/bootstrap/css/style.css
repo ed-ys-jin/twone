@@ -1305,3 +1305,52 @@ h6 {
 .member-info{
   padding-bottom: 10px;
 }
+
+.teamtitle{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.delete-bnt{
+  height: 38px;
+}
+
+.x{
+  padding-left: 100px
+}
+
+.form-select{
+  height: 42px !important;
+  margin: 0px !important;
+  padding: 7px 0 7px 7px !important;
+  width: 86px !important;
+}
+
+#manager, #member, #reder{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+.line{
+  padding: 18px;
+  border-bottom: 1px solid #cddfff;
+}
+.line-end{
+  padding: 10px;
+}
+
+.allowTitle{
+  padding-bottom: 10px;
+}
+.position{
+  padding-bottom: 5px;
+}
+
+.team-card{
+  max-width: 140px;
+}
+.card-wrrap{
+  width: 170px;
+}

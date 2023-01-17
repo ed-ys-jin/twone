@@ -27,4 +27,14 @@ public class commonMethod {
         return;
     }
 
+    /*숫자인지 판별하는 메소드*/
+    public static boolean isNumber(String str){
+        try{
+            Double.parseDouble(str);
+            return true;
+        }catch(NumberFormatException e){
+            return false;
+        }
+    }
+
 }
