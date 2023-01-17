@@ -1318,7 +1318,7 @@ h6 {
 }
 
 .x{
-  padding-left: 124px
+  padding-left: 100px
 }
 
 .form-select{
@@ -1330,9 +1330,11 @@ h6 {
 
 #manager, #member, #reder{
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 .line{
-  padding: 10px;
+  padding: 18px;
   border-bottom: 1px solid #cddfff;
 }
 .line-end{
@@ -1341,4 +1343,14 @@ h6 {
 
 .allowTitle{
   padding-bottom: 10px;
+}
+.position{
+  padding-bottom: 5px;
+}
+
+.team-card{
+  max-width: 140px;
+}
+.card-wrrap{
+  width: 170px;
 }

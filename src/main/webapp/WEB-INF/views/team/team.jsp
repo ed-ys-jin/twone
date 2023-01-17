@@ -172,7 +172,7 @@
         teamList.forEach(member => {
             console.log(member.mem_position);
 
-            let tag = '<div class="col-2"> <div class="card" style="';
+            let tag = '<div class="col-2 card-wrrap"> <div class="card team-card" style="';
             console.log(${leder == dto.memSeq});
             if (leader == member.mem_seq) {
                 tag += 'border: 3px solid #0d6efd3b;';

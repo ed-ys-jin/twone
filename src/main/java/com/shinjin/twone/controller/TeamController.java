@@ -44,9 +44,9 @@ public class TeamController {
     Set<String> keys = teamList.get(0).keySet();
     List<HashMap<String,Object>> list = new ArrayList<>();
 
-    for(HashMap<String,Object> m : teamList){ //{mem_cert=0, team_allow=2}
+    for(HashMap<String,Object> m : teamList){
         HashMap<String,Object> map = new HashMap<>();
-      for(String k : keys){ //mem_cert, team_allow
+      for(String k : keys){
         if(m.get(k).equals("")){
           map.put(("\"" + k + "\"" ),null);
         }else if((m.get(k)+"").matches("[+-]?\\d*(\\.\\d+)?")){
