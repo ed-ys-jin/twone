@@ -38,13 +38,14 @@ public class TeamController {
     int pSeq = Integer.parseInt(request.getParameter("projectSeq"));
     int leader = teamService.leaderSeq(pSeq);
     ProjectDTO pdto = projectService.selectOne(pSeq);
-//    List<MemDTO> teamList = teamService.selectTeamList(pSeq);
     List<HashMap<String,Object>> teamList = teamService.selectTeamList(pSeq);
 
+    List<Integer> allowList = new ArrayList<>();
     Set<String> keys = teamList.get(0).keySet();
     List<HashMap<String,Object>> list = new ArrayList<>();
 
     for(HashMap<String,Object> m : teamList){
+        allowList.add((Integer) m.get("team_allow"));
         HashMap<String,Object> map = new HashMap<>();
       for(String k : keys){
         if(m.get(k).equals("")){
@@ -58,24 +59,15 @@ public class TeamController {
       list.add(map);
     }
 
-    List<Integer> allowList = new ArrayList<>();
-
     JSONParser parser = new JSONParser();
     JSONArray teamlist = new JSONArray();
-//    int idx = 0;
-//    String text ="[";
+//    System.out.println(list);
     for(HashMap<String,Object> map:list){
-      allowList.add((Integer) map.get("team_allow"));
+
       String str = map.toString().replaceAll("=",":") ;
       JSONObject json = (JSONObject)parser.parse(str);
       teamlist.add(json);
-//      if(idx < 1){
-//        text += ",";
-//      }
     }
-//    text += "]";
-
-//    System.out.println(text +"text");
 
     //로그인 세션의 정보 가져오기
     session = request.getSession();
@@ -84,7 +76,6 @@ public class TeamController {
     HashMap<String, Object> map = new HashMap<String, Object>();
     map.put("mSeq", login);
     map.put("pSeq",pSeq);
-//    TeamDTO tdto = teamService.selectOne(map);
     HashMap<String,Object> tdto = teamService.selectOne(map);
     Set<String> key = tdto.keySet();
 
@@ -100,13 +91,8 @@ public class TeamController {
     }
     String sdto = dto.toString().replaceAll("=",":") ;
     JSONObject json = (JSONObject)parser.parse(sdto);
-    System.out.println(json);
-
-
-
 
     request.setAttribute("teamList",teamlist);
-//    request.setAttribute("text",text);
     request.setAttribute("dto",json);
     request.setAttribute("allowList",allowList);
     request.setAttribute("leader",leader);
@@ -181,6 +167,10 @@ public class TeamController {
       TeamDTO dto = new TeamDTO();
       dto.setProjectSeq(pSeq);
       dto.setMemSeq(mSeq);
+
+//      if(request.getServletPath().equals("/project/Withdrawal")){
+//
+//      }
 
       int check = teamService.deleteMember(dto);
       if(check != 0){

@@ -19,15 +19,13 @@
                 </ol>
             </nav>
         </div>
-        <button type="button" class="btn btn-primary delete-bnt" onclick="Withdrawal(${login},${dto.projectSeq})">팀 탈퇴
-        </button>
     </div><!-- End Page Title -->
 
-    <div class="search-bar">
+    <div class="search-bar team-search">
         <form class="search-form d-flex align-items-center" method="POST" action="/project/memberAdd"
               onsubmit="return check(this)">
             <input type="hidden" name="projectSeq" value="${dto.project_seq}">
-            <input type="text" name="email" placeholder="이메일로 사용자 추가" title="Enter search keyword">
+            <input type="text" name="email" placeholder="email" title="Enter search keyword">
             <button type="submit" title="Search"><i class="bi bi-person-plus-fill member-search"></i></button>
         </form>
     </div><!-- End Search Bar -->
@@ -43,85 +41,16 @@
                 <div class="allowTitle">구성원</div>
                 <div id="member"></div>
             </div>
-<%--            <hr style="border: 1px solid #8eb3f5f5;">--%>
             <div class="line-end">
                 <div class="allowTitle">조회자</div>
                 <div id="reader"></div>
             </div>
-            <%--            <c:set var = "idx" value="0"/>--%>
-            <%--            <c:forEach var="member" items="${teamList}">--%>
-            <%--            <div class="col-2" >--%>
-            <%--                <div class="card" style="${leader == member.memSeq? 'border: 3px solid #0d6efd3b;':''}">--%>
-
-            <%--                    <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">--%>
-            <%--                        <c:if test="${(dto.teamAllow ==1) && login != member.memSeq}">--%>
-            <%--                            <span class="x" onclick="deleteTeam(${member.memSeq},${dto.projectSeq})"><i class="bi bi-person-dash-fill"></i></span>--%>
-            <%--                            <span class="clean"></span>--%>
-            <%--                        </c:if>--%>
-            <%--                        <div class="member-info">--%>
-            <%--                            <c:choose>--%>
-            <%--                                <c:when test="${member.memImage == null}">--%>
-            <%--                                    <img src="${twone}/resources/bootstrap/img/no_image.png" alt="Profile" class="rounded-circle member-img">--%>
-            <%--                                </c:when>--%>
-            <%--                                <c:otherwise>--%>
-            <%--                                         <img src="${twone}/resources/bootstrap/img/news-3.jpg" alt="Profile"--%>
-            <%--                                         class="rounded-circle member-img">--%>
-
-            <%--                                </c:otherwise>--%>
-            <%--                            </c:choose>--%>
-            <%--&lt;%&ndash;                            <img src="${member.memImage == ""? [twone]+'/resources/bootstrap/img/no_image.png' : [twone]+'/resources/bootstrap/img/news-3.jpg'}" alt="Profile"&ndash;%&gt;--%>
-            <%--&lt;%&ndash;                                 class="rounded-circle member-img">&ndash;%&gt;--%>
-            <%--                        </div>--%>
-            <%--                        <div class="name">${member.memName}</div>--%>
-            <%--                        <div class="position">${member.memPosition}</div>--%>
-
-            <%--                        <c:if test="${dto.teamAllow == 1}">--%>
-            <%--                            <c:set var="idx" value="${idx+1}"/>--%>
-            <%--                            <form class="team-from" id="input${idx}" method="post" action="/project/changeAllow">--%>
-            <%--                                <input type="hidden" value="${member.memSeq}" name="memSeq">--%>
-            <%--                                <input type="hidden" name="projectSeq" value="${dto.projectSeq}">--%>
-            <%--                                <div class="form-floating mb-3">--%>
-            <%--                                    <select class="form-select" id="floatingSelect" name="allow"--%>
-            <%--                                                                        aria-label="Floating label select example" onchange="change_allow('${member.memName}',${idx},${member.memSeq})">--%>
-            <%--                                        <option value="1" ${member.teamAllow == 1? 'selected':''}>관리자</option>--%>
-            <%--                                        <option value="2" ${member.teamAllow == 2? 'selected':''}>구성원</option>--%>
-            <%--                                        <option value="3" ${member.teamAllow == 3? 'selected':''}>조회자</option>--%>
-            <%--                                    </select> <label for="floatingSelect">권한</label>--%>
-            <%--                                </div>--%>
-            <%--                            </form>--%>
-            <%--                        </c:if>--%>
-
-            <%--                    </div>--%>
-            <%--                </div>--%>
-
-            <%--            </div>--%>
-            <%--            </c:forEach>--%>
         </div>
     </section>
 
 </main>
 <!-- End #main -->
 <script>
-    <%-- 권한 변경 --%>
-
-    function change_allow(name, idx, memSeq) {
-        const allowList = ${allowList};
-        // 본인 권한 수정일 때
-        if (memSeq == ${login}) {
-            const result = allowList.filter(allow => allow == 1);
-            if (result.length == 1) {
-                alert("최소 한명이상이 관리자 권한이어야 합니다.");
-                return location.href = "/project/team";
-            }
-        }
-        let select = confirm(name + "님의 권한을 변경하시겠습니까?");
-        if (select) {
-            document.getElementById("input" + idx).submit();
-        } else {
-            return location.href = "/project/team";
-        }
-    }
-
     // 검색폼 유효성 검사
     function check(f) {
         const emailCheck = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
@@ -142,19 +71,44 @@
     // 다른 사용자 삭제
     function deleteTeam(mSeq, pSeq) {
         let check = confirm("사용자를 삭제하시겠습니까?");
-        if (!check) {
-            return;
-        }
+        if (!check) { return; }
         location.href = "/project/deleteMember?projectSeq=" + pSeq + "&memberSeq=" + mSeq;
     }
 
     // 로그인세션 팀 탈퇴
     function Withdrawal(mSeq, pSeq) {
         let check = confirm("팀을 탈퇴하시겠습니까?");
-        if (!check) {
+        if (check) {
+            const allowList = ${allowList};
+            const result = allowList.filter(allow => allow == 1);
+            if (result.length == 1) {
+                alert("최소 한명이상이 관리자 권한이어야 합니다.");
+                return;
+            }
+        }else{
             return;
         }
         location.href = "/project/Withdrawal?projectSeq=" + pSeq + "&memberSeq=" + mSeq;
+    }
+
+    <%-- 권한 변경 --%>
+    function change_allow(name, idx, memSeq, pSeq) {
+        const allowList = ${allowList};
+        // 본인 권한 수정일 때
+        if (memSeq == ${login}) {
+            const result = allowList.filter(allow => allow == 1);
+            if (result.length == 1) {
+                alert("최소 한명이상이 관리자 권한이어야 합니다.");
+                return location.href = "/project/team?projectSeq=" + pSeq;
+                alert("end");
+            }
+        }
+        let select = confirm(name + "님의 권한을 변경하시겠습니까?");
+        if (select) {
+            document.getElementById("input" + idx).submit();
+        } else {
+            return location.href = "/project/team?projectSeq=" + pSeq;
+        }
     }
 </script>
 <script language="JavaScript">
@@ -169,6 +123,8 @@
         const reader = document.getElementById("reader");
         let idx = 0;
 
+        console.log(${allowList});
+
         teamList.forEach(member => {
             console.log(member.mem_position);
 
@@ -177,14 +133,21 @@
             if (leader == member.mem_seq) {
                 tag += 'border: 3px solid #0d6efd3b;';
             }
-            tag += '"> <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">';
+            tag +='"><div class="card-body test-card-body profile-card pt-4 d-flex flex-column align-items-center">';
 
-            if (dto.team_allow == 1 && login != member.mem_seq) {
-                tag += '<span class="x" onclick="deleteTeam(' + member.mem_seq + "," + dto.project_seq + ')"><i class="bi bi-person-dash-fill"></i></span>';
+            if(dto.team_allow == 1 || login == member.mem_seq){ // 로그인세션의 팀 권한이 조회자가 아니면 보이게끔
+                tag += ' <div class="filter team-filter"><a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">';
+
+                if(login == member.mem_seq){
+                    tag += '<li><a class="dropdown-item" onclick="Withdrawal(' +login+','+ dto.project_seq + ')">팀 탈퇴</a></li>';
+                }else{
+                    tag += '<li><a class="dropdown-item" onclick="deleteTeam(' + member.mem_seq + "," + dto.project_seq + ')">사용자 삭제</a></li>';
+                }
+                tag += '</ul></div>';
             }
-            tag += '<div class="member-info"> <img alt="Profile" class="rounded-circle member-img" src="';
+            tag += ' <div class="member-info"> <img alt="Profile" class="rounded-circle member-img" src="';
             if (member.mem_image == null) {
-                tag += 'pageContext.request.contextPath/resources/bootstrap/img/no_image.png">';
+                tag += '../resources/bootstrap/img/no_image.png">';
             } else {
                 tag += 'pageContext.request.contextPath/resources/bootstrap/img/' + member.mem_image + '">';
             }
@@ -193,22 +156,22 @@
                 tag += member.mem_position;
             }
             tag += '</div>';
-            if (dto.team_allow == 1) {
+            if (dto.team_allow == 1) { // 권한 변경
                 idx++;
                 tag += '<form  class="team-from" id="input' + idx + '" method="post" action="/project/changeAllow">'
                     + '<input type="hidden" value="' + member.mem_seq + '" name="memSeq">'
                     + '<input type="hidden" name="projectSeq" value="' + dto.project_seq + '"> <div class="form-floating mb-3" >' +
                     '<select  class="form-select" id="floatingSelect" name="allow" aria-label="Floating label select example" onchange="change_allow(' +
-                    "'" + member.mem_name + '\',' + idx + ',' + member.mem_seq + ')"> <option value="1"';
+                    "'" + member.mem_name + '\',' + idx + ',' + member.mem_seq + ','+ dto.project_seq +')"> <option value="1"';
 
                 tag += member.team_allow == 1 ? "selected" : "";
                 tag += '>관리자</option> <option value="2"';
                 tag += member.team_allow == 2 ? "selected" : "";
                 tag += '>구성원</option> <option value="3"';
                 tag += member.team_allow == 3 ? "selected" : "";
-                tag += '>조회자</option></select></div></form></div></div></div>';
-
+                tag += '>조회자</option></select></div></form>';
             }
+            tag += '</div></div></div>';
             if (member.team_allow == 1) {
                 manager.insertAdjacentHTML('beforeend', tag);
             } else if (member.team_allow == 2) {
@@ -218,8 +181,5 @@
             }
         })
     }
-
 </script>
-
-
 <%@ include file="../layouts/footer.jsp" %>
