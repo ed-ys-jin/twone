@@ -14,6 +14,14 @@ public class BoardServiceImpl implements BoardService {
     private BoardDAO boardDAO;
 
 
+    /* 샘플 보드 생성 */
+    @Override
+    public int createsampleboard(BoardDTO boardDTO) {
+        boardDAO.createsampleboard(boardDTO);
+        // selectkey 를 활용하여 인서트 한 board_seq 바로 가져오기
+        return boardDTO.getBoardSeq();
+    }
+
     /* 보드 생성 */
     @Override
     public int addBoard(BoardDTO boardDTO) {
@@ -22,8 +30,8 @@ public class BoardServiceImpl implements BoardService {
 
     /* 보드 리스트 불러오기 */
     @Override
-    public List<BoardDTO> getBoardList() {
-        return boardDAO.getBoardList();
+    public List<BoardDTO> getBoardList(int projectSeq) {
+        return boardDAO.getBoardList(projectSeq);
     }
 
     /* 최근 생성한 BoardDTO 불러오기 */

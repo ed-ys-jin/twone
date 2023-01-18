@@ -31,6 +31,9 @@ public class BoardController {
     @RequestMapping("project/board")
     public String viewBoard(@RequestParam(defaultValue="-1", required=false) int boardSeq, HttpServletRequest request, Model model) {
 
+        // project 상세페이지 넘어감
+        model.addAttribute("navType", "project");
+
         /* Attr : memDTO */
         int memSeq = (int) request.getSession().getAttribute("login");
         MemDTO memDTO = memService.getDto(memSeq);
@@ -42,7 +45,7 @@ public class BoardController {
         model.addAttribute("pdto", pdto);
 
         /* Attr : boardList(보드사이드바 출력용) */
-        List<BoardDTO> boardList = boardService.getBoardList();
+        List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
         model.addAttribute("blist", boardList);
 
         /* Attr : boardDTO */
@@ -54,6 +57,10 @@ public class BoardController {
         } else {
             boardDTO = boardService.getBoardDTO(boardSeq);
         }
+        // 프로젝트에 보드가 한개도 없음
+        if(boardDTO == null){
+            return "project/board";
+        }
         model.addAttribute("bdto", boardDTO);
 
         /* Attr : colList */
@@ -64,14 +71,11 @@ public class BoardController {
         Map<Integer, List<IssueDTO>> issueMap = new HashMap<>();
         for(ColDTO cdto : colList) {
             List<IssueDTO> issueList = issueService.getIssueList(cdto.getColSeq());
-            if(issueList != null) {
+            if(!issueList.isEmpty()) {
                 issueMap.put(cdto.getColSeq(), issueList);
             }
         }
         model.addAttribute("imap", issueMap);
-
-        // project 상세페이지 넘어감
-        model.addAttribute("navType", "project");
 
         return "project/board";
     }
@@ -97,7 +101,7 @@ public class BoardController {
         }
 
         // 보드 리스트 문자열에 담기
-        List<BoardDTO> boardList = boardService.getBoardList();
+        List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
 
         String result = "";
         for(BoardDTO bdto : boardList) {
@@ -140,17 +144,15 @@ public class BoardController {
     public String deleteColumnProc(HttpServletRequest request){
 
         int columnSeq = Integer.parseInt(request.getParameter("colSeq"));
-        int boardSeq = Integer.parseInt(request.getParameter("boardSeq"));
-        System.out.println(columnSeq);
-        System.out.println(boardSeq);
+//        int boardSeq = Integer.parseInt(request.getParameter("boardSeq"));
 
         // 컬럼 삭제
         colService.deleteColumn(columnSeq);
 
         // 컬럼 리스트 문자열에 담기
-        String result = createHtmlCodeForBoardView(boardSeq);
+//        String result = createHtmlCodeForBoardView(boardSeq);
 
-        return result;
+        return null;
     }
 
     /*** 컬럼 리스트 문자열에 담기 ***/
@@ -168,7 +170,7 @@ public class BoardController {
 
         String result = "";
         for (ColDTO cdto : colList) {
-            result += "<div class=\"col-lg-2 col-md-6\" style=\"min-width: 300px\">";
+            result += "<div id=" + cdto.getColSeq() + " class=\"col-lg-2 col-md-6\" style=\"min-width: 300px\">";
             result += "<div class=\"card info-card sales-card\">";
             result += "<div class=\"filter\">";
             result += "<a class=\"icon\" href=\"#\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-three-dots\"></i></a>";

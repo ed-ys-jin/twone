@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.ColDAO" >
 
+    <!-- 샘플 컬럼 생성 -->
+    <insert id="createsamplecolumn" useGeneratedKeys="true" keyProperty="colSeq" parameterType="ColDTO">
+        <selectKey keyProperty="colSeq" resultType="int" order="BEFORE">
+            SELECT nextval('col_seq') AS col_seq FROM dual
+        </selectKey>
+        INSERT INTO t_col
+        VALUES (#{colSeq}, #{boardSeq}, '샘플 컬럼', 0)
+    </insert>
+
     <!-- 컬럼 생성 -->
     <insert id="addColumn" parameterType="ColDTO">
         INSERT INTO t_col

@@ -12,6 +12,12 @@ public class ColDAOImpl implements ColDAO {
         return getColList(boardSeq);
     }
 
+    /* 샘플 컬럼 생성 */
+    @Override
+    public int createsamplecolumn(ColDTO colDTO) {
+        return createsamplecolumn(colDTO);
+    }
+
     /* 컬럼 생성 */
     @Override
     public int addColumn(ColDTO colDTO) {
@@ -27,7 +33,6 @@ public class ColDAOImpl implements ColDAO {
     /* 컬럼 삭제 */
     @Override
     public int deleteColumn(int colSeq) {
-        System.out.println("11111");
         return deleteColumn(colSeq);
     }
 }

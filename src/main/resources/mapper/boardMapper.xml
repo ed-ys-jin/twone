@@ -2,6 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.BoardDAO" >
 
+    <!-- 샘플 보드 생성 -->
+    <insert id="createsampleboard" useGeneratedKeys="true" keyProperty="boardSeq" parameterType="BoardDTO">
+        <selectKey keyProperty="boardSeq" resultType="int" order="BEFORE">
+            SELECT nextval('board_seq') AS board_seq FROM dual
+        </selectKey>
+        INSERT INTO t_board
+        VALUES (#{boardSeq}, #{projectSeq}, '샘플 보드')
+    </insert>
+
     <!-- 보드 생성 -->
     <insert id="addBoard" parameterType="BoardDTO">
         INSERT INTO t_board
@@ -11,9 +20,10 @@
     </insert>
 
     <!-- 보드 리스트 불러오기 -->
-    <select id="getBoardList" resultType="BoardDTO">
+    <select id="getBoardList" parameterType="int" resultType="BoardDTO">
         SELECT *
         FROM t_board
+        WHERE project_seq = #{projectSeq}
         ORDER BY board_seq DESC
     </select>
 

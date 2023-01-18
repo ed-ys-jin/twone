@@ -71,12 +71,6 @@
                 <span>프로젝트 설정</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link ${navType == 'access'? '':'collapsed'}" href="../../../../../../../../../Downloads/NiceAdmin/users-profile.html">
-                <i class="bi bi-person"></i>
-                <span>엑세스</span>
-            </a>
-        </li>
 
     </ul>
 

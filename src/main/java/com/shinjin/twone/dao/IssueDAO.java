@@ -8,6 +8,7 @@ import java.util.List;
 @Mapper
 public interface IssueDAO {
 
+    public int addIssue(IssueDTO issueDTO); // 이슈 생성
     public List<IssueDTO> getIssueList(int colSeq); // IssueList 불러오기
 
 }

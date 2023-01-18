@@ -19,6 +19,14 @@ public class ColServiceImpl implements ColService {
         return colDAO.getColList(boardSeq);
     }
 
+    /* 샘플 컬럼 생성 */
+    @Override
+    public int createsamplecolumn(ColDTO colDTO) {
+        colDAO.createsamplecolumn(colDTO);
+        // selectkey 를 활용하여 인서트 한 col_seq 바로 가져오기
+        return colDTO.getColSeq();
+    }
+
     /* 컬럼 생성 */
     @Override
     public int addColumn(ColDTO colDTO) {

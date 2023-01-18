@@ -2,6 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.IssueDAO" >
 
+    <!-- 이슈 생성 -->
+    <insert id="addIssue" parameterType="IssueDTO">
+        INSERT INTO t_issue
+        VALUES
+            ((SELECT nextval('mem_seq') AS mem_seq FROM dual), #{projectSeq}, #{boardSeq}, #{colSeq}, #{memSeq}
+            , #{issueCode}, #{issueTitle}, null, NOW(), NOW(), null)
+    </insert>
+
     <!-- IssueList 불러오기 -->
     <select id="getIssueList" parameterType="int" resultType="IssueDTO">
         SELECT *

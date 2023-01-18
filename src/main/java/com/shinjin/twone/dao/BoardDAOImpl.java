@@ -7,6 +7,12 @@ import java.util.List;
 public class BoardDAOImpl implements BoardDAO {
 
 
+    /* 샘플 보드 생성 */
+    @Override
+    public int createsampleboard(BoardDTO boardDTO) {
+        return createsampleboard(boardDTO);
+    }
+
     /* 보드 생성 */
     @Override
     public int addBoard(BoardDTO boardDTO) {
@@ -21,8 +27,8 @@ public class BoardDAOImpl implements BoardDAO {
 
     /* 보드 리스트 불러오기 */
     @Override
-    public List<BoardDTO> getBoardList() {
-        return getBoardList();
+    public List<BoardDTO> getBoardList(int projectSeq) {
+        return getBoardList(projectSeq);
     }
 
     /* 최근 생성한 BoardDTO 불러오기 */

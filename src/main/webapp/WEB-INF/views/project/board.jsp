@@ -25,7 +25,7 @@
 
       <!-- Column -->
       <c:forEach var="cdto" items="${clist}">
-        <div class="col-lg-2 col-md-6" style="min-width: 300px">
+        <div id="${cdto.colSeq}" class="col-lg-2 col-md-6" style="min-width: 300px">
           <div class="card info-card sales-card">
 
             <!-- Three Dots Dropdown Menu Icon -->
@@ -99,7 +99,7 @@
 
 <script>
 
-  <!-- 보드 생성 -->
+  <%-- 보드 생성 --%>
   function addcolumn(obj) {
 
     // 입력 글자수 제어
@@ -128,7 +128,7 @@
 
       // 콜백 작업 지정
       xhttp.onreadystatechange = function (){
-        if(this.readyState == 4 && this.status == 200){
+        if(this.readyState == 4 && this.status == 200) {
           document.getElementById("columnlist-card").innerHTML = this.responseText;
         }
       };
@@ -153,16 +153,18 @@
     const xhttp = new XMLHttpRequest();
     xhttp.open("GET", url, true);
 
+    // 태그 삭제
+    document.getElementById(colSeq).remove();
+
     // 콜백 작업 지정
-    xhttp.onreadystatechange = function () {
-      if(this.readyState == 4 && this.status == 200) {
-        document.getElementById("columnlist-card").innerHTML = this.responseText;
-      }
-    }
+    // xhttp.onreadystatechange = function () {
+    //   if(this.readyState == 4 && this.status == 200) {
+    //     document.getElementById("columnlist-card").innerHTML = this.responseText;
+    //   }
+    // }
 
     // 결과값 받음
     xhttp.send();
-    location.reload();
   }
 
     <!-- 컬럼 이름 입력창 보이기 / 숨기기 -->
