@@ -15,9 +15,13 @@ public class TeamServiceImpl implements TeamService {
   @Autowired
   private TeamDAO teamDao;
 
+//  @Override
+//  public List<MemDTO> selectTeamList(int seq) {
+//    return teamDao.selectTeamList(seq);
+//  }
   @Override
-  public List<MemDTO> selectTeamList() {
-    return teamDao.selectTeamList();
+  public List<HashMap<String,Object>> selectTeamList(int seq) {
+    return teamDao.selectTeamList(seq);
   }
 
   @Override
@@ -26,10 +30,10 @@ public class TeamServiceImpl implements TeamService {
   }
 
   @Override
-  public int leaderSeq() throws Exception{
+  public int leaderSeq(int seq) throws Exception{
     int result = -1;
     try{
-      result = teamDao.leaderSeq();
+      result = teamDao.leaderSeq(seq);
     }catch (Exception e){
       e.printStackTrace();
     }
@@ -40,5 +44,25 @@ public class TeamServiceImpl implements TeamService {
   public int memberAdd(HashMap<String, Object> map) {
     return teamDao.memberAdd(map);
   }
+
+  @Override
+  public Integer checkMember(String email) {
+    return teamDao.checkMember(email);
+  }
+
+  @Override
+  public TeamDTO checkOne(HashMap<String, Object> map) {
+    return teamDao.checkOne(map);
+  }
+  @Override
+  public HashMap<String, Object> selectOne(HashMap<String, Object> map) {
+    return teamDao.selectOne(map);
+  }
+
+  @Override
+  public int deleteMember(TeamDTO dto) {
+    return teamDao.deleteMember(dto);
+  }
+
 
 }

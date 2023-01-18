@@ -33,6 +33,7 @@
 
     <!-- Template Main CSS File -->
     <link href="../resources/bootstrap/css/style.css" rel="stylesheet">
+    <link href="../resources/bootstrap/css/custom.css" rel="stylesheet">
 
     <!-- =======================================================
     * Template Name: NiceAdmin - v2.5.0
