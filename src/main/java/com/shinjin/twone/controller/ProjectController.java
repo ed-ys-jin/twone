@@ -72,8 +72,10 @@ public class ProjectController {
 
         // 샘플 컬럼 생성
         ColDTO colDTO = new ColDTO();
+        colDTO.setProjectSeq(projectSeq);
         colDTO.setBoardSeq(boardSeq);
-        int colSeq = colService.createsamplecolumn(colDTO);
+        int colSeq = colService.createSampleColumn(colDTO); // 일반 컬럼
+        colService.addDoneColumn(colDTO); // Done 컬럼
 
         // 샘플 이슈 생성
         IssueDTO issueDTO = new IssueDTO();

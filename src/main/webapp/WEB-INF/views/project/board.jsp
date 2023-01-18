@@ -30,11 +30,18 @@
 
             <!-- Three Dots Dropdown Menu Icon -->
             <div class="filter">
-              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                <li><a class="dropdown-item" href="#">이슈 추가</a></li>
-                <li><a class="dropdown-item" href="javascript:deletecolumn(${cdto.colSeq})">컬럼 삭제</a></li>
-              </ul>
+              <c:choose>
+                <c:when test="${cdto.colType == 1}">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><img src="../resources/bootstrap/img/checkmark.png" width="20"></a>
+                </c:when>
+                <c:otherwise>
+                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                      <li><a class="dropdown-item" href="#">이슈 추가</a></li>
+                      <li><a class="dropdown-item" href="javascript:deletecolumn(${cdto.colSeq})">컬럼 삭제</a></li>
+                    </ul>
+                </c:otherwise>
+              </c:choose>
             </div><!-- End Three Dots Dropdown Menu Icon -->
 
             <!-- Column Title -->
@@ -46,27 +53,25 @@
             <c:choose>
               <c:when test="${imap.containsKey(cdto.colSeq)}">
 
-                <c:forEach var="ilist" items="${imap.get(cdto.colSeq)}">
-                  <c:forEach var="idto" items="${ilist}">
-                    <div class="card-body" style="font-size: 14px">
+                <c:forEach var="idto" items="${imap.get(cdto.colSeq)}">
+                  <div class="card-body" style="font-size: 14px">
 
-                      <a href="${twone}/project/issue">
-                        <div class="alert alert-secondary fade show" role="alert">
-                          <p>${idto.issueTitle}</p>
-                          <!-- Three Dots Dropdown Menu Icon -->
-                          <div class="filter">
-                            <div class="icon" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></div>
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                              <li><div class="dropdown-item">이슈 삭제</div></li>
-                            </ul>
-                          </div><!-- End Three Dots Dropdown Menu Icon -->
-                          <hr>
-                          <p class="mb-0">${idto.issueCode}</p>
-                        </div>
-                      </a>
+                    <a href="${twone}/project/issue">
+                      <div class="alert alert-secondary fade show" role="alert">
+                        <p>${idto.issueTitle}</p>
+                        <!-- Three Dots Dropdown Menu Icon -->
+                        <div class="filter">
+                          <div class="icon" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></div>
+                          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                            <li><div class="dropdown-item">이슈 삭제</div></li>
+                          </ul>
+                        </div><!-- End Three Dots Dropdown Menu Icon -->
+                        <hr>
+                        <p class="mb-0">${idto.issueCode}</p>
+                      </div>
+                    </a>
 
-                    </div>
-                  </c:forEach>
+                  </div>
                 </c:forEach>
 
               </c:when>
@@ -99,7 +104,7 @@
 
 <script>
 
-  <%-- 보드 생성 --%>
+  <%-- 컬럼 생성 --%>
   function addcolumn(obj) {
 
     // 입력 글자수 제어
@@ -120,7 +125,9 @@
       }
 
       // URL(+ 파라미터) 만들기
-      let url = "/project/addcolumn?colName=" + encodeURIComponent(obj.value) + "&boardSeq=" + ${bdto.boardSeq};
+      let url = "/project/addcolumn?projectSeq=" + ${bdto.projectSeq}
+              + "&boardSeq=" + ${bdto.boardSeq}
+              + "&colName=" + encodeURIComponent(obj.value);
 
       // 연결 작업
       const xhttp = new XMLHttpRequest();

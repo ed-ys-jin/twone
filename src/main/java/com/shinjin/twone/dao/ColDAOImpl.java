@@ -14,20 +14,20 @@ public class ColDAOImpl implements ColDAO {
 
     /* 샘플 컬럼 생성 */
     @Override
-    public int createsamplecolumn(ColDTO colDTO) {
-        return createsamplecolumn(colDTO);
+    public int createSampleColumn(ColDTO colDTO) {
+        return createSampleColumn(colDTO);
+    }
+
+    /* Done 컬럼 생성 */
+    @Override
+    public int addDoneColumn(ColDTO colDTO) {
+        return addDoneColumn(colDTO);
     }
 
     /* 컬럼 생성 */
     @Override
     public int addColumn(ColDTO colDTO) {
-        int result = -1;
-        try {
-            result = addColumn(colDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+        return addColumn(colDTO);
     }
 
     /* 컬럼 삭제 */

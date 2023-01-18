@@ -78,7 +78,7 @@
 
 <script>
 
-    <!-- 보드 생성 -->
+    <%-- 보드 생성 --%>
     function addboard(obj){
 
         // 입력 글자수 제어

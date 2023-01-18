@@ -21,16 +21,27 @@ public class ColServiceImpl implements ColService {
 
     /* 샘플 컬럼 생성 */
     @Override
-    public int createsamplecolumn(ColDTO colDTO) {
-        colDAO.createsamplecolumn(colDTO);
+    public int createSampleColumn(ColDTO colDTO) {
+        colDAO.createSampleColumn(colDTO);
         // selectkey 를 활용하여 인서트 한 col_seq 바로 가져오기
         return colDTO.getColSeq();
+    }
+
+    @Override
+    public int addDoneColumn(ColDTO colDTO) {
+        return colDAO.addDoneColumn(colDTO);
     }
 
     /* 컬럼 생성 */
     @Override
     public int addColumn(ColDTO colDTO) {
-        return colDAO.addColumn(colDTO);
+        int result = -1;
+        try {
+            result = colDAO.addColumn(colDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /* 컬럼 삭제 */

@@ -12,11 +12,12 @@
     </insert>
 
     <!-- 보드 생성 -->
-    <insert id="addBoard" parameterType="BoardDTO">
+    <insert id="addBoard" useGeneratedKeys="true" keyProperty="boardSeq" parameterType="BoardDTO">
+        <selectKey keyProperty="boardSeq" resultType="int" order="BEFORE">
+            SELECT nextval('board_seq') AS board_seq FROM dual
+        </selectKey>
         INSERT INTO t_board
-            (board_seq, project_seq, board_name)
-        VALUES
-            ((SELECT nextval('board_seq') AS board_seq FROM dual), #{projectSeq}, #{boardName})
+        VALUES (#{boardSeq}, #{projectSeq}, #{boardName})
     </insert>
 
     <!-- 보드 리스트 불러오기 -->

@@ -89,16 +89,23 @@ public class BoardController {
         int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
         String boardName = request.getParameter("boardName");
 
-        // 생성할 boardDTO 만들기
+        // boardDTO 만들기
         BoardDTO boardDTO = new BoardDTO();
         boardDTO.setProjectSeq(projectSeq);
         boardDTO.setBoardName(boardName);
 
         // 보드 생성 실패
-        if(boardService.addBoard(boardDTO) == -1) {
+        int boardSeq = boardService.addBoard(boardDTO);
+        if(boardSeq == -1) {
             commonMethod.setAttribute(request, "/project/board", "보드 생성에 실패하였습니다. 관리자에게 문의해 주세요.");
             return "/common/alert";
         }
+
+        // Done 컬럼 만들기
+        ColDTO colDTO = new ColDTO();
+        colDTO.setProjectSeq(projectSeq);
+        colDTO.setBoardSeq(boardSeq);
+        colService.addDoneColumn(colDTO);
 
         // 보드 리스트 문자열에 담기
         List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
@@ -106,7 +113,7 @@ public class BoardController {
         String result = "";
         for(BoardDTO bdto : boardList) {
             result += "<li>";
-            result += "<a href=\"${twone}/project/board?projectSeq=" + projectSeq + "&boardSeq=" + bdto.getBoardSeq() + "\">";
+            result += "<a href=\"/project/board?projectSeq=" + projectSeq + "&boardSeq=" + bdto.getBoardSeq() + "\">";
             result += "</i><span>" + bdto.getBoardName() + "</span>";
             result += "</a>";
             result += "</li>";
@@ -121,12 +128,14 @@ public class BoardController {
     @ResponseBody
     public String createColumnProc(HttpServletRequest request) {
 
-        // columnName 입력값, boardSeq 값 파라미터로 받기
+        // columnName 입력값, projectSeq/boardSeq 값 파라미터로 받기
+        int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
         int boardSeq = Integer.parseInt(request.getParameter("boardSeq"));
         String columnName = request.getParameter("colName");
 
         // 생성할 columnDTO 만들기
         ColDTO colDTO = new ColDTO();
+        colDTO.setProjectSeq(projectSeq);
         colDTO.setBoardSeq(boardSeq);
         colDTO.setColName(columnName);
 
