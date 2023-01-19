@@ -122,7 +122,6 @@ public class BoardController {
         return result;
     }
 
-
     /*** 컬럼 생성 ***/
     @GetMapping("/project/addcolumn")
     @ResponseBody
@@ -182,11 +181,15 @@ public class BoardController {
             result += "<div id=" + cdto.getColSeq() + " class=\"col-lg-2 col-md-6\" style=\"min-width: 300px\">";
             result += "<div class=\"card info-card sales-card\">";
             result += "<div class=\"filter\">";
-            result += "<a class=\"icon\" href=\"#\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-three-dots\"></i></a>";
-            result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
-            result += "<li><a class=\"dropdown-item\" href=\"#\">이슈 추가</a></li>";
-            result += "<li><a class=\"dropdown-item\" href=\"javascript:deletecolumn(" + cdto.getColSeq() + ")\">컬럼 삭제</a></li>";
-            result += "</ul>";
+            if(cdto.getColType() == 1){
+                result += "<a class=\"icon\" href=\"#\" data-bs-toggle=\"dropdown\"><img src=\"../resources/bootstrap/img/checkmark.png\" width=\"20\"></a>";
+            } else {
+                result += "<a class=\"icon\" href=\"#\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-three-dots\"></i></a>";
+                result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
+                result += "<li><a class=\"dropdown-item\" href=\"#\">이슈 추가</a></li>";
+                result += "<li><a class=\"dropdown-item\" href=\"javascript:deletecolumn(" + cdto.getColSeq() + ")\">컬럼 삭제</a></li>";
+                result += "</ul>";
+            }
             result += "</div>";
             result += "<div class=\"card-body\">";
             result += "<h5 class=\"card-title\">" + cdto.getColName() + "</h5>";
