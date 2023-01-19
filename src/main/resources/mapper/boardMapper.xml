@@ -33,7 +33,7 @@
         SELECT *
         FROM t_board
         WHERE project_seq = #{projectSeq}
-          and board_seq = (SELECT MAX(board_seq) FROM t_board)
+          and board_seq = (SELECT MAX(board_seq) FROM t_board WHERE project_seq = #{projectSeq})
     </select>
 
     <!-- boardDTO 불러오기 -->
