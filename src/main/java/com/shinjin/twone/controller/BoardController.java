@@ -26,6 +26,10 @@ public class BoardController {
     private ColService colService;
     @Autowired
     private IssueService issueService;
+    @Autowired
+    private IssueFormService issueFormService;
+    @Autowired
+    private LinkedIssueService linkedIssueService;
 
     /*** 보드 출력 ***/
     @RequestMapping("project/board")
@@ -70,7 +74,7 @@ public class BoardController {
         /* Attr : issueMap */
         Map<Integer, List<IssueDTO>> issueMap = new HashMap<>();
         for(ColDTO cdto : colList) {
-            List<IssueDTO> issueList = issueService.getIssueList(cdto.getColSeq());
+            List<IssueDTO> issueList = issueService.getIssueListByColSeq(cdto.getColSeq());
             if(!issueList.isEmpty()) {
                 issueMap.put(cdto.getColSeq(), issueList);
             }
@@ -108,18 +112,72 @@ public class BoardController {
         colService.addDoneColumn(colDTO);
 
         // 보드 리스트 문자열에 담기
+        String result = boardListToHtmlCode(projectSeq);
+
+        return result;
+    }
+
+    /*** 보드 리스트 문자열에 담기 ***/
+    public String boardListToHtmlCode(int projectSeq){
         List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
 
         String result = "";
         for(BoardDTO bdto : boardList) {
-            result += "<li>";
-            result += "<a href=\"/project/board?projectSeq=" + projectSeq + "&boardSeq=" + bdto.getBoardSeq() + "\">";
-            result += "</i><span>" + bdto.getBoardName() + "</span>";
+            result += "<li id=\"" + bdto.getBoardSeq() + "\">";
+            result += "<div class=\"row\">";
+            result += "<div class=\"col-sm-8\">";
+            result += "<a href=\"${twone}/project/board?projectSeq=" + projectSeq + "&boardSeq=" + bdto.getBoardSeq() + "\">";
+            result += "<span>" + bdto.getBoardName() + "</span>";
             result += "</a>";
+            result += "</div>";
+            result += "<div class=\"col-sm-2\">";
+            result += "<div class=\"filter\">";
+            result += "<a class=\"icon\" href=\"#\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-three-dots\"></i></a>";
+            result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
+            result += "<li><a class=\"dropdown-item\" href=\"${twone}/project/deleteboard?projectSeq=" + projectSeq + "&boardSeq=" + bdto.getBoardSeq() + "\">보드 삭제</a></li>";
+            result += "</ul>";
+            result += "</div>";
+            result += "</div>";
+            result += "</div>";
             result += "</li>";
         }
 
         return result;
+    }
+
+    /*** 보드 삭제 ***/
+    @RequestMapping("/project/deleteboard")
+    public String deleteBoardProc(HttpServletRequest request){
+        int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
+        int boardSeq = Integer.parseInt(request.getParameter("boardSeq"));
+
+        /* 이슈 및 하위 레코드 전체 삭제 */
+        List<Integer> issueSeqList = issueService.getIssueSeqListUnderBoard(boardSeq);
+        for(int issueSeq : issueSeqList){
+            // 이슈폼 및 이슈폼 자식 삭제
+            List<IssueFormDTO> issueFormList = issueFormService.getIssueFormList(issueSeq);
+            for(IssueFormDTO issueFormDTO : issueFormList){
+                String code = issueFormDTO.getFormsSeq().substring(0, 3);
+                String formsTableName = "t_forms_" + code; // forms 테이블명 조합
+                String formsColName = code + "_seq"; // forms 컬럼명 조합
+                issueFormDTO.setFormsTableName(formsTableName);
+                issueFormDTO.setFormsColName(formsColName);
+                issueFormService.deleteFormsUnderIssue(issueFormDTO); // 이슈폼 자식 삭제
+                issueFormService.deleteIssueForm(issueFormDTO.getIssueFormSeq()); // 이슈폼 삭제
+            }
+            // 이슈된 링크 삭제
+            linkedIssueService.deleteLinkedIssue(issueSeq);
+            // 이슈 삭제
+            issueService.deleteIssue(issueSeq);
+        }
+
+        /* 컬럼 삭제 */
+        colService.deleteColumnByBoardSeq(boardSeq);
+
+        /* 보드 삭제 */
+        boardService.deleteBoard(boardSeq);
+
+        return "redirect:/project/board?projectSeq=" + projectSeq;
     }
 
     /*** 컬럼 생성 ***/
@@ -142,35 +200,19 @@ public class BoardController {
         colService.addColumn(colDTO);
 
         // 컬럼 리스트 문자열에 담기
-        String result = createHtmlCodeForBoardView(boardSeq);
+        String result = colListToHtmlCode(boardSeq);
 
         return result;
     }
 
-    /*** 컬럼 삭제 ***/
-    @GetMapping("project/deletecolumn")
-    public String deleteColumnProc(HttpServletRequest request){
-
-        int columnSeq = Integer.parseInt(request.getParameter("colSeq"));
-//        int boardSeq = Integer.parseInt(request.getParameter("boardSeq"));
-
-        // 컬럼 삭제
-        colService.deleteColumn(columnSeq);
-
-        // 컬럼 리스트 문자열에 담기
-//        String result = createHtmlCodeForBoardView(boardSeq);
-
-        return null;
-    }
-
     /*** 컬럼 리스트 문자열에 담기 ***/
-    public String createHtmlCodeForBoardView(int boardSeq) {
+    public String colListToHtmlCode(int boardSeq) {
 
         // colList, issueMap 불러오기
         List<ColDTO> colList = colService.getColList(boardSeq);
         Map<Integer, List<IssueDTO>> issueMap = new HashMap<>();
         for (ColDTO cdto : colList) {
-            List<IssueDTO> issueList = issueService.getIssueList(cdto.getColSeq());
+            List<IssueDTO> issueList = issueService.getIssueListByColSeq(cdto.getColSeq());
             if (issueList != null) {
                 issueMap.put(cdto.getColSeq(), issueList);
             }
@@ -228,6 +270,13 @@ public class BoardController {
         result += "</div>";
 
         return result;
+    }
+
+    /*** 컬럼 삭제 ***/
+    @GetMapping("project/deletecolumn")
+    public void deleteColumnProc(HttpServletRequest request){
+        int columnSeq = Integer.parseInt(request.getParameter("colSeq"));
+        colService.deleteColumn(columnSeq); // 컬럼 삭제
     }
 
 }

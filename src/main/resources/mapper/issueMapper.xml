@@ -10,12 +10,50 @@
             , #{issueCode}, #{issueTitle}, null, NOW(), NOW(), null)
     </insert>
 
-    <!-- IssueList 불러오기 -->
-    <select id="getIssueList" parameterType="int" resultType="IssueDTO">
+    <!-- IssueList 불러오기 by colSeq -->
+    <select id="getIssueListByColSeq" parameterType="int" resultType="IssueDTO">
         SELECT *
         FROM t_issue
         WHERE col_seq = #{colSeq}
         ORDER BY issue_seq DESC
     </select>
+
+    <!-- issueSeqList 불러오기 by boardSeq -->
+    <select id="getIssueSeqListUnderBoard" parameterType="int" resultType="int">
+        SELECT issue_seq
+        FROM t_issue
+        WHERE board_seq = #{boardSeq}
+    </select>
+
+    <!-- issueSeqList 불러오기 by projectSeq -->
+    <select id="getIssueSeqListUnderProject" parameterType="int" resultType="int">
+        SELECT issue_seq
+        FROM t_issue
+        WHERE project_seq = #{projectSeq}
+    </select>
+
+    <!-- 이슈 삭제 by issueSeq -->
+    <delete id="deleteIssue" parameterType="int">
+        DELETE FROM t_issue
+        WHERE issue_seq = #{issueSeq}
+    </delete>
+
+    <!-- 이슈 삭제 by colSeq -->
+    <delete id="deleteIssueByColSeq" parameterType="int">
+        DELETE FROM t_issue
+        WHERE col_seq = #{colSeq}
+    </delete>
+
+    <!-- 이슈 삭제 by boardSeq -->
+    <delete id="deleteIssueByBoardSeq" parameterType="int">
+        DELETE FROM t_issue
+        WHERE board_seq = #{boardSeq}
+    </delete>
+
+    <!-- 이슈 삭제 by projectSeq -->
+    <delete id="deleteIssueByProjectSeq" parameterType="int">
+        DELETE FROM t_issue
+        WHERE project_seq = #{projectSeq}
+    </delete>
 
 </mapper>

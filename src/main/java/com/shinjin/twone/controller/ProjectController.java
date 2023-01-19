@@ -27,6 +27,12 @@ public class ProjectController {
     ColService colService;
     @Autowired
     IssueService issueService;
+    @Autowired
+    IssueFormService issueFormService;
+    @Autowired
+    LinkedIssueService linkedIssueService;
+    @Autowired
+    LabelService labelService;
 
     @RequestMapping("/project")
     public String viewProjectList(HttpServletRequest request, Model model){
@@ -120,6 +126,37 @@ public class ProjectController {
     @RequestMapping("/project/delete")
     public String deleteProject(HttpServletRequest request){
         int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
+
+        /* 이슈 및 하위 레코드 전체 삭제 */
+        List<Integer> issueSeqList = issueService.getIssueSeqListUnderProject(projectSeq);
+        for(int issueSeq : issueSeqList){
+            // 이슈폼 및 이슈폼 자식 삭제
+            List<IssueFormDTO> issueFormList = issueFormService.getIssueFormList(issueSeq);
+            for(IssueFormDTO issueFormDTO : issueFormList){
+                String code = issueFormDTO.getFormsSeq().substring(0, 3);
+                String formsTableName = "t_forms_" + code; // forms 테이블명 조합
+                String formsColName = code + "_seq"; // forms 컬럼명 조합
+                issueFormDTO.setFormsTableName(formsTableName);
+                issueFormDTO.setFormsColName(formsColName);
+                issueFormService.deleteFormsUnderIssue(issueFormDTO); // 이슈폼 자식 삭제
+                issueFormService.deleteIssueForm(issueFormDTO.getIssueFormSeq()); // 이슈폼 삭제
+            }
+            // 이슈된 링크 삭제
+            linkedIssueService.deleteLinkedIssue(issueSeq);
+            // 이슈 삭제
+            issueService.deleteIssue(issueSeq);
+        }
+
+        /* 레이블 삭제 */
+        labelService.deleteLabelByProjectSeq(projectSeq);
+
+        /* 컬럼 삭제 */
+        colService.deleteColumnByProjectSeq(projectSeq);
+
+        /* 보드 삭제 */
+        boardService.deleteBoardByProjectSeq(projectSeq);
+
+        /* 프로젝트 삭제 */
         projectService.deleteOne(projectSeq);
 
         return "redirect:/project";

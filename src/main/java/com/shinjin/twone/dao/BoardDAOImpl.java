@@ -43,9 +43,15 @@ public class BoardDAOImpl implements BoardDAO {
         return getBoardDTO(boardSeq);
     }
 
-    /* 보드 삭제 */
+    /* 보드 삭제 by boardSeq */
     @Override
     public int deleteBoard(int boardSeq) {
         return deleteBoard(boardSeq);
+    }
+
+    /* 보드 삭제 by projectSeq */
+    @Override
+    public int deleteBoardByProjectSeq(int projectSeq) {
+        return deleteBoardByProjectSeq(projectSeq);
     }
 }

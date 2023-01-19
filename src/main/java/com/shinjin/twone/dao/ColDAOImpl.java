@@ -30,9 +30,20 @@ public class ColDAOImpl implements ColDAO {
         return addColumn(colDTO);
     }
 
-    /* 컬럼 삭제 */
+    /* 컬럼 삭제 by colSeq */
     @Override
     public int deleteColumn(int colSeq) {
         return deleteColumn(colSeq);
+    }
+
+    /* 컬럼 삭제 by boardSeq */
+    @Override
+    public int deleteColumnByBoardSeq(int boardSeq) {
+        return deleteColumnByBoardSeq(boardSeq);
+    }
+
+    @Override
+    public int deleteColumnByProjectSeq(int projectSeq) {
+        return deleteColumnByProjectSeq(projectSeq);
     }
 }

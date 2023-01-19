@@ -44,9 +44,20 @@ public class ColServiceImpl implements ColService {
         return result;
     }
 
-    /* 컬럼 삭제 */
+    /* 컬럼 삭제 by colSeq */
     @Override
     public int deleteColumn(int colSeq) {
         return colDAO.deleteColumn(colSeq);
+    }
+
+    /* 컬럼 삭제 by boardSeq */
+    @Override
+    public int deleteColumnByBoardSeq(int boardSeq) {
+        return colDAO.deleteColumnByBoardSeq(boardSeq);
+    }
+
+    @Override
+    public int deleteColumnByProjectSeq(int projectSeq) {
+        return colDAO.deleteColumnByBoardSeq(projectSeq);
     }
 }

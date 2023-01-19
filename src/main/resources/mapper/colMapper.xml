@@ -30,10 +30,21 @@
         WHERE board_seq = #{boardSeq}
     </select>
 
-    <!-- 컬럼 삭제 -->
+    <!-- 일반 컬럼 삭제 by colSeq -->
     <delete id="deleteColumn" parameterType="int">
         DELETE FROM t_col
         WHERE col_seq = #{colSeq} and col_type = 0
     </delete>
 
+    <!-- 일반/Done 컬럼 삭제 by boardSeq -->
+    <delete id="deleteColumnByBoardSeq" parameterType="int">
+        DELETE FROM t_col
+        WHERE board_seq = #{boardSeq}
+    </delete>
+
+    <!-- 일반/Done 컬럼 삭제 by projectSeq -->
+    <delete id="deleteColumnByProjectSeq" parameterType="int">
+        DELETE FROM t_col
+        WHERE project_seq = #{projectSeq}
+    </delete>
 </mapper>

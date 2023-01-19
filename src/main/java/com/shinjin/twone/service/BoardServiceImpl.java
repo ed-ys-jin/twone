@@ -48,10 +48,16 @@ public class BoardServiceImpl implements BoardService {
         return boardDAO.getBoardDTO(boardSeq);
     }
 
-    /* 보드 삭제 */
+    /* 보드 삭제 by boardSeq */
     @Override
     public int deleteBoard(int boardSeq) {
         return boardDAO.deleteBoard(boardSeq);
+    }
+
+    /* 보드 삭제 by projectSeq */
+    @Override
+    public int deleteBoardByProjectSeq(int projectSeq) {
+        return boardDAO.deleteBoardByProjectSeq(projectSeq);
     }
 
 }

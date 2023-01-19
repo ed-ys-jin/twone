@@ -163,10 +163,9 @@
     // 태그 삭제
     document.getElementById(colSeq).remove();
 
-    // 콜백 작업 지정
+    // 콜백 작업 지정 -> '삭제' 케이스에서는 콜백 작업 별도 없음
     // xhttp.onreadystatechange = function () {
     //   if(this.readyState == 4 && this.status == 200) {
-    //     document.getElementById("columnlist-card").innerHTML = this.responseText;
     //   }
     // }
 
