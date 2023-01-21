@@ -98,12 +98,8 @@ public class BoardController {
         boardDTO.setProjectSeq(projectSeq);
         boardDTO.setBoardName(boardName);
 
-        // 보드 생성 실패
+        // 보드 생성
         int boardSeq = boardService.addBoard(boardDTO);
-        if(boardSeq == -1) {
-            commonMethod.setAttribute(request, "/project/board", "보드 생성에 실패하였습니다. 관리자에게 문의해 주세요.");
-            return "/common/alert";
-        }
 
         // Done 컬럼 만들기
         ColDTO colDTO = new ColDTO();
@@ -117,6 +113,30 @@ public class BoardController {
         return result;
     }
 
+    /*** 보드명 변경 ***/
+    @GetMapping("/project/updateboardname")
+    @ResponseBody
+    public String updateBoardName(HttpServletRequest request){
+
+        // boardName 입력값, boardSeq 값 파라미터로 받기
+        int boardSeq = Integer.parseInt(request.getParameter("boardSeq"));
+        String boardName = request.getParameter("boardName");
+
+        // boardDTO 만들기
+        BoardDTO boardDTO = boardService.getBoardDTO(boardSeq);
+        boardDTO.setBoardName(boardName);
+
+        // 보드명 변경
+        boardService.updateBoardName(boardDTO);
+
+        // 보드 리스트 문자열에 담기
+        int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
+        String result = boardListToHtmlCode(projectSeq);
+
+        return result;
+
+    }
+
     /*** 보드 리스트 문자열에 담기 ***/
     public String boardListToHtmlCode(int projectSeq){
         List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
@@ -126,7 +146,7 @@ public class BoardController {
             result += "<li id=\"" + bdto.getBoardSeq() + "\">";
             result += "<div class=\"row\">";
             result += "<div class=\"col-sm-8\">";
-            result += "<a href=\"${twone}/project/board?projectSeq=" + projectSeq + "&boardSeq=" + bdto.getBoardSeq() + "\">";
+            result += "<a href=\"/project/board?projectSeq=" + projectSeq + "&boardSeq=" + bdto.getBoardSeq() + "\">";
             result += "<span>" + bdto.getBoardName() + "</span>";
             result += "</a>";
             result += "</div>";
@@ -134,7 +154,7 @@ public class BoardController {
             result += "<div class=\"filter\">";
             result += "<a class=\"icon\" href=\"#\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-three-dots\"></i></a>";
             result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
-            result += "<li><a class=\"dropdown-item\" href=\"${twone}/project/deleteboard?projectSeq=" + projectSeq + "&boardSeq=" + bdto.getBoardSeq() + "\">보드 삭제</a></li>";
+            result += "<li><a class=\"dropdown-item\" href=\"/project/deleteboard?projectSeq=" + projectSeq + "&boardSeq=" + bdto.getBoardSeq() + "\">보드 삭제</a></li>";
             result += "</ul>";
             result += "</div>";
             result += "</div>";
@@ -229,7 +249,7 @@ public class BoardController {
                 result += "<a class=\"icon\" href=\"#\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-three-dots\"></i></a>";
                 result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
                 result += "<li><a class=\"dropdown-item\" href=\"#\">이슈 추가</a></li>";
-                result += "<li><a class=\"dropdown-item\" href=\"javascript:deletecolumn(" + cdto.getColSeq() + ")\">컬럼 삭제</a></li>";
+                result += "<li><a class=\"dropdown-item\" href=\"javascript:deleteColumn(" + cdto.getColSeq() + ")\">컬럼 삭제</a></li>";
                 result += "</ul>";
             }
             result += "</div>";
@@ -239,13 +259,13 @@ public class BoardController {
             if (issueMap.containsKey(cdto.getColSeq())) {
                 for (IssueDTO idto : issueMap.get(cdto.getColSeq())) {
                     result += "<div class=\"card-body\" style=\"font-size: 14px\">";
-                    result += "<a href=\"${twone}/project/issue\">";
+                    result += "<a href=\"/project/issue\">";
                     result += "<div class=\"alert alert-secondary fade show\" role=\"alert\">";
                     result += "<p>" + idto.getIssueTitle() + "</p>";
                     result += "<div class=\"filter\">";
                     result += "<div class=\"icon\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-three-dots\"></i></div>";
                     result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
-                    result += "<li><div class=\"dropdown-item\"><a href=\"${twone}/project/deleteissue?issueSeq=" + idto.getIssueSeq() + "\">이슈 삭제</a></div></li>";
+                    result += "<li><div class=\"dropdown-item\"><a href=\"/project/deleteissue?issueSeq=" + idto.getIssueSeq() + "\">이슈 삭제</a></div></li>";
                     result += "</ul>";
                     result += "</div>";
                     result += "<hr>";

@@ -30,6 +30,18 @@ public class BoardServiceImpl implements BoardService {
         return boardDTO.getBoardSeq();
     }
 
+    /* 보드명 변경 */
+    @Override
+    public int updateBoardName(BoardDTO boardDTO) {
+        int result = -1;
+        try {
+            result = boardDAO.updateBoardName(boardDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     /* 보드 리스트 불러오기 */
     @Override
     public List<BoardDTO> getBoardList(int projectSeq) {

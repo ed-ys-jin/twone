@@ -11,7 +11,12 @@
 
   <!-- Page Title -->
   <div class="pagetitle">
-    <h1>${bdto.boardName}</h1>
+    <h1>
+      <input id="board-update-box" type="text" value="${bdto.boardName}" onkeyup="updateBoardName(this)"
+             style="border: none; background-color: #f6f9ff; font-family: 'Nunito', sans-serif;
+             font-size: 24px; font-weight: 600; color: #012970">
+    </h1>
+
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/project">프로젝트</a></li>
@@ -38,7 +43,7 @@
                     <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                       <li><a class="dropdown-item" href="#">이슈 추가</a></li>
-                      <li><a class="dropdown-item" href="javascript:deletecolumn(${cdto.colSeq})">컬럼 삭제</a></li>
+                      <li><a class="dropdown-item" href="javascript:deleteColumn(${cdto.colSeq})">컬럼 삭제</a></li>
                     </ul>
                 </c:otherwise>
               </c:choose>
@@ -84,14 +89,14 @@
       <div class="col-lg-2" style="min-width: 300px">
         <!-- Column Creation Button -->
         <div class="col-sm-1">
-          <button type="button" class="btn btn-light" onclick="togglecnameinput()">
+          <button type="button" class="btn btn-light" onclick="toggleInput('col-input-box')">
             <img src="../resources/bootstrap/img/button_plus.png">
           </button>
         </div>
 
         <!-- Column Creation Input Box -->
         <div class="col-sm-12" style="margin-top: 12px">
-          <input type="text" class="form-control" id="cnameinput" style="display: none" placeholder="컬럼 제목 입력 후 엔터 (최대 30자)" onkeyup="addcolumn(this)">
+          <input type="text" class="form-control" id="col-input-box" style="display: none" placeholder="컬럼 제목 입력 후 엔터 (최대 30자)" onkeyup="addColumn(this)">
         </div>
       </div>
 
@@ -104,21 +109,22 @@
 
 <script>
 
-  <%-- 컬럼 생성 --%>
-  function addcolumn(obj) {
+  /* 컬럼 생성 */
+  function addColumn(inputText) {
+
+    const inputBox = document.getElementById("col-input-box");
 
     // 입력 글자수 제어
-    if(obj.value.length > 30) {
+    if(inputText.value.length > 30) {
       alert("최대 30자까지만 작성할 수 있습니다.");
-      const inputbox = document.getElementById("cnameinput");
-      inputbox.value = obj.value.substring(0, 28); // 문자열 29자로 자르기
+      inputBox.value = inputText.value.substring(0, 28); // 문자열 29자로 자르기
       return;
     }
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
 
-      let cname = obj.value;
+      let cname = inputText.value;
       if(cname.trim() == ""){
         alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
         return;
@@ -127,7 +133,7 @@
       // URL(+ 파라미터) 만들기
       let url = "/project/addcolumn?projectSeq=" + ${bdto.projectSeq}
               + "&boardSeq=" + ${bdto.boardSeq}
-              + "&colName=" + encodeURIComponent(obj.value);
+              + "&colName=" + encodeURIComponent(inputText.value);
 
       // 연결 작업
       const xhttp = new XMLHttpRequest();
@@ -141,17 +147,62 @@
       };
 
       // input 클리어 & 숨기기
-      const inputbox = document.getElementById("cnameinput");
-      inputbox.value = null;
-      inputbox.style.display = "none";
+      inputBox.value = null;
+      inputBox.style.display = "none";
 
       // 결과값 받음
       xhttp.send();
     }
   }
 
-  <!-- 컬럼 삭제 -->
-  function deletecolumn(colSeq) {
+  /* 보드명 변경 */
+  function updateBoardName(inputText){
+
+    const inputBox = document.getElementById("board-update-box");
+    let boardName = inputText.value;
+
+    // 입력 글자수 제어
+    if(boardName.length > 30) {
+      alert("최대 30자까지만 작성할 수 있습니다.");
+      inputBox.value = boardName.substring(0, 28); // 문자열 29자로 자르기
+      return;
+    }
+
+    // 엔터키 입력 시 IF문 실행
+    if (window.event.keyCode == 13) {
+      // 입력값이 공백인 경우
+      if(boardName.trim() == ""){
+        alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
+        return;
+      }
+
+      // URL(+ 파라미터) 만들기
+      let url = "/project/updateboardname?projectSeq=" + ${bdto.projectSeq}
+              + "&boardSeq=" + ${bdto.boardSeq}
+              + "&boardName=" + encodeURIComponent(boardName);
+
+      // 연결 작업
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("GET", url, true);
+
+      // 콜백 작업 지정
+      xhttp.onreadystatechange = function (){
+        if(this.readyState == 4 && this.status == 200){
+          // boardSideBar의 보드 리스트 업데이트
+          document.getElementById("components-nav").innerHTML = this.responseText;
+          // inputBox focus 해제
+          inputBox.blur();
+        }
+      };
+
+      // 결과값 받음
+      xhttp.send();
+
+    }
+  }
+
+  /* 컬럼 삭제 */
+  function deleteColumn(colSeq) {
 
     // URL(+ 파라미터) 만들기
     let url = "/project/deletecolumn?boardSeq=" + ${bdto.boardSeq} + "&colSeq=" + colSeq;
@@ -171,22 +222,6 @@
 
     // 결과값 받음
     xhttp.send();
-  }
-
-    <!-- 컬럼 이름 입력창 보이기 / 숨기기 -->
-  function togglecnameinput() {
-
-    const inputbox = document.getElementById("cnameinput");
-
-    // input toggle
-    if(inputbox.style.display != "none") {
-      // 입력창 숨길때 입력값 삭제
-      const inputbox = document.getElementById("cnameinput");
-      inputbox.value = null;
-      inputbox.style.display = "none";
-    } else {
-      inputbox.style.display = "block";
-    }
   }
 
 </script>

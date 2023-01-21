@@ -25,6 +25,12 @@ public class BoardDAOImpl implements BoardDAO {
         return result;
     }
 
+    /* 보드명 변경 */
+    @Override
+    public int updateBoardName(BoardDTO boardDTO) {
+        return updateBoardName(boardDTO);
+    }
+
     /* 보드 리스트 불러오기 */
     @Override
     public List<BoardDTO> getBoardList(int projectSeq) {

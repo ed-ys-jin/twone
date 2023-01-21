@@ -20,6 +20,13 @@
         VALUES (#{boardSeq}, #{projectSeq}, #{boardName})
     </insert>
 
+    <!-- 보드명 변경 -->
+    <update id="updateBoardName" parameterType="BoardDTO">
+        UPDATE t_board
+        SET board_name = #{boardName}
+        WHERE board_seq = #{boardSeq}
+    </update>
+
     <!-- 보드 리스트 불러오기 -->
     <select id="getBoardList" parameterType="int" resultType="BoardDTO">
         SELECT *

@@ -26,14 +26,14 @@
             <a class="nav-link ${navType == 'board'? '':'collapsed'}" data-bs-target="#components-nav" data-bs-toggle="collapse">
                 <i class="bi bi-menu-button-wide"></i><span>보드</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                 <!-- Board List -->
                 <c:forEach var="bdto" items="${blist}">
                     <li id="${bdto.boardSeq}">
                         <div class="row">
                             <div class="col-sm-8">
                                 <a href="${twone}/project/board?projectSeq=${pdto.projectSeq}&boardSeq=${bdto.boardSeq}">
-                                    <span>${bdto.boardName}</span>
+                                    <div><span>${bdto.boardName}</span></div>
                                 </a>
                             </div>
                             <div class="col-sm-2">
@@ -51,14 +51,14 @@
             </ul>
             <!-- Board Creation Button -->
             <div class="d-grid gap-2 mt-3">
-                <button class="btn btn-primary btn-light" type="button" onclick="togglebnameinput()">
+                <button class="btn btn-primary btn-light" type="button" onclick="toggleInput('board-input-box')">
                     <img src="../resources/bootstrap/img/button_plus.png" width="17">
                 </button>
             </div>
             <br>
-            <!-- Board Creation Input Box -->
             <div class="col-sm-12">
-                <input type="text" class="form-control" id="bnameinput" style="display: none" placeholder="보드 이름 입력 후 엔터 (최대 30자)" onkeyup="addboard(this)">
+                <!-- Board Creation Input Box -->
+                <input type="text" class="form-control" id="board-input-box" style="display: none" placeholder="보드 이름 입력 후 엔터 (최대 30자)" onkeyup="addBoard(this)">
             </div>
         </li>
 
@@ -92,27 +92,28 @@
 <script>
 
     <%-- 보드 생성 --%>
-    function addboard(obj){
+    function addBoard(obj){
+
+        const inputBox = document.getElementById("board-input-box");
 
         // 입력 글자수 제어
         if(obj.value.length > 30) {
             alert("최대 30자까지만 작성할 수 있습니다.");
-            const inputbox = document.getElementById("bnameinput");
-            inputbox.value = obj.value.substring(0, 28); // 문자열 29자로 자르기
+            inputBox.value = obj.value.substring(0, 28); // 문자열 29자로 자르기
             return;
         }
 
         // 엔터키 입력 시 IF문 실행
         if (window.event.keyCode == 13){
 
-            let bname = obj.value;
-            if(bname.trim() == ""){
+            let boardName = obj.value;
+            if(boardName.trim() == ""){
                 alert("보드명을 최소 1글자 이상 입력해 주세요.");
                 return;
             }
 
             // URL(+ 파라미터) 만들기
-            let url = "/project/addboard?boardName=" + encodeURIComponent(obj.value) + "&projectSeq=" + ${pdto.projectSeq};
+            let url = "/project/addboard?boardName=" + encodeURIComponent(boardName) + "&projectSeq=" + ${pdto.projectSeq};
 
             // 연결 작업
             const xhttp = new XMLHttpRequest();
@@ -126,27 +127,27 @@
             };
 
             // input 클리어 & 숨기기
-            const inputbox = document.getElementById("bnameinput");
-            inputbox.value = null;
-            inputbox.style.display = "none";
+            inputBox.value = null;
+            inputBox.style.display = "none";
 
             // 결과값 받음
             xhttp.send();
         }
     }
 
-    <!-- 보드 이름 입력창 보이기 / 숨기기 -->
-    function togglebnameinput() {
-        const inputbox = document.getElementById("bnameinput");
+    <!-- 입력창 보이기 / 숨기기 -->
+    function toggleInput(inputBoxId) {
+
+        let id = inputBoxId;
+        const inputBox = document.getElementById(id);
 
         // input toggle
-        if(inputbox.style.display != "none") {
+        if(inputBox.style.display != "none") {
             // 입력창 숨길때 입력값 삭제
-            const inputbox = document.getElementById("bnameinput");
-            inputbox.value = null;
-            inputbox.style.display = "none";
+            inputBox.value = null;
+            inputBox.style.display = "none";
         } else {
-            inputbox.style.display = "block";
+            inputBox.style.display = "block";
         }
     }
 
