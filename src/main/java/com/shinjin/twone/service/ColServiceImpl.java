@@ -11,7 +11,7 @@ import java.util.List;
 public class ColServiceImpl implements ColService {
 
     @Autowired
-    ColDAO colDAO;
+    private ColDAO colDAO;
 
     /* 컬럼 리스트 불러오기 */
     @Override
@@ -42,6 +42,24 @@ public class ColServiceImpl implements ColService {
             e.printStackTrace();
         }
         return result;
+    }
+
+    /* 컬럼명 변경 */
+    @Override
+    public int updateColName(ColDTO colDTO) {
+        int result = -1;
+        try {
+            result = colDAO.updateColName(colDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /* ColDTO 불러오기 */
+    @Override
+    public ColDTO getColDTO(int colSeq) {
+        return colDAO.getColDTO(colSeq);
     }
 
     /* 컬럼 삭제 by colSeq */

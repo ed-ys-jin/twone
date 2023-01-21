@@ -30,6 +30,18 @@ public class ColDAOImpl implements ColDAO {
         return addColumn(colDTO);
     }
 
+    /* 컬럼명 변경 */
+    @Override
+    public int updateColName(ColDTO colDTO) {
+        return updateColName(colDTO);
+    }
+
+    /* ColDTO 불러오기 */
+    @Override
+    public ColDTO getColDTO(int colSeq) {
+        return getColDTO(colSeq);
+    }
+
     /* 컬럼 삭제 by colSeq */
     @Override
     public int deleteColumn(int colSeq) {

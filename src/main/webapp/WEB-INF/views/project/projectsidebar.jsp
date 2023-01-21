@@ -91,29 +91,29 @@
 
 <script>
 
-    <%-- 보드 생성 --%>
-    function addBoard(obj){
+    /* 보드 생성 */
+    function addBoard(inputText){
 
         const inputBox = document.getElementById("board-input-box");
+        let boardName = inputText.value;
 
         // 입력 글자수 제어
-        if(obj.value.length > 30) {
+        if(boardName.length > 30) {
             alert("최대 30자까지만 작성할 수 있습니다.");
-            inputBox.value = obj.value.substring(0, 28); // 문자열 29자로 자르기
+            inputBox.value = boardName.substring(0, 28); // 문자열 29자로 자르기
             return;
         }
 
         // 엔터키 입력 시 IF문 실행
         if (window.event.keyCode == 13){
-
-            let boardName = obj.value;
+            // 공백이 입력된 경우
             if(boardName.trim() == ""){
                 alert("보드명을 최소 1글자 이상 입력해 주세요.");
                 return;
             }
 
             // URL(+ 파라미터) 만들기
-            let url = "/project/addboard?boardName=" + encodeURIComponent(boardName) + "&projectSeq=" + ${pdto.projectSeq};
+            let url = "/project/addboard?projectSeq=" + ${pdto.projectSeq} + "&boardName=" + encodeURIComponent(boardName);
 
             // 연결 작업
             const xhttp = new XMLHttpRequest();
@@ -135,7 +135,7 @@
         }
     }
 
-    <!-- 입력창 보이기 / 숨기기 -->
+    /* 입력창 보이기/숨기기 */
     function toggleInput(inputBoxId) {
 
         let id = inputBoxId;

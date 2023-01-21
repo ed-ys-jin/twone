@@ -26,11 +26,11 @@
   </div><!-- End Page Title -->
 
   <section class="section dashboard">
-    <div class="row" id="columnlist-card">
+    <div class="row" id="column-list-card">
 
       <!-- Column -->
       <c:forEach var="cdto" items="${clist}">
-        <div id="${cdto.colSeq}" class="col-lg-2 col-md-6" style="min-width: 300px">
+        <div id="col-${cdto.colSeq}" class="col-lg-2 col-md-6" style="min-width: 300px">
           <div class="card info-card sales-card">
 
             <!-- Three Dots Dropdown Menu Icon -->
@@ -51,7 +51,11 @@
 
             <!-- Column Title -->
             <div class="card-body">
-              <h5 class="card-title">${cdto.colName}</h5>
+              <h5 class="card-title">
+                  <input id="col-update-box" type="text" value="${cdto.colName}" onkeyup="updateColName(this, ${cdto.colSeq})"
+                         style="border: none; font-family: 'Nunito', sans-serif;
+                         font-size: 18px; font-weight: 500; color: #012970">
+              </h5>
             </div>
 
             <!-- Issue Card -->
@@ -109,52 +113,6 @@
 
 <script>
 
-  /* 컬럼 생성 */
-  function addColumn(inputText) {
-
-    const inputBox = document.getElementById("col-input-box");
-
-    // 입력 글자수 제어
-    if(inputText.value.length > 30) {
-      alert("최대 30자까지만 작성할 수 있습니다.");
-      inputBox.value = inputText.value.substring(0, 28); // 문자열 29자로 자르기
-      return;
-    }
-
-    // 엔터키 입력 시 IF문 실행
-    if (window.event.keyCode == 13) {
-
-      let cname = inputText.value;
-      if(cname.trim() == ""){
-        alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
-        return;
-      }
-
-      // URL(+ 파라미터) 만들기
-      let url = "/project/addcolumn?projectSeq=" + ${bdto.projectSeq}
-              + "&boardSeq=" + ${bdto.boardSeq}
-              + "&colName=" + encodeURIComponent(inputText.value);
-
-      // 연결 작업
-      const xhttp = new XMLHttpRequest();
-      xhttp.open("GET", url, true);
-
-      // 콜백 작업 지정
-      xhttp.onreadystatechange = function (){
-        if(this.readyState == 4 && this.status == 200) {
-          document.getElementById("columnlist-card").innerHTML = this.responseText;
-        }
-      };
-
-      // input 클리어 & 숨기기
-      inputBox.value = null;
-      inputBox.style.display = "none";
-
-      // 결과값 받음
-      xhttp.send();
-    }
-  }
-
   /* 보드명 변경 */
   function updateBoardName(inputText){
 
@@ -170,6 +128,7 @@
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
+
       // 입력값이 공백인 경우
       if(boardName.trim() == ""){
         alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
@@ -178,8 +137,8 @@
 
       // URL(+ 파라미터) 만들기
       let url = "/project/updateboardname?projectSeq=" + ${bdto.projectSeq}
-              + "&boardSeq=" + ${bdto.boardSeq}
-              + "&boardName=" + encodeURIComponent(boardName);
+          + "&boardSeq=" + ${bdto.boardSeq}
+          + "&boardName=" + encodeURIComponent(boardName);
 
       // 연결 작업
       const xhttp = new XMLHttpRequest();
@@ -194,10 +153,97 @@
           inputBox.blur();
         }
       };
+      // 결과값 받음
+      xhttp.send();
+    }
+  }
+
+  /* 컬럼 생성 */
+  function addColumn(inputText) {
+
+    const inputBox = document.getElementById("col-input-box");
+    let colName = inputText.value;
+
+    // 입력 글자수 제어
+    if(colName.length > 30) {
+      alert("최대 30자까지만 작성할 수 있습니다.");
+      inputBox.value = colName.substring(0, 28); // 문자열 29자로 자르기
+      return;
+    }
+
+    // 엔터키 입력 시 IF문 실행
+    if (window.event.keyCode == 13) {
+
+      // 공백이 입력된 경우
+      if(colName.trim() == ""){
+        alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
+        return;
+      }
+
+      // URL(+ 파라미터) 만들기
+      let url = "/project/addcolumn?boardSeq=" + ${bdto.boardSeq}
+              + "&colName=" + encodeURIComponent(colName);
+
+      // 연결 작업
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("GET", url, true);
+
+      // 콜백 작업 지정
+      xhttp.onreadystatechange = function (){
+        if(this.readyState == 4 && this.status == 200) {
+          document.getElementById("column-list-card").innerHTML = this.responseText;
+        }
+      };
+
+      // input 클리어 & 숨기기
+      inputBox.value = null;
+      inputBox.style.display = "none";
 
       // 결과값 받음
       xhttp.send();
+    }
+  }
 
+  /* 컬럼명 변경 */
+  function updateColName(inputText, colSeq){
+    const inputBox = document.getElementById("col-update-box");
+    let colName = inputText.value;
+
+    // 입력 글자수 제어
+    if(colName.length > 30) {
+      alert("최대 30자까지만 작성할 수 있습니다.");
+      inputBox.value = colName.substring(0, 28); // 문자열 29자로 자르기
+      return;
+    }
+
+    // 엔터키 입력 시 IF문 실행
+    if (window.event.keyCode == 13) {
+
+      // 입력값이 공백인 경우
+      if(colName.trim() == ""){
+        alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
+        return;
+      }
+
+      // URL(+ 파라미터) 만들기
+      let url = "/project/updatecolname?colSeq=" + colSeq
+          + "&colName=" + encodeURIComponent(colName);
+
+      // 연결 작업
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("GET", url, true);
+
+      // 콜백 작업 지정
+      xhttp.onreadystatechange = function (){
+        if(this.readyState == 4 && this.status == 200){
+          // 컬럼 리스트 업데이트
+          document.getElementById("column-list-card").innerHTML = this.responseText;
+          // inputBox focus 해제
+          inputBox.blur();
+        }
+      };
+      // 결과값 받음
+      xhttp.send();
     }
   }
 
@@ -205,20 +251,16 @@
   function deleteColumn(colSeq) {
 
     // URL(+ 파라미터) 만들기
-    let url = "/project/deletecolumn?boardSeq=" + ${bdto.boardSeq} + "&colSeq=" + colSeq;
+    let url = "/project/deletecolumn?colSeq=" + colSeq;
 
     // 연결 작업
     const xhttp = new XMLHttpRequest();
     xhttp.open("GET", url, true);
 
     // 태그 삭제
-    document.getElementById(colSeq).remove();
-
-    // 콜백 작업 지정 -> '삭제' 케이스에서는 콜백 작업 별도 없음
-    // xhttp.onreadystatechange = function () {
-    //   if(this.readyState == 4 && this.status == 200) {
-    //   }
-    // }
+    let colId = "col-" + colSeq;
+    alert(colId);
+    document.getElementById(colId).remove();
 
     // 결과값 받음
     xhttp.send();

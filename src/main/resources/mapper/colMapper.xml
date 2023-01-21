@@ -23,6 +23,20 @@
         VALUES ((SELECT nextval('col_seq') AS col_seq FROM dual), #{projectSeq}, #{boardSeq}, #{colName}, 0)
     </insert>
 
+    <!-- 컬럼명 변경 -->
+    <update id="updateColName" parameterType="ColDTO">
+        UPDATE t_col
+        SET col_name = #{colName}
+        WHERE col_seq = #{colSeq}
+    </update>
+
+    <!-- ColDTO 불러오기 -->
+    <select id="getColDTO" parameterType="int" resultType="ColDTO">
+        SELECT *
+        FROM t_col
+        WHERE col_seq = #{colSeq}
+    </select>
+
     <!-- 컬럼 리스트 불러오기 -->
     <select id="getColList" parameterType="int" resultType="ColDTO">
         SELECT *

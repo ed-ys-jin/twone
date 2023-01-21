@@ -9,8 +9,8 @@ public class BoardDAOImpl implements BoardDAO {
 
     /* 샘플 보드 생성 */
     @Override
-    public int createsampleboard(BoardDTO boardDTO) {
-        return createsampleboard(boardDTO);
+    public int createSampleBoard(BoardDTO boardDTO) {
+        return createSampleBoard(boardDTO);
     }
 
     /* 보드 생성 */

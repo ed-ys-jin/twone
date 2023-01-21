@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface BoardDAO {
 
-    public int createsampleboard(BoardDTO boardDTO); // 샘플 보드 생성
+    public int createSampleBoard(BoardDTO boardDTO); // 샘플 보드 생성
     public int addBoard(BoardDTO boardDTO); // 보드 생성
     public int updateBoardName(BoardDTO boardDTO); // 보드명 변경
     public List<BoardDTO> getBoardList(int projectSeq); // 보드 리스트 불러오기

@@ -16,8 +16,8 @@ public class BoardServiceImpl implements BoardService {
 
     /* 샘플 보드 생성 */
     @Override
-    public int createsampleboard(BoardDTO boardDTO) {
-        boardDAO.createsampleboard(boardDTO);
+    public int createSampleBoard(BoardDTO boardDTO) {
+        boardDAO.createSampleBoard(boardDTO);
         // selectkey 를 활용하여 인서트 한 board_seq 바로 가져오기
         return boardDTO.getBoardSeq();
     }

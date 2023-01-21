@@ -74,7 +74,7 @@ public class ProjectController {
         // 샘플 보드 생성
         BoardDTO boardDTO = new BoardDTO();
         boardDTO.setProjectSeq(projectSeq);
-        int boardSeq = boardService.createsampleboard(boardDTO);
+        int boardSeq = boardService.createSampleBoard(boardDTO);
 
         // 샘플 컬럼 생성
         ColDTO colDTO = new ColDTO();

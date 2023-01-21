@@ -3,7 +3,7 @@
 <mapper namespace="com.shinjin.twone.dao.BoardDAO" >
 
     <!-- 샘플 보드 생성 -->
-    <insert id="createsampleboard" useGeneratedKeys="true" keyProperty="boardSeq" parameterType="BoardDTO">
+    <insert id="createSampleBoard" useGeneratedKeys="true" keyProperty="boardSeq" parameterType="BoardDTO">
         <selectKey keyProperty="boardSeq" resultType="int" order="BEFORE">
             SELECT nextval('board_seq') AS board_seq FROM dual
         </selectKey>
