@@ -9,6 +9,8 @@ public class ColDTO {
 
     private int colSeq;
 
+    private int projectSeq;
+
     private int boardSeq;
 
     @NotBlank(message = "컬럼명은 필수 입력 값입니다.")

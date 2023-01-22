@@ -2,18 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.BoardDAO" >
 
-    <!-- 보드 생성 -->
-    <insert id="addBoard" parameterType="BoardDTO">
+    <!-- 샘플 보드 생성 -->
+    <insert id="createSampleBoard" useGeneratedKeys="true" keyProperty="boardSeq" parameterType="BoardDTO">
+        <selectKey keyProperty="boardSeq" resultType="int" order="BEFORE">
+            SELECT nextval('board_seq') AS board_seq FROM dual
+        </selectKey>
         INSERT INTO t_board
-            (board_seq, project_seq, board_name)
-        VALUES
-            ((SELECT nextval('board_seq') AS board_seq FROM dual), #{projectSeq}, #{boardName})
+        VALUES (#{boardSeq}, #{projectSeq}, '샘플 보드')
     </insert>
 
+    <!-- 보드 생성 -->
+    <insert id="addBoard" useGeneratedKeys="true" keyProperty="boardSeq" parameterType="BoardDTO">
+        <selectKey keyProperty="boardSeq" resultType="int" order="BEFORE">
+            SELECT nextval('board_seq') AS board_seq FROM dual
+        </selectKey>
+        INSERT INTO t_board
+        VALUES (#{boardSeq}, #{projectSeq}, #{boardName})
+    </insert>
+
+    <!-- 보드명 변경 -->
+    <update id="updateBoardName" parameterType="BoardDTO">
+        UPDATE t_board
+        SET board_name = #{boardName}
+        WHERE board_seq = #{boardSeq}
+    </update>
+
     <!-- 보드 리스트 불러오기 -->
-    <select id="getBoardList" resultType="BoardDTO">
+    <select id="getBoardList" parameterType="int" resultType="BoardDTO">
         SELECT *
         FROM t_board
+        WHERE project_seq = #{projectSeq}
         ORDER BY board_seq DESC
     </select>
 
@@ -22,7 +40,7 @@
         SELECT *
         FROM t_board
         WHERE project_seq = #{projectSeq}
-          and board_seq = (SELECT MAX(board_seq) FROM t_board)
+          and board_seq = (SELECT MAX(board_seq) FROM t_board WHERE project_seq = #{projectSeq})
     </select>
 
     <!-- boardDTO 불러오기 -->
@@ -32,10 +50,16 @@
         WHERE board_seq = #{boardSeq}
     </select>
 
-    <!-- 보드 삭제 -->
+    <!-- 보드 삭제 by boardSeq -->
     <delete id="deleteBoard" parameterType="int">
         DELETE FROM t_board
         WHERE board_seq = #{boardSeq}
+    </delete>
+
+    <!-- 보드 삭제 by projectSeq -->
+    <delete id="deleteBoardByProjectSeq" parameterType="int">
+        DELETE FROM t_board
+        WHERE project_seq = #{projectSeq}
     </delete>
 
 </mapper>

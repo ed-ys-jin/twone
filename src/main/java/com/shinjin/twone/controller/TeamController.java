@@ -1,24 +1,22 @@
 package com.shinjin.twone.controller;
 
 import com.shinjin.twone.common.commonMethod;
-import com.shinjin.twone.dto.MemDTO;
+import com.shinjin.twone.dto.BoardDTO;
 import com.shinjin.twone.dto.ProjectDTO;
 import com.shinjin.twone.dto.TeamDTO;
 
+import com.shinjin.twone.service.BoardService;
 import com.shinjin.twone.service.ProjectService;
 import com.shinjin.twone.service.TeamService;
-import org.apache.tomcat.util.buf.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.awt.image.ImageProducer;
 import java.util.*;
 
 
@@ -29,9 +27,12 @@ public class TeamController {
   TeamService teamService;
   @Autowired
   ProjectService projectService;
+  @Autowired
+  BoardService boardService;
+
   HttpSession session;
 
-// 사용자 페이지로 이동
+  // 사용자 페이지로 이동
   @RequestMapping("/project/team")
   public String teamView(HttpServletRequest request) throws Exception{
 
@@ -92,16 +93,21 @@ public class TeamController {
     String sdto = dto.toString().replaceAll("=",":") ;
     JSONObject json = (JSONObject)parser.parse(sdto);
 
+    // 보드 리스트 문자열에 담기
+    List<BoardDTO> boardList = boardService.getBoardList(pSeq);
+    request.setAttribute("blist", boardList);
+
     request.setAttribute("teamList",teamlist);
     request.setAttribute("dto",json);
     request.setAttribute("allowList",allowList);
     request.setAttribute("leader",leader);
     request.setAttribute("pdto", pdto);
     request.setAttribute("navType","team");
+
     return "/team/team";
   }
 
-//  권한 변경
+  // 권한 변경
   @RequestMapping("/project/changeAllow")
   public String chageAllow(HttpServletRequest request){
     int allow = Integer.parseInt(request.getParameter("allow"));
@@ -112,9 +118,9 @@ public class TeamController {
     dto.setTeamAllow(allow);
     dto.setMemSeq(memSeq);
     dto.setProjectSeq(projectSeq);
-    System.out.println(dto.getProjectSeq() +"project");
-    System.out.println(dto.getMemSeq() +"memSeq");
-    System.out.println(dto.getTeamAllow() +"allow");
+//    System.out.println(dto.getProjectSeq() +"project");
+//    System.out.println(dto.getMemSeq() +"memSeq");
+//    System.out.println(dto.getTeamAllow() +"allow");
 
     int check = teamService.changeAllow(dto);
     if(check == -1 ){
@@ -159,18 +165,15 @@ public class TeamController {
     }
   }
 
-    @RequestMapping(value ={"/project/deleteMember", "/project/Withdrawal"})
-    public String deleteMember(HttpServletRequest request){
+  // 사용자 삭제
+  @RequestMapping(value ={"/project/deleteMember", "/project/Withdrawal"})
+  public String deleteMember(HttpServletRequest request){
       int mSeq = Integer.parseInt(request.getParameter("memberSeq"));
       int pSeq = Integer.parseInt(request.getParameter("projectSeq"));
 
       TeamDTO dto = new TeamDTO();
       dto.setProjectSeq(pSeq);
       dto.setMemSeq(mSeq);
-
-//      if(request.getServletPath().equals("/project/Withdrawal")){
-//
-//      }
 
       int check = teamService.deleteMember(dto);
       if(check != 0){
