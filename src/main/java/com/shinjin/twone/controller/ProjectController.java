@@ -89,7 +89,7 @@ public class ProjectController {
         issueDTO.setBoardSeq(boardSeq);
         issueDTO.setColSeq(colSeq);
         issueDTO.setMemSeq(memSeq);
-        issueDTO.setIssueCode(projectDto.getProjectKey() + "-1");
+        issueDTO.setIssueCode(projectDto.getProjectKey() + "-");
         issueDTO.setIssueTitle("샘플 이슈");
         issueService.addIssue(issueDTO);
 
