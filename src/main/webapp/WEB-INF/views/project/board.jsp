@@ -67,7 +67,7 @@
                     <div id="issue-${idto.issueSeq}" class="card-body" style="font-size: 14px">
 
                       <div class="alert alert-secondary fade show" role="alert">
-                        <a href="${twone}/project/issue" style="color: black">
+                        <a href="${twone}/project/issue?issueSeq=${idto.issueSeq}" style="color: black">
                           <p>${idto.issueTitle}</p>
                         </a>
                         <!-- Three Dots Dropdown Menu Icon -->
@@ -136,7 +136,7 @@
 
       // 입력값이 공백인 경우
       if(boardName.trim() == ""){
-        alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
+        alert("보드명을 최소 1글자 이상 입력해 주세요.");
         return;
       }
 

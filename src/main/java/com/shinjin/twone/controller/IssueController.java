@@ -31,7 +31,14 @@ public class IssueController {
 
   /*** 이슈 상세 페이지로 이동 ***/
   @RequestMapping("/project/issue")
-  public String viewIssue() {
+  public String viewIssue(HttpServletRequest request) {
+
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
+
+    request.setAttribute("idto", issueDTO);
+
+
     return "issue/issue";
   }
 
@@ -40,8 +47,49 @@ public class IssueController {
   * -> 이유 : html 태그 전환하는 메소드를 컬럼 추가 메소드와 공유함
   */
 
+  /*** 이슈 제목 변경 ***/
+  @GetMapping("/project/updateissuedto")
+  @ResponseBody
+  public String updateIssueTitleProc(HttpServletRequest request){
+
+    // 입력값, issueSeq, type 파라미터로 받기
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    String inputValue = request.getParameter("inputValue");
+    String type = request.getParameter("type");
+
+    // issueDTO 만들기
+    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
+    switch (type){
+      case "title":
+        issueDTO.setIssueTitle(inputValue);
+        break;
+      case "summary":
+        issueDTO.setIssueSummary(inputValue);
+        break;
+    }
+
+    // IssueDTO 변경
+    issueService.updateIssueDTO(issueDTO);
+
+    // 태그 만들기
+    String result = "";
+
+    switch (type) {
+      case "title":
+        result += "<input id=\"issue-update-box\" type=\"text\" value=\"" + issueDTO.getIssueTitle() + "\" onkeyup=\"updateIssueDTO(this, 'title')\"";
+        result += "style=\"border: none; font-family: 'Nunito', sans-serif;";
+        result += "font-size: 24px; font-weight: 600; color: #012970\">";
+        break;
+      case "summary":
+        result += "<input type=\"text\" class=\"form-control\" value=\"" + issueDTO.getIssueSummary() + "\" onkeyup=\"updateIssueDTO(this, 'summary')\">";
+        break;
+    }
+
+    return result;
+  }
+
   /*** 이슈 삭제 ***/
-  @GetMapping("project/deleteissue")
+  @GetMapping("/project/deleteissue")
   @ResponseBody
   public void deleteIssueProc(HttpServletRequest request) {
     int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));

@@ -12,6 +12,22 @@
           , CONCAT(#{issueCode}, #{issueSeq}), #{issueTitle}, null, NOW(), NOW(), null)
     </insert>
 
+    <!-- IssueDTO 변경 -->
+    <update id="updateIssueDTO" parameterType="IssueDTO">
+        UPDATE t_issue
+        SET
+            issue_title = #{issueTitle},
+            issue_summary = #{issueSummary}
+        WHERE issue_seq = #{issueSeq}
+    </update>
+
+    <!-- IssueDTO 불러오기 -->
+    <select id="getIssueDTO" parameterType="int" resultType="IssueDTO">
+        SELECT *
+        FROM t_issue
+        WHERE issue_seq = #{issueSeq}
+    </select>
+
     <!-- IssueList 불러오기 by colSeq -->
     <select id="getIssueListByColSeq" parameterType="int" resultType="IssueDTO">
         SELECT *

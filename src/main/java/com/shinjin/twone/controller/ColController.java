@@ -110,7 +110,7 @@ public class ColController {
   }
 
   /*** 이슈 추가 ***/
-  @RequestMapping("/project/addissue")
+  @GetMapping("/project/addissue")
   @ResponseBody
   public String addIssueProc(HttpServletRequest request, HttpSession session) {
 
@@ -186,7 +186,7 @@ public class ColController {
         for (IssueDTO idto : issueMap.get(cdto.getColSeq())) {
           result += "<div id=\"issue-" + idto.getIssueSeq() + "\" class=\"card-body\" style=\"font-size: 14px\">";
           result += "<div class=\"alert alert-secondary fade show\" role=\"alert\">";
-          result += "<a href=\"/project/issue\" style=\"color: black\">";
+          result += "<a href=\"/project/issue?issueSeq=" + idto.getIssueSeq() + "\" style=\"color: black\">";
           result += "<p>" + idto.getIssueTitle() + "</p>";
           result += "</a>";
 

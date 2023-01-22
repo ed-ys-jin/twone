@@ -21,7 +21,11 @@
               <div class="card-body">
                 <div class="pagetitle">
                   <h5 class="card-title"></h5>
-                  <h1>Issue Title</h1>
+                  <h1 id="issue-title">
+                    <input id="issue-title-box" type="text" value="${idto.issueTitle}" onkeyup="updateIssueDTO(this, 'title')"
+                           style="border: none; font-family: 'Nunito', sans-serif;
+                           font-size: 24px; font-weight: 600; color: #012970">
+                  </h1>
                 </div><!-- End Summary Card Title -->
 
                 <div class="row mb-3">
@@ -45,8 +49,8 @@
                 <!-- 설명 -->
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">설명</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control">
+                  <div id="issue-summary" class="col-sm-10">
+                    <input type="text" class="form-control" value="${idto.issueSummary}" onkeyup="updateIssueDTO(this, 'summary')">
                   </div>
                 </div>
 
@@ -190,3 +194,70 @@
   </main><!-- End #main -->
 
 <%@ include file="../layouts/footer.jsp"%>
+
+<script>
+
+  function updateIssueDTO(inputText, type){
+
+    let eBoxId = null;
+    let eTagId = null;
+    let maxLength = 0;
+    let inputValue = inputText.value;
+    let url = "/project/updateissuedto?issueSeq=" + ${idto.issueSeq}
+            + "&inputValue=" + encodeURIComponent(inputValue);
+
+    switch (type) {
+      case "title":
+        eBoxId = "issue-title-box";
+        eTagId = "issue-title";
+        maxLength = 30;
+        url += "&type=title";
+        break;
+      case "summary":
+        eBoxId = "issue-summary-box";
+        eTagId = "issue-summary";
+        maxLength = 300;
+        url += "&type=summary";
+        break;
+    }
+
+    const inputBox = document.getElementById(eBoxId);
+
+    // 입력 글자수 제어
+    if(inputValue.length > maxLength) {
+      alert("최대 " + maxLength + "자까지만 작성할 수 있습니다.");
+      inputBox.value = inputValue.substring(0, maxLength-2); // 문자열 자르기(Max-2)
+      return;
+    }
+
+    // 엔터키 입력 시 IF문 실행
+    if (window.event.keyCode == 13) {
+      // 이슈 제목의 입력값이 공백인 경우
+      if(type == "title"){
+        if(inputValue.trim() == ""){
+          alert("이슈 제목을 최소 1글자 이상 입력해 주세요.");
+          return;
+        }
+      }
+
+      // 연결 작업
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("GET", url, true);
+
+      // 콜백 작업 지정
+      xhttp.onreadystatechange = function (){
+        if(this.readyState == 4 && this.status == 200){
+          // 태그 업데이트
+          document.getElementById(eTagId).innerHTML = this.responseText;
+          // 이슈 제목인 경우 focus 해제
+          if(type == "title"){
+            inputBox.blur();
+          }
+        }
+      };
+      // 결과값 받음
+      xhttp.send();
+    }
+  }
+
+</script>
