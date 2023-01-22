@@ -42,7 +42,7 @@
                 <c:otherwise>
                     <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li><a class="dropdown-item" href="#">이슈 추가</a></li>
+                      <li><a class="dropdown-item" href="javascript:addIssue(${cdto.colSeq})">이슈 추가</a></li>
                       <li><a class="dropdown-item" href="javascript:deleteColumn(${cdto.colSeq})">컬럼 삭제</a></li>
                     </ul>
                 </c:otherwise>
@@ -59,38 +59,42 @@
             </div>
 
             <!-- Issue Card -->
-            <c:choose>
-              <c:when test="${imap.containsKey(cdto.colSeq)}">
+            <div id="issue-list-card">
+              <c:choose>
+                <c:when test="${imap.containsKey(cdto.colSeq)}">
 
-                <c:forEach var="idto" items="${imap.get(cdto.colSeq)}">
-                  <div class="card-body" style="font-size: 14px">
+                  <c:forEach var="idto" items="${imap.get(cdto.colSeq)}">
+                    <div id="issue-${idto.issueSeq}" class="card-body" style="font-size: 14px">
 
-                    <a href="${twone}/project/issue">
                       <div class="alert alert-secondary fade show" role="alert">
-                        <p>${idto.issueTitle}</p>
+                        <a href="${twone}/project/issue?issueSeq=${idto.issueSeq}" style="color: black">
+                          <p>${idto.issueTitle}</p>
+                        </a>
                         <!-- Three Dots Dropdown Menu Icon -->
                         <div class="filter">
-                          <div class="icon" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></div>
+                          <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li><div class="dropdown-item">이슈 삭제</div></li>
+                            <li><a class="dropdown-item" href="javascript:deleteIssue(${idto.issueSeq})">이슈 삭제</a></li>
                           </ul>
                         </div><!-- End Three Dots Dropdown Menu Icon -->
+
                         <hr>
                         <p class="mb-0">${idto.issueCode}</p>
                       </div>
-                    </a>
 
-                  </div>
-                </c:forEach>
+                    </div>
+                  </c:forEach>
 
-              </c:when>
-            </c:choose>
+                </c:when>
+              </c:choose>
+            </div>
           </div>
         </div>
 
       </c:forEach><!-- End Column -->
 
       <div class="col-lg-2" style="min-width: 300px">
+
         <!-- Column Creation Button -->
         <div class="col-sm-1">
           <button type="button" class="btn btn-light" onclick="toggleInput('col-input-box')">
@@ -102,6 +106,7 @@
         <div class="col-sm-12" style="margin-top: 12px">
           <input type="text" class="form-control" id="col-input-box" style="display: none" placeholder="컬럼 제목 입력 후 엔터 (최대 30자)" onkeyup="addColumn(this)">
         </div>
+
       </div>
 
     </div>
@@ -131,7 +136,7 @@
 
       // 입력값이 공백인 경우
       if(boardName.trim() == ""){
-        alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
+        alert("보드명을 최소 1글자 이상 입력해 주세요.");
         return;
       }
 
@@ -259,8 +264,44 @@
 
     // 태그 삭제
     let colId = "col-" + colSeq;
-    alert(colId);
     document.getElementById(colId).remove();
+
+    // 결과값 받음
+    xhttp.send();
+  }
+
+  /* 이슈 생성 */
+  function addIssue(colSeq){
+    // URL(+ 파라미터) 만들기
+    let url = "/project/addissue?colSeq=" + colSeq;
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 콜백 작업 지정
+    xhttp.onreadystatechange = function (){
+      if(this.readyState == 4 && this.status == 200) {
+        document.getElementById("column-list-card").innerHTML = this.responseText;
+      }
+    };
+
+    // 결과값 받음
+    xhttp.send();
+  }
+
+  /* 이슈 삭제 */
+  function deleteIssue(issueSeq){
+    // URL(+ 파라미터) 만들기
+    let url = "/project/deleteissue?issueSeq=" + issueSeq;
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 태그 삭제
+    let issueId = "issue-" + issueSeq;
+    document.getElementById(issueId).remove();
 
     // 결과값 받음
     xhttp.send();

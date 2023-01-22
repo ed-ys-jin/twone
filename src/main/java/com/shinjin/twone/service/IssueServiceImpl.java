@@ -19,6 +19,18 @@ public class IssueServiceImpl implements IssueService {
         return issueDAO.addIssue(issueDTO);
     }
 
+    /* IssueDTO 변경 */
+    @Override
+    public int updateIssueDTO(IssueDTO issueDTO) {
+        return issueDAO.updateIssueDTO(issueDTO);
+    }
+
+    /* IssueDTO 불러오기 */
+    @Override
+    public IssueDTO getIssueDTO(int issueSeq) {
+        return issueDAO.getIssueDTO(issueSeq);
+    }
+
     /* IssueList 불러오기 by colSeq */
     @Override
     public List<IssueDTO> getIssueListByColSeq(int colSeq) {

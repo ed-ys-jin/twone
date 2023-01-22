@@ -3,12 +3,30 @@
 <mapper namespace="com.shinjin.twone.dao.IssueDAO" >
 
     <!-- 이슈 생성 -->
-    <insert id="addIssue" parameterType="IssueDTO">
+    <insert id="addIssue" useGeneratedKeys="true" keyProperty="issueSeq" parameterType="IssueDTO">
+        <selectKey keyProperty="issueSeq" resultType="int" order="BEFORE">
+            SELECT nextval('issue_seq') AS issue_seq FROM dual
+        </selectKey>
         INSERT INTO t_issue
-        VALUES
-            ((SELECT nextval('mem_seq') AS mem_seq FROM dual), #{projectSeq}, #{boardSeq}, #{colSeq}, #{memSeq}
-            , #{issueCode}, #{issueTitle}, null, NOW(), NOW(), null)
+        VALUES (#{issueSeq}, #{projectSeq}, #{boardSeq}, #{colSeq}, #{memSeq}
+          , CONCAT(#{issueCode}, #{issueSeq}), #{issueTitle}, null, NOW(), NOW(), null)
     </insert>
+
+    <!-- IssueDTO 변경 -->
+    <update id="updateIssueDTO" parameterType="IssueDTO">
+        UPDATE t_issue
+        SET
+            issue_title = #{issueTitle},
+            issue_summary = #{issueSummary}
+        WHERE issue_seq = #{issueSeq}
+    </update>
+
+    <!-- IssueDTO 불러오기 -->
+    <select id="getIssueDTO" parameterType="int" resultType="IssueDTO">
+        SELECT *
+        FROM t_issue
+        WHERE issue_seq = #{issueSeq}
+    </select>
 
     <!-- IssueList 불러오기 by colSeq -->
     <select id="getIssueListByColSeq" parameterType="int" resultType="IssueDTO">

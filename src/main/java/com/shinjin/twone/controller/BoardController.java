@@ -32,24 +32,24 @@ public class BoardController {
 
   /*** 보드 출력 ***/
   @RequestMapping("project/board")
-  public String viewBoard(@RequestParam(defaultValue = "-1", required = false) int boardSeq, HttpServletRequest request, Model model) {
+  public String viewBoard(@RequestParam(defaultValue = "-1", required = false) int boardSeq, HttpServletRequest request) {
 
     // project 상세페이지 넘어감
-    model.addAttribute("navType", "project");
+    request.setAttribute("navType", "project");
 
     /* Attr : memDTO */
     int memSeq = (int) request.getSession().getAttribute("login");
     MemDTO memDTO = memService.getDto(memSeq);
-    model.addAttribute("memDTO", memDTO);
+    request.setAttribute("memDTO", memDTO);
 
     /* Attr : projectDTO */
     int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
     ProjectDTO pdto = projectService.selectOne(projectSeq);
-    model.addAttribute("pdto", pdto);
+    request.setAttribute("pdto", pdto);
 
     /* Attr : boardList(보드사이드바 출력용) */
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
-    model.addAttribute("blist", boardList);
+    request.setAttribute("blist", boardList);
 
     /* Attr : boardDTO */
     BoardDTO boardDTO;
@@ -64,11 +64,11 @@ public class BoardController {
     if (boardDTO == null) {
       return "project/board";
     }
-    model.addAttribute("bdto", boardDTO);
+    request.setAttribute("bdto", boardDTO);
 
     /* Attr : colList */
     List<ColDTO> colList = colService.getColList(boardDTO.getBoardSeq());
-    model.addAttribute("clist", colList);
+    request.setAttribute("clist", colList);
 
     /* Attr : issueMap */
     Map<Integer, List<IssueDTO>> issueMap = new HashMap<>();
@@ -78,7 +78,7 @@ public class BoardController {
         issueMap.put(cdto.getColSeq(), issueList);
       }
     }
-    model.addAttribute("imap", issueMap);
+    request.setAttribute("imap", issueMap);
 
     return "project/board";
   }
@@ -133,7 +133,6 @@ public class BoardController {
     String result = boardListToHtmlCode(projectSeq);
 
     return result;
-
   }
 
   /*** 보드 리스트 문자열에 담기 ***/
