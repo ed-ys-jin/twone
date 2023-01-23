@@ -13,12 +13,6 @@ public class ColServiceImpl implements ColService {
     @Autowired
     private ColDAO colDAO;
 
-    /* 컬럼 리스트 불러오기 */
-    @Override
-    public List<ColDTO> getColList(int boardSeq) {
-        return colDAO.getColList(boardSeq);
-    }
-
     /* 샘플 컬럼 생성 */
     @Override
     public int createSampleColumn(ColDTO colDTO) {
@@ -27,6 +21,7 @@ public class ColServiceImpl implements ColService {
         return colDTO.getColSeq();
     }
 
+    /* Done 컬럼 생성 */
     @Override
     public int addDoneColumn(ColDTO colDTO) {
         return colDAO.addDoneColumn(colDTO);
@@ -54,6 +49,12 @@ public class ColServiceImpl implements ColService {
             e.printStackTrace();
         }
         return result;
+    }
+
+    /* 컬럼 리스트 불러오기 */
+    @Override
+    public List<ColDTO> getColList(int boardSeq) {
+        return colDAO.getColList(boardSeq);
     }
 
     /* ColDTO 불러오기 */

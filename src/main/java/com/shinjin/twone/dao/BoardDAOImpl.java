@@ -16,13 +16,7 @@ public class BoardDAOImpl implements BoardDAO {
     /* 보드 생성 */
     @Override
     public int addBoard(BoardDTO boardDTO) {
-        int result = -1;
-        try {
-            result = addBoard(boardDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+        return addBoard(boardDTO);
     }
 
     /* 보드명 변경 */

@@ -44,19 +44,37 @@ public class MemServiceImpl implements MemService{
     /* 회원등록 */
     @Override
     public int signup(MemDTO memDTO) {
-        return memDAO.signup(memDTO);
+        int result = -1;
+        try {
+            result = memDAO.signup(memDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /* 로그인 */
     @Override
     public MemDTO login(MemDTO memDTO) {
-        return memDAO.login(memDTO);
+        MemDTO dto = null;
+        try {
+            dto = memDAO.login(memDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dto;
     }
 
     /* 회원탈퇴 */
     @Override
     public int withdraw(MemDTO memDTO) {
-        return memDAO.withdraw(memDTO);
+        int result = 0;
+        try {
+            result = memDAO.withdraw(memDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /* memDTO 불러오기 */
@@ -68,7 +86,13 @@ public class MemServiceImpl implements MemService{
     /* 회원정보 수정 */
     @Override
     public int updateMemInfo(MemDTO memDTO) {
-        return memDAO.updateMemInfo(memDTO);
+        int result = -1;
+        try {
+            result = memDAO.updateMemInfo(memDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /* 비밀번호 불러오기 */
@@ -80,7 +104,13 @@ public class MemServiceImpl implements MemService{
     /* 비밀번호 변경 */
     @Override
     public int changePw(MemDTO memDTO) {
-        return memDAO.changePw(memDTO);
+        int result = -1;
+        try {
+            result = memDAO.changePw(memDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
 }

@@ -25,9 +25,15 @@ public class BoardServiceImpl implements BoardService {
     /* 보드 생성 */
     @Override
     public int addBoard(BoardDTO boardDTO) {
-        boardDAO.addBoard(boardDTO);
+        int result = -1;
+        try {
+            boardDAO.addBoard(boardDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // selectkey 를 활용하여 인서트 한 board_seq 바로 가져오기
-        return boardDTO.getBoardSeq();
+        result = boardDTO.getBoardSeq();
+        return result;
     }
 
     /* 보드명 변경 */
