@@ -15,7 +15,7 @@ public class TeamServiceImpl implements TeamService {
   @Autowired
   private TeamDAO teamDao;
 
-  //  @Override
+//  @Override
 //  public List<MemDTO> selectTeamList(int seq) {
 //    return teamDao.selectTeamList(seq);
 //  }

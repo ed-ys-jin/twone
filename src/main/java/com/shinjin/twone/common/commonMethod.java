@@ -1,8 +1,6 @@
 package com.shinjin.twone.common;
 
 import com.shinjin.twone.dto.MemDTO;
-import com.shinjin.twone.service.MemService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletRequest;

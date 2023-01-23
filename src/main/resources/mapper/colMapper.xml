@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.ColDAO" >
+
+    <!-- 샘플 컬럼 생성 -->
+    <insert id="createSampleColumn" useGeneratedKeys="true" keyProperty="colSeq" parameterType="ColDTO">
+        <selectKey keyProperty="colSeq" resultType="int" order="BEFORE">
+            SELECT nextval('col_seq') AS col_seq FROM dual
+        </selectKey>
+        INSERT INTO t_col
+        VALUES (#{colSeq}, #{projectSeq}, #{boardSeq}, '샘플 컬럼', 0)
+    </insert>
+
+    <!-- Done 컬럼 생성 -->
+    <insert id="addDoneColumn" parameterType="ColDTO">
+        INSERT INTO t_col
+        VALUES ((SELECT nextval('col_seq') AS col_seq FROM dual), #{projectSeq}, #{boardSeq}, 'Done', 1)
+    </insert>
+
+    <!-- 컬럼 생성 -->
+    <insert id="addColumn" parameterType="ColDTO">
+        INSERT INTO t_col
+        VALUES ((SELECT nextval('col_seq') AS col_seq FROM dual), #{projectSeq}, #{boardSeq}, #{colName}, 0)
+    </insert>
+
+    <!-- 컬럼명 변경 -->
+    <update id="updateColName" parameterType="ColDTO">
+        UPDATE t_col
+        SET col_name = #{colName}
+        WHERE col_seq = #{colSeq}
+    </update>
+
+    <!-- ColDTO 불러오기 -->
+    <select id="getColDTO" parameterType="int" resultType="ColDTO">
+        SELECT *
+        FROM t_col
+        WHERE col_seq = #{colSeq}
+    </select>
+
+    <!-- 컬럼 리스트 불러오기 -->
+    <select id="getColList" parameterType="int" resultType="ColDTO">
+        SELECT *
+        FROM t_col
+        WHERE board_seq = #{boardSeq}
+    </select>
+
+    <!-- 일반 컬럼 삭제 by colSeq -->
+    <delete id="deleteColumn" parameterType="int">
+        DELETE FROM t_col
+        WHERE col_seq = #{colSeq} and col_type = 0
+    </delete>
+
+    <!-- 일반/Done 컬럼 삭제 by boardSeq -->
+    <delete id="deleteColumnByBoardSeq" parameterType="int">
+        DELETE FROM t_col
+        WHERE board_seq = #{boardSeq}
+    </delete>
+
+    <!-- 일반/Done 컬럼 삭제 by projectSeq -->
+    <delete id="deleteColumnByProjectSeq" parameterType="int">
+        DELETE FROM t_col
+        WHERE project_seq = #{projectSeq}
+    </delete>
+</mapper>

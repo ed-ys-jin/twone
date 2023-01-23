@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TeamService {
 
-  //  public List<MemDTO> selectTeamList(int seq);
+//  public List<MemDTO> selectTeamList(int seq);
   public List<HashMap<String,Object>> selectTeamList(int seq);
 
   public int changeAllow(TeamDTO dto);

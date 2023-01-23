@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.LinkedIssueDAO" >
+
+    <!-- 링크된이슈 삭제 -->
+    <delete id="deleteLinkedIssue" parameterType="int">
+        DELETE FROM t_linked_issue
+        WHERE linked_main = #{issueSeq} || issue_seq = #{issueSeq}
+    </delete>
+
+</mapper>

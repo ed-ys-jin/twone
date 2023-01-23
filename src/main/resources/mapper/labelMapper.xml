@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.LabelDAO" >
+
+    <!-- 레이블 삭제 by labSeq -->
+    <delete id="deleteLabel" parameterType="int">
+        DELETE FROM t_label
+        WHERE lab_seq = #{labSeq}
+    </delete>
+
+    <!-- 레이블 삭제 by projectSeq -->
+    <delete id="deleteLabelByProjectSeq" parameterType="int">
+        DELETE FROM t_label
+        WHERE project_seq = #{projectSeq}
+    </delete>
+
+</mapper>

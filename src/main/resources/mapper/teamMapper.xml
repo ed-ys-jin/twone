@@ -3,20 +3,20 @@
 <mapper namespace="com.shinjin.twone.dao.TeamDAO" >
 
     <!-- 팀 구성원 리스트 -->
-    <!--    <select id="selectTeamList" parameterType="int" resultType="MemDTO">-->
-    <!--        SELECT m.*, t.team_allow-->
-    <!--        FROM t_team t, t_mem m-->
-    <!--        where t.mem_seq = m.mem_seq and t.project_seq =#{seq}-->
-    <!--        order by team_allow asc;-->
-    <!--    </select>-->
+<!--    <select id="selectTeamList" parameterType="int" resultType="MemDTO">-->
+<!--        SELECT m.*, t.team_allow-->
+<!--        FROM t_team t, t_mem m-->
+<!--        where t.mem_seq = m.mem_seq and t.project_seq =#{seq}-->
+<!--        order by team_allow asc;-->
+<!--    </select>-->
 
     <!-- 팀 구성원 리스트 -->
-    <!--    <select id="selectTeamList" parameterType="int" resultType="Hashmap">-->
-    <!--        SELECT m.-->
-    <!--        FROM t_team t, t_mem m-->
-    <!--        where t.mem_seq = m.mem_seq and t.project_seq =#{seq}-->
-    <!--        order by team_allow asc;-->
-    <!--    </select>-->
+<!--    <select id="selectTeamList" parameterType="int" resultType="Hashmap">-->
+<!--        SELECT m.-->
+<!--        FROM t_team t, t_mem m-->
+<!--        where t.mem_seq = m.mem_seq and t.project_seq =#{seq}-->
+<!--        order by team_allow asc;-->
+<!--    </select>-->
     <!--팀 구성원 리스트 -->
     <select id="selectTeamList" parameterType="int" resultType="Hashmap">
         SELECT ifnull(m.mem_image,"") mem_image,ifnull(m.mem_position,"") mem_position,ifnull(m.mem_dept,"") mem_dept,ifnull(m.mem_company,"") mem_company,m.mem_seq,m.mem_email,m.mem_cert,m.mem_delcheck,m.mem_name, t.team_allow

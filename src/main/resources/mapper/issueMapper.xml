@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.IssueDAO" >
+
+    <!-- 이슈 생성 -->
+    <insert id="addIssue" useGeneratedKeys="true" keyProperty="issueSeq" parameterType="IssueDTO">
+        <selectKey keyProperty="issueSeq" resultType="int" order="BEFORE">
+            SELECT nextval('issue_seq') AS issue_seq FROM dual
+        </selectKey>
+        INSERT INTO t_issue
+        VALUES (#{issueSeq}, #{projectSeq}, #{boardSeq}, #{colSeq}, #{memSeq}
+          , CONCAT(#{issueCode}, #{issueSeq}), #{issueTitle}, null, NOW(), NOW(), null)
+    </insert>
+
+    <!-- IssueDTO 변경 -->
+    <update id="updateIssueDTO" parameterType="IssueDTO">
+        UPDATE t_issue
+        SET
+            issue_title = #{issueTitle},
+            issue_summary = #{issueSummary}
+        WHERE issue_seq = #{issueSeq}
+    </update>
+
+    <!-- IssueDTO 불러오기 -->
+    <select id="getIssueDTO" parameterType="int" resultType="IssueDTO">
+        SELECT *
+        FROM t_issue
+        WHERE issue_seq = #{issueSeq}
+    </select>
+
+    <!-- IssueList 불러오기 by colSeq -->
+    <select id="getIssueListByColSeq" parameterType="int" resultType="IssueDTO">
+        SELECT *
+        FROM t_issue
+        WHERE col_seq = #{colSeq}
+        ORDER BY issue_seq DESC
+    </select>
+
+    <!-- issueSeqList 불러오기 by boardSeq -->
+    <select id="getIssueSeqListUnderBoard" parameterType="int" resultType="int">
+        SELECT issue_seq
+        FROM t_issue
+        WHERE board_seq = #{boardSeq}
+    </select>
+
+    <!-- issueSeqList 불러오기 by projectSeq -->
+    <select id="getIssueSeqListUnderProject" parameterType="int" resultType="int">
+        SELECT issue_seq
+        FROM t_issue
+        WHERE project_seq = #{projectSeq}
+    </select>
+
+    <!-- 이슈 삭제 by issueSeq -->
+    <delete id="deleteIssue" parameterType="int">
+        DELETE FROM t_issue
+        WHERE issue_seq = #{issueSeq}
+    </delete>
+
+    <!-- 이슈 삭제 by colSeq -->
+    <delete id="deleteIssueByColSeq" parameterType="int">
+        DELETE FROM t_issue
+        WHERE col_seq = #{colSeq}
+    </delete>
+
+    <!-- 이슈 삭제 by boardSeq -->
+    <delete id="deleteIssueByBoardSeq" parameterType="int">
+        DELETE FROM t_issue
+        WHERE board_seq = #{boardSeq}
+    </delete>
+
+    <!-- 이슈 삭제 by projectSeq -->
+    <delete id="deleteIssueByProjectSeq" parameterType="int">
+        DELETE FROM t_issue
+        WHERE project_seq = #{projectSeq}
+    </delete>
+
+</mapper>

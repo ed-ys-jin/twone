@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface TeamDAO {
 
-  //  public List<MemDTO> selectTeamList(int seq);
+//  public List<MemDTO> selectTeamList(int seq);
   public List<HashMap<String,Object>> selectTeamList(int seq);
 
   public int leaderSeq(int seq) throws Exception;
