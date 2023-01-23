@@ -9,12 +9,16 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 @Controller
@@ -22,7 +26,8 @@ public class MemController {
 
     @Autowired
     private MemService memService;
-
+    @Autowired // 자동 주입
+    private ServletContext application;
     /*** 회원가입 ***/
     @RequestMapping("/signup")
     public String signupView(){
@@ -213,17 +218,51 @@ public class MemController {
 
         memDTO.setMemSeq(memSeq); // 수정할 정보를 담은 memDTO 만들기
 
+        // 사진 업로드
+        String savePath = application.getRealPath("/resources/upload/");
+        //String savePath = "/var/lib/tomcat9/file_repo/";
+
+        String imgPath = "resources/upload/";
+        //String imgPath = "/var/lib/tomcat9/file_repo/";
+
+        MultipartFile memPic = memDTO.getMemPic();
+        String memImage = null;
+
+        if(!memPic.isEmpty() || memPic==null) {
+            memImage = memPic.getOriginalFilename();
+            memImage = memSeq + "memberImage" + memImage.substring(memImage.lastIndexOf("."),memImage.length());
+            File saveFile = new File(savePath, memImage);
+
+            //업로드된 파일 저장할 때 코드
+            if(!saveFile.exists()) {//경로에 파일이 없다면
+                saveFile.mkdir();
+            }else {
+                long time = System.currentTimeMillis();
+                memImage = String.format("%s%d%s", memImage.substring(0,memImage.lastIndexOf(".")),time,memImage.substring(memImage.lastIndexOf(".")));
+                saveFile = new File(savePath,memImage);
+            }
+
+            try {
+                memPic.transferTo(saveFile);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            memImage = imgPath+memImage;
+            memDTO.setMemImage(memImage);
+        }
+
+        int check = memService.updateMemInfo(memDTO);
         /* 회원정보 수정 */
-        if(memService.updateMemInfo(memDTO) == -1){ // 정보 수정 실패
+        if(check == -1){ // 정보 수정 실패
             commonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
             return "/common/alert";
         }
-
         /* 변경사항 세션에 업로드 */
         request.getSession().setAttribute("username", memDTO.getMemName()); // member name
         request.getSession().setAttribute("userposition", memDTO.getMemPosition()); // member position
         request.getSession().setAttribute("userimage", memDTO.getMemImage()); // member image
-
         return "redirect:/profile";
     }
 

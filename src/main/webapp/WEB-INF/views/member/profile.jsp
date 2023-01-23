@@ -1,10 +1,30 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="twone" value="${ pageContext.request.contextPath }"/>
+<c:set var="twone" value="${pageContext.request.contextPath }"/>
 
 <%@ include file="../layouts/header.jsp"%>
 
+<%--<script>--%>
+
+<%--image upload modal--%>
+<%--$(".close-box").on("click", function(){--%>
+<%--  $("#change-image").removeClass("open");--%>
+<%--  $(".wrapper").removeClass("overlay"); --%>
+<%--return false;--%>
+<%--});--%>
+<%--  function imgModal() {--%>
+<%--    let OpenImgUpload = document.getElementById("OpenImgUpload")--%>
+<%--    let changeimage = document.getElementById("change-image")--%>
+<%--    let wrapper = document.getElementsByClassName("wrapper")--%>
+
+<%--    changeimage.addClass("open");--%>
+<%--    wrapper.addClass("overlay");--%>
+<%--    return false;--%>
+<%--  }--%>
+
+
+<%--</script>--%>
   <main id="main" class="main">
 
     <h5 class="card-title"></h5>
@@ -137,22 +157,33 @@
                   <h5 class="card-title"></h5>
 
                   <!-- *** Profile Edit Form *** -->
-                  <form method="post" action="${twone}/editprofile">
+                  <form method="post" action="${twone}/editprofile" enctype="multipart/form-data">
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">프로필 사진</label>
                       <div class="col-md-8 col-lg-9">
                         <c:choose>
                           <c:when test="${!empty memDTO.memImage}">
-                            <img src="${memDTO.memImage}" id="profileImage" alt="Profile">
+                            <img src="${twone}/${memDTO.memImage}" id="profileImage" alt="Profile">
                           </c:when>
                           <c:otherwise>
                             <img src="../resources/bootstrap/img/no_image.png" id="profileImage" alt="Profile">
                           </c:otherwise>
                         </c:choose>
 
+<%--                        모달창으로 하기--%>
                         <div class="pt-2">
-                          <a href="#" class="btn btn-primary btn-sm" title="사진 변경"><i class="bi bi-upload"></i></a>
-                          <a href="#" class="btn btn-danger btn-sm" title="사진 삭제"><i class="bi bi-trash"></i></a>
+
+                          <!-- 사진 업로드 -->
+                          <div class="btn btn-primary btn-sm" title="사진 변경">
+                            <i class="bi bi-upload">
+                              <input type="file" name="memPic"/>
+                            </i>
+                          </div>
+
+
+                          <div class="btn btn-danger btn-sm" title="사진 삭제">
+                            <i class="bi bi-trash"></i>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -167,21 +198,21 @@
                     <div class="row mb-3">
                       <label for="position" class="col-md-4 col-lg-3 col-form-label">직위</label>
                       <div class="col-md-8 col-lg-9">
-                          <input name="memPosition" type="text" class="form-control" id="position" placeholder="직위" value="${memDTO.memPosition}">
+                        <input name="memPosition" type="text" class="form-control" id="position" placeholder="직위" value="${memDTO.memPosition}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="dept" class="col-md-4 col-lg-3 col-form-label">부서</label>
                       <div class="col-md-8 col-lg-9">
-                          <input name="memDept" type="text" class="form-control" id="dept" placeholder="부서" value="${memDTO.memDept}">
+                        <input name="memDept" type="text" class="form-control" id="dept" placeholder="부서" value="${memDTO.memDept}">
                       </div>
                     </div>
 
                     <div class="row mb-3">
                       <label for="country" class="col-md-4 col-lg-3 col-form-label">조직</label>
                       <div class="col-md-8 col-lg-9">
-                          <input name="memCompany" type="text" class="form-control" id="country" placeholder="조직" value="${memDTO.memCompany}">
+                        <input name="memCompany" type="text" class="form-control" id="country" placeholder="조직" value="${memDTO.memCompany}">
                       </div>
                     </div>
 
@@ -193,6 +224,8 @@
                   </form><!-- End Profile Edit Form -->
 
                 </div>
+
+
 
                 <div class="tab-pane fade pt-3" id="profile-change-password">
                   <h5 class="card-title"></h5>
@@ -233,5 +266,19 @@
     </section>
 
   </main><!-- End #main -->
+
+<%--  <div class="overview-box" id="change-image">--%>
+<%--    <div class="overview-edit">--%>
+<%--      <h3>Change ProfileImage</h3>--%>
+<%--      <form action="${contextPath }/member/mPic" method="post"--%>
+<%--            enctype="multipart/form-data">--%>
+<%--        <input type="file" name="filePic" size="400" />--%>
+<%--        <button type="submit" class="save">Save</button>--%>
+<%--        <button type="reset" class="cancel">Reset</button>--%>
+<%--      </form>--%>
+<%--      <a href="#" title="" class="close-box"><i class="la la-close"></i></a>--%>
+<%--    </div>--%>
+<%--    <!--overview-edit end-->--%>
+<%--  </div>--%>
 
 <%@ include file="../layouts/footer.jsp"%>
