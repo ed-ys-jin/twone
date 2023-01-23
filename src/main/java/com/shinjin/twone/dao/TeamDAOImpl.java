@@ -2,7 +2,6 @@ package com.shinjin.twone.dao;
 
 import com.shinjin.twone.dto.MemDTO;
 import com.shinjin.twone.dto.TeamDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,13 +10,18 @@ public class TeamDAOImpl implements TeamDAO{
 
 
   @Override
-  public List<MemDTO> selectTeamList() {
-    return selectTeamList();
+  public List<HashMap<String,Object>> selectTeamList(int seq) {
+    return selectTeamList(seq);
   }
 
+//  @Override
+//  public List<MemDTO> selectTeamList(int seq) {
+//    return selectTeamList(seq);
+//  }
+
   @Override
-  public int leaderSeq() {
-    return leaderSeq();
+  public int leaderSeq(int seq) {
+    return leaderSeq(seq);
   }
 
   @Override
@@ -30,7 +34,24 @@ public class TeamDAOImpl implements TeamDAO{
     return memberAdd(map);
   }
 
-//  public int memberAdd(String email){
-//    return memberAdd(email);
-//  }
+  @Override
+  public Integer checkMember(String email) {
+    return checkMember(email);
+  }
+
+  @Override
+  public TeamDTO checkOne(HashMap<String, Object> map) {
+    return checkOne(map);
+  }
+  @Override
+  public HashMap<String, Object> selectOne(HashMap<String, Object> map) {
+    return selectOne(map);
+  }
+
+  @Override
+  public int deleteMember(TeamDTO dto) {
+    return deleteMember(dto);
+  }
+
+
 }

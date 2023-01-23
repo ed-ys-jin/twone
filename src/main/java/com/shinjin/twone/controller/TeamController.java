@@ -28,11 +28,11 @@ public class TeamController {
   @RequestMapping("/project/team")
   public String teamView(Model model, HttpServletRequest request) throws Exception{
 
-    List<MemDTO> teamList = teamService.selectTeamList();
-    int leader = teamService.leaderSeq();
+    int pSeq = Integer.parseInt(request.getParameter("projectSeq"));
+    int leader = teamService.leaderSeq(pSeq);
+    ProjectDTO pdto = projectService.selectOne(pSeq);
+    List<HashMap<String,Object>> teamList = teamService.selectTeamList(pSeq);
 
-    int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
-    ProjectDTO pdto = projectService.selectOne(projectSeq);
     model.addAttribute("pdto", pdto);
 
     model.addAttribute("teamList",teamList);
