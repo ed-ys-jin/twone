@@ -66,7 +66,7 @@ ZIRA, JANDI 등 과 같은 협업툴 구현해보기
 		</tr>
 		<tr align="center">
 			<td>DB</td>
-			<td>dBeaver</td>
+			<td>dBeaver , MySQLWorkbench</td>
 		</tr>
 		<tr align="center">
 			<td>문서 작성</td>
