@@ -1,6 +1,7 @@
 package com.shinjin.twone.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -41,4 +42,7 @@ public class MemDTO {
 
     /*팀 권한*/
     private int teamAllow;
+
+    /*프로필 이미지*/
+    private MultipartFile memPic;
 }

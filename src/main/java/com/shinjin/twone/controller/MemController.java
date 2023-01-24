@@ -213,17 +213,16 @@ public class MemController {
 
         memDTO.setMemSeq(memSeq); // 수정할 정보를 담은 memDTO 만들기
 
+        int check = memService.updateMemInfo(memDTO);
         /* 회원정보 수정 */
-        if(memService.updateMemInfo(memDTO) == -1){ // 정보 수정 실패
+        if(check == -1){ // 정보 수정 실패
             commonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
             return "/common/alert";
         }
-
         /* 변경사항 세션에 업로드 */
         request.getSession().setAttribute("username", memDTO.getMemName()); // member name
         request.getSession().setAttribute("userposition", memDTO.getMemPosition()); // member position
         request.getSession().setAttribute("userimage", memDTO.getMemImage()); // member image
-
         return "redirect:/profile";
     }
 

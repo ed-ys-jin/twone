@@ -1,10 +1,24 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+  <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <%@ include file="../layouts/header.jsp"%>
 <%@ include file="projectsidebar.jsp"%>
 
+<script>
+  function check(f) {
+    if (f.projectKey.value == "") {
+      alert("프로젝트 키를 입력해주세요");
+      f.projectKey.focus();
+      return false;
+    } else if (f.memPw.value == "") {
+      alert("프로젝트 리더 비밀번호를 입력해주세요");
+      f.memPw.focus();
+      return false;
+    }
+    return true;
+  }
+</script>
 <main id="main" class="main">
 
   <div class="pagetitle">
@@ -43,17 +57,23 @@
                 <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button>
               </li>
 
-              <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
-              </li>
+              <c:if test="${check == 0 || check == 1}">
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button>
+                </li>
+              </c:if>
 
-              <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Settings</button>
-              </li>
+              <c:if test="${check == 0 || check == 1}">
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Settings</button>
+                </li>
+              </c:if>
 
-              <li class="nav-item">
-                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Delete Project</button>
-              </li>
+              <c:if test="${check == 0}">
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Delete Project</button>
+                </li>
+              </c:if>
 
             </ul>
             <div class="tab-content pt-2">
@@ -251,26 +271,20 @@
 
               <div class="tab-pane fade pt-3" id="profile-change-password">
                 <!-- Change Password Form -->
-                <form>
 
+                <form method="post" action="${twone}/project/delete" onsubmit="return check(this)">
+                  <input type="hidden" name="projectSeq" value="${pdto.projectSeq}"/>
                   <div class="row mb-3">
-                    <label for="currentPassword" class="col-md-4 col-lg-3 col-form-label">Delete Project</label>
+                    <label for="projectKey" class="col-md-4 col-lg-3 col-form-label">Project Key</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="password" type="password" class="form-control" id="currentPassword">
+                      <input name="projectKey" type="text" class="form-control" id="projectKey">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New Password</label>
+                    <label for="memPw" class="col-md-4 col-lg-3 col-form-label">Leader PW</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="newpassword" type="password" class="form-control" id="newPassword">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">Re-enter New Password</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="renewpassword" type="password" class="form-control" id="renewPassword">
+                      <input name="memPw" type="password" class="form-control" id="memPw">
                     </div>
                   </div>
 

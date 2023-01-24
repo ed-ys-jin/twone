@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="twone" value="${ pageContext.request.contextPath }"/>
-
+<c:set var="twone" value="${pageContext.request.contextPath }"/>
 <!DOCTYPE html>
 <html lang="en">
+
 
 <head>
     <meta charset="utf-8">
@@ -13,7 +13,6 @@
     <title>Twone 협업툴</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
-
     <!-- Favicons -->
     <link href="../resources/bootstrap/img/logo_sjb_withback.png" rel="icon">
     <link href="../resources/bootstrap/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -41,6 +40,7 @@
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
+
 </head>
 
 <body>
@@ -218,7 +218,7 @@
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                     <c:choose>
                         <c:when test="${!empty userimage}">
-                            <img src="${userimage}" alt="Profile" class="rounded-circle">
+                            <img src="${twone}/${memDTO.memImage}" alt="Profile" class="rounded-circle">
                         </c:when>
                         <c:otherwise>
                             <img src="../resources/bootstrap/img/no_image.png" alt="Profile" class="rounded-circle">
