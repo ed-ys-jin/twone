@@ -2,29 +2,44 @@
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="twone" value="${pageContext.request.contextPath }"/>
+<style>
+  .modal {
+    position: absolute;
+    top: 0;
+    left: 0;
 
+    width: 100%;
+    height: 100%;
+
+    display: none;
+
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .modal.show {
+    display: block;
+  }
+
+  .modal_body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    width: 540px;
+    height: 200px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+    transform: translateX(-50%) translateY(-50%);
+  }
+</style>
 <%@ include file="../layouts/header.jsp"%>
-
-<%--<script>--%>
-
-<%--image upload modal--%>
-<%--$(".close-box").on("click", function(){--%>
-<%--  $("#change-image").removeClass("open");--%>
-<%--  $(".wrapper").removeClass("overlay"); --%>
-<%--return false;--%>
-<%--});--%>
-<%--  function imgModal() {--%>
-<%--    let OpenImgUpload = document.getElementById("OpenImgUpload")--%>
-<%--    let changeimage = document.getElementById("change-image")--%>
-<%--    let wrapper = document.getElementsByClassName("wrapper")--%>
-
-<%--    changeimage.addClass("open");--%>
-<%--    wrapper.addClass("overlay");--%>
-<%--    return false;--%>
-<%--  }--%>
-
-
-<%--</script>--%>
   <main id="main" class="main">
 
     <h5 class="card-title"></h5>
@@ -157,7 +172,7 @@
                   <h5 class="card-title"></h5>
 
                   <!-- *** Profile Edit Form *** -->
-                  <form method="post" action="${twone}/editprofile" enctype="multipart/form-data">
+                  <form method="post" action="${twone}/editprofile">
                     <div class="row mb-3">
                       <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">프로필 사진</label>
                       <div class="col-md-8 col-lg-9">
@@ -170,21 +185,17 @@
                           </c:otherwise>
                         </c:choose>
 
-<%--                        모달창으로 하기--%>
                         <div class="pt-2">
-
                           <!-- 사진 업로드 -->
-                          <div class="btn btn-primary btn-sm" title="사진 변경">
-                            <i class="bi bi-upload">
-                              <input type="file" name="memPic"/>
-                            </i>
+                          <div id="changeProfileImg" class="btn btn-primary btn-sm btn-open-popup" title="사진 변경">
+                            <i class="bi bi-upload"></i>
                           </div>
-
 
                           <div class="btn btn-danger btn-sm" title="사진 삭제">
                             <i class="bi bi-trash"></i>
                           </div>
                         </div>
+
                       </div>
                     </div>
 
@@ -265,20 +276,41 @@
       </div>
     </section>
 
-  </main><!-- End #main -->
+    <!-- 이미지 업로드 모달창 -->
+    <div class="modal">
+      <div class="modal_body">
+        <h3>프로필 이미지 변경</h3>
+        <form method="post" action="${twone}/image/profileImg" enctype="multipart/form-data">
+          <input type="file" name="memPic" value="${memDTO.memImage}">
+          <button type="submit" class="save">저장</button>
+          <button type="reset" class="cancel">초기화</button>
+        </form>
+      </div>
+    </div>
 
-<%--  <div class="overview-box" id="change-image">--%>
-<%--    <div class="overview-edit">--%>
-<%--      <h3>Change ProfileImage</h3>--%>
-<%--      <form action="${contextPath }/member/mPic" method="post"--%>
-<%--            enctype="multipart/form-data">--%>
-<%--        <input type="file" name="filePic" size="400" />--%>
-<%--        <button type="submit" class="save">Save</button>--%>
-<%--        <button type="reset" class="cancel">Reset</button>--%>
-<%--      </form>--%>
-<%--      <a href="#" title="" class="close-box"><i class="la la-close"></i></a>--%>
-<%--    </div>--%>
-<%--    <!--overview-edit end-->--%>
-<%--  </div>--%>
+  </main><!-- End #main -->
+<script>
+  const body = document.querySelector('body');
+  const modal = document.querySelector('.modal');
+  const btnOpenPopup = document.querySelector('.btn-open-popup');
+
+  btnOpenPopup.addEventListener('click', () => {
+    modal.classList.toggle('show');
+
+    if (modal.classList.contains('show')) {
+      body.style.overflow = 'hidden';
+    }
+  });
+
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) {
+      modal.classList.toggle('show');
+
+      if (!modal.classList.contains('show')) {
+        body.style.overflow = 'auto';
+      }
+    }
+  });
+</script>
 
 <%@ include file="../layouts/footer.jsp"%>

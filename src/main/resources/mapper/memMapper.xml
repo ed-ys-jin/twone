@@ -22,13 +22,21 @@
     <update id="updateMemInfo" parameterType="MemDTO">
         UPDATE t_mem
         SET
-            <if test="memName !='' and memName != null">
+            <if test="memName!='' and memName != null">
                 mem_name = #{memName},
             </if>
-                mem_image = #{memImage},
+            <if test="memPosition!='' and memPosition != null">
                 mem_position = #{memPosition},
+            </if>
+            <if test="memDept!='' and memDept != null">
                 mem_dept = #{memDept},
+            </if>
+            <if test="memCompany!='' and memCompany != null">
                 mem_company = #{memCompany}
+            </if>
+            <if test="memImage!='' and memImage != null">
+                mem_image = #{memImage}
+            </if>
         WHERE mem_seq = #{memSeq}
     </update>
 
