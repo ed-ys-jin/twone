@@ -53,7 +53,7 @@ ZIRA, JANDI 등 과 같은 협업툴 구현해보기
 		</tr>
 		<tr align="center">
 			<td>개발 프레임 워크</td>
-			<td>spring framework 5.0.2 </td>
+			<td>spring framework 5.0.2 , Spring Boot 2.7.7</td>
 		</tr>
 		<tr align="center">
 			<td>프론트 앤드</td>
