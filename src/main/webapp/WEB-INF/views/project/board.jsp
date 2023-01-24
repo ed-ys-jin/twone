@@ -6,7 +6,6 @@
 <%@ include file="projectsidebar.jsp"%>
 
 <main id="main" class="main">
-
   <h5 class="card-title"></h5>
 
   <!-- Page Title -->
@@ -17,7 +16,7 @@
              font-size: 24px; font-weight: 600; color: #012970">
     </h1>
 
-    <nav>
+    <nav style="--bs-breadcrumb-divider: '>';">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/project">프로젝트</a></li>
         <li class="breadcrumb-item active">보드</li>

@@ -8,11 +8,12 @@
 
 
 <main id="main" class="main">
+    <h5 class="card-title"></h5>
 
     <div class="pagetitle teamtitle">
         <div>
             <h1>사용자</h1>
-            <nav>
+            <nav style="--bs-breadcrumb-divider: '>';">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="/project">프로젝트</a></li>
                     <li class="breadcrumb-item active">사용자</li>
