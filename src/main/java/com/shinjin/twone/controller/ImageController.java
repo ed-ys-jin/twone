@@ -23,7 +23,8 @@ public class ImageController {
   private ServletContext application;
 
   // 사진 업로드 (본인 피씨(로컬) 저장 경로)
-  private final String savePath = "C:\\Users\\A\\IdeaProjects\\twone\\src\\main\\webapp\\resources\\upload\\";
+//  private final String savePath = "C:\\Users\\A\\IdeaProjects\\twone\\src\\main\\webapp\\resources\\upload\\"; //성주
+  private final String savePath = "/Users/jin/DevRoot/Workspace/Github/Twone/src/main/webapp/resources/upload/"; //윤석
   // 리눅스 서버 경로
   //private final String savePath = "/var/lib/tomcat9/file_repo/";
 

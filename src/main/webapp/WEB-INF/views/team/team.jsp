@@ -1,7 +1,119 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="twone" value="${pageContext.request.contextPath }"/>
 
+<style>
+/*
+#사용자 input 추가
+*/
+    .search-form input {
+        border: 0;
+        font-size: 14px;
+        color: #012970;
+        border: 1px solid rgba(1, 41, 112, 0.2);
+        padding: 7px 38px 7px 8px;
+        border-radius: 3px;
+        transition: 0.3s;
+        width: 25%;
+    }
+
+    .bi::before, [class^="bi-"]::before, [class*=" bi-"]::before {
+        display: inline-block;
+        font-family: bootstrap-icons !important;
+        font-style: normal;
+        font-weight: normal !important;
+        font-variant: normal;
+        text-transform: none;
+        line-height: 1;
+        vertical-align: -.125em;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscal;
+        color: #012970;
+
+    }
+    .search-form button {
+        border: 0;
+        padding: 0;
+        margin-left: -30px;
+        background: none;
+    }
+
+    .bi-search::before {
+        content: "\f52a";
+    }
+
+    .search-bar{
+        padding-bottom: 30px;
+    }
+
+    .member-info{
+        padding-bottom: 10px;
+    }
+
+    .teamtitle{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .delete-bnt{
+        height: 38px;
+    }
+
+    .x{
+        padding-left: 150px;
+    }
+
+    .form-select{
+        height: 42px !important;
+        margin: 0px !important;
+        padding: 7px 0 7px 7px !important;
+        width: 86px !important;
+    }
+
+    #manager, #member, #reder{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+    }
+    .line{
+        padding: 18px;
+        border-bottom: 1px solid #cddfff;
+    }
+    .line-end{
+        padding: 10px;
+    }
+
+    .allowTitle{
+        padding-bottom: 10px;
+    }
+    .position{
+        padding-bottom: 5px;
+    }
+
+    .team-card{
+        max-width: 200px;
+        min-width: 200px;
+    }
+    .card-wrrap{
+        width: 240px;
+        min-width: 240px;
+    }
+
+    .test-card-body{
+        padding-top: 12px;
+    }
+
+    .team-search{
+        padding-bottom: 0;
+    }
+
+    .team-filter{
+        padding-left: 139px !important;
+    }
+</style>
 
 <%@ include file="../layouts/header.jsp" %>
 <%@ include file="../project/projectsidebar.jsp" %>
@@ -150,7 +262,7 @@
             if (member.mem_image == null) {
                 tag += '../resources/bootstrap/img/no_image.png">';
             } else {
-                tag += 'pageContext.request.contextPath/resources/bootstrap/img/' + member.mem_image + '">';
+                tag += '/' + member.mem_image + '\">';
             }
             tag += '</div> <div class="name">' + member.mem_name + '</div><div class="position">';
             if (!member.mem_position =="") {
