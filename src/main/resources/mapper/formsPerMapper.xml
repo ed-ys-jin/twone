@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.FormsPerDAO" >
+
+  <select id="getPerDTO" parameterType="String" resultType="FormsPerDTO">
+    SELECT *
+    FROM t_forms_per
+    WHERE per_seq = #{perSeq}
+  </select>
+
+</mapper>
