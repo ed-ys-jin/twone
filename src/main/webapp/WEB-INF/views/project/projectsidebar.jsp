@@ -18,7 +18,6 @@
         </li>
 
         <!-- Board Section-->
-        <h5 class="card-title"></h5>
         <li class="nav-heading">보드</li>
 
         <li class="nav-item">
@@ -63,7 +62,6 @@
         </li>
 
         <!-- Member Section -->
-        <h5 class="card-title"></h5>
         <li class="nav-heading">사용자</li>
 
         <li class="nav-item">
@@ -74,14 +72,19 @@
         </li>
 
         <!-- Setting Section -->
-        <h5 class="card-title"></h5>
         <li class="nav-heading">설정</li>
 
 
         <li class="nav-item">
             <a class="nav-link ${navType == 'setting'? '':'collapsed'}" href="${twone}/project/setting?projectSeq=${pdto.projectSeq}">
-                <i class="bi bi-person"></i>
+                <i class="bi bi-gear"></i>
                 <span>프로젝트 설정</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link ${navType == 'issuetype'? '':'collapsed'}" href="${twone}/project/issuetype?projectSeq=${pdto.projectSeq}">
+                <i class="bi bi-bookmark"></i>
+                <span>이슈 유형</span>
             </a>
         </li>
 
@@ -135,7 +138,7 @@
         }
     }
 
-    /* 입력창 보이기/숨기기 */
+    /* 입력창 토글 */
     function toggleInput(inputBoxId) {
 
         let id = inputBoxId;

@@ -6,9 +6,16 @@
 <%@ include file="projectsidebar.jsp"%>
 
 <main id="main" class="main">
+  <h5 class="card-title"></h5>
 
   <div class="pagetitle">
-    <h1>Project Setting</h1>
+    <h1>프로젝트 설정</h1>
+    <nav style="--bs-breadcrumb-divider: '>';">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/project">프로젝트</a></li>
+        <li class="breadcrumb-item active">설정</li>
+      </ol>
+    </nav>
   </div><!-- End Page Title -->
 
   <section class="section profile">

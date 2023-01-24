@@ -27,6 +27,20 @@ public class IssueController {
   IssueFormService issueFormService;
   @Autowired
   LinkedIssueService linkedIssueService;
+  @Autowired
+  FormsCheService formsCheService;
+  @Autowired
+  FormsDatService formsDatService;
+  @Autowired
+  FormsDroService formsDroService;
+  @Autowired
+  FormsParService formsParService;
+  @Autowired
+  FormsPerService formsPerService;
+  @Autowired
+  FormsPriService formsPriService;
+  @Autowired
+  FormsSimService formsSimService;
 
   /*** 이슈 상세 출력 ***/
   @RequestMapping("/project/issue")
@@ -45,6 +59,28 @@ public class IssueController {
     /* Attr : boardList(보드사이드바 출력용) */
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
     request.setAttribute("blist", boardList);
+
+    /* Attr : 이슈 세부사항 */
+    List<IssueFormDTO> issueFormList = issueFormService.getIssueFormList(issueSeq);
+    for(IssueFormDTO ifdto : issueFormList){
+      switch (ifdto.getFormsSeq().substring(0,3)){
+        case "per":
+          FormsPerDTO perDto = formsPerService.getPerDTO(ifdto.getFormsSeq());
+          break;
+        case "dat":
+          break;
+        case "pri":
+          break;
+        case "che":
+          break;
+        case "dro":
+          break;
+        case "sim":
+          break;
+        case "par":
+          break;
+      }
+    }
 
     return "issue/issue";
   }
@@ -84,11 +120,11 @@ public class IssueController {
     switch (type) {
       case "title":
         result += "<input id=\"issue-update-box\" type=\"text\" value=\"" + issueDTO.getIssueTitle() + "\" onkeyup=\"updateIssueDTO(this, 'title')\"";
-        result += "style=\"border: none; font-family: 'Nunito', sans-serif;";
+        result += "style=\"border: none; background-color: #f6f9ff; font-family: 'Nunito', sans-serif;";
         result += "font-size: 24px; font-weight: 600; color: #012970\">";
         break;
       case "summary":
-        result += "<input type=\"text\" class=\"form-control\" value=\"" + issueDTO.getIssueSummary() + "\" onkeyup=\"updateIssueDTO(this, 'summary')\">";
+        result += "<input type=\"text\" class=\"form-control\" style=\"font-size: 14px; font-family: 'Nunito', sans-serif;\" value=\"" + issueDTO.getIssueSummary() + "\" onkeyup=\"updateIssueDTO(this, 'summary')\">";
         break;
     }
 
