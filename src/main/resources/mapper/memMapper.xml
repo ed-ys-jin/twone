@@ -75,6 +75,14 @@
         WHERE mem_seq = #{memSeq}
     </select>
 
+    <!-- 팀 멤버 불러오기 for 이슈폼 -->
+    <select id="getTeamMemberForIssueForm" parameterType="int" resultType="MemDTO">
+        SELECT m.*
+        FROM t_team t, t_mem m
+        WHERE t.project_seq = #{projectSeq}
+            and t.team_allow != 3
+            and t.mem_seq = m.mem_seq
+    </select>
 
 
 </mapper>

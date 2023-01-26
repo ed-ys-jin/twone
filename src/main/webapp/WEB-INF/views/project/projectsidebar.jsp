@@ -81,12 +81,6 @@
                 <span>프로젝트 설정</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link ${navType == 'issuetype'? '':'collapsed'}" href="${twone}/project/issuetype?projectSeq=${pdto.projectSeq}">
-                <i class="bi bi-bookmark"></i>
-                <span>이슈 유형</span>
-            </a>
-        </li>
 
     </ul>
 
@@ -95,10 +89,10 @@
 <script>
 
     /* 보드 생성 */
-    function addBoard(inputText){
+    function addBoard(input){
 
         const inputBox = document.getElementById("board-input-box");
-        let boardName = inputText.value;
+        let boardName = input.value;
 
         // 입력 글자수 제어
         if(boardName.length > 30) {

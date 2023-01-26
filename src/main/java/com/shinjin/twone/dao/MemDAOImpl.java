@@ -2,6 +2,8 @@ package com.shinjin.twone.dao;
 
 import com.shinjin.twone.dto.MemDTO;
 
+import java.util.List;
+
 public class MemDAOImpl implements MemDAO {
 
     /* 중복 이메일 확인 */
@@ -50,5 +52,11 @@ public class MemDAOImpl implements MemDAO {
     @Override
     public int changePw(MemDTO memDTO) {
         return changePw(memDTO);
+    }
+
+    /* 팀 멤버 불러오기 for 이슈폼 */
+    @Override
+    public List<MemDTO> getTeamMemberForIssueForm(int projectSeq) {
+        return getTeamMemberForIssueForm(projectSeq);
     }
 }
