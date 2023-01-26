@@ -11,18 +11,17 @@ public class FormsDatServiceImpl implements FormsDatService {
   @Autowired
   private FormsDatDAO formsDatDAO;
 
+  /* datSeq 생성 */
+  @Override
+  public String createDatSeq() {
+    String datSeq = "dat-" + formsDatDAO.createDatSeq();
+    return datSeq;
+  }
+
   /* 날짜 이슈폼 생성 */
   @Override
-  public String addFormsDat(FormsDatDTO datDTO) {
-    String result = null;
-    try {
-      formsDatDAO.addFormsDat(datDTO);
-      // selectkey 를 활용하여 인서트 한 dat_seq 바로 가져오기
-      result = "dat-" + datDTO.getDatSeq();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return result;
+  public int addFormsDat(FormsDatDTO datDTO) {
+    return formsDatDAO.addFormsDat(datDTO);
   }
 
   /* datTitle 변경 */

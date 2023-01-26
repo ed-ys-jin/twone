@@ -2,13 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.FormsParDAO" >
 
+  <!-- parSeq 생성 -->
+  <select id="createParSeq" resultType="int">
+    SELECT nextval('par_seq') FROM dual
+  </select>
+
   <!-- 단락 이슈폼 생성 -->
-  <insert id="addFormsPar" useGeneratedKeys="true" keyProperty="parSeq" parameterType="FormsParDTO">
-    <selectKey keyProperty="parSeq" resultType="String" order="BEFORE">
-      SELECT nextval('par_seq') FROM dual
-    </selectKey>
+  <insert id="addFormsPar" parameterType="FormsParDTO">
     INSERT INTO t_forms_par
-    VALUES (CONCAT('par-', #{parSeq}), '단락', '')
+    VALUES (#{parSeq}, #{issueFormSeq}, '단락', '')
   </insert>
 
   <!-- parTitle 변경 -->

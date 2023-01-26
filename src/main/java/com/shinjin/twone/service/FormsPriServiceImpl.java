@@ -11,18 +11,16 @@ public class FormsPriServiceImpl implements FormsPriService {
   @Autowired
   private FormsPriDAO formsPriDAO;
 
+  @Override
+  public String createPriSeq() {
+    String priSeq = "pri-" + formsPriDAO.createPriSeq();
+    return priSeq;
+  }
+
   /* 우선순위 이슈폼 생성 */
   @Override
-  public String addFormsPri(FormsPriDTO priDTO) {
-    String result = null;
-    try {
-      formsPriDAO.addFormsPri(priDTO);
-      // selectkey 를 활용하여 인서트 한 pri_seq 바로 가져오기
-      result = "pri-" + priDTO.getPriSeq();
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return result;
+  public int addFormsPri(FormsPriDTO priDTO) {
+    return formsPriDAO.addFormsPri(priDTO);
   }
 
   /* priTitle 변경 */

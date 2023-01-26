@@ -16,7 +16,9 @@ public class IssueFormServiceImpl implements IssueFormService {
     /* 이슈폼 생성 */
     @Override
     public int addIssueForm(IssueFormDTO issueFormDTO) {
-        return issueFormDAO.addIssueForm(issueFormDTO);
+        issueFormDAO.addIssueForm(issueFormDTO);
+        // selectkey 를 활용하여 인서트 한 issueform_seq 바로 가져오기
+        return issueFormDTO.getIssueFormSeq();
     }
 
     /* 이슈폼 사이즈 구하기 */

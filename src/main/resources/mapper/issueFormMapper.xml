@@ -3,9 +3,12 @@
 <mapper namespace="com.shinjin.twone.dao.IssueFormDAO" >
 
     <!-- 이슈폼 생성 -->
-    <insert id="addIssueForm" parameterType="IssueFormDTO">
+    <insert id="addIssueForm" useGeneratedKeys="true" keyProperty="issueFormSeq" parameterType="IssueFormDTO">
+        <selectKey keyProperty="issueFormSeq" resultType="int" order="BEFORE">
+            SELECT nextval('issueform_seq') FROM dual
+        </selectKey>
         INSERT INTO t_issueform
-        VALUES ((SELECT nextval('issueform_seq') AS issueform_seq FROM dual), #{issueSeq}, #{formsSeq}, #{issueFormOrder})
+        VALUES (#{issueFormSeq}, #{issueSeq}, #{formsSeq}, #{issueFormOrder})
     </insert>
 
     <!-- 이슈폼 사이즈 구하기 -->

@@ -131,63 +131,82 @@ public class IssueController {
 
     int issueSeq = Integer.parseInt(request.getParameter("issueSeq")); // issueSeq 받기
     String selectedValue = request.getParameter("selectedValue"); // 이슈타입 받기
-    IssueFormDTO issueFormDTO = new IssueFormDTO(); // IssueFromDTO 객체 생성
+
+    // issueFormDTO 만들기
+    IssueFormDTO issueFormDTO = new IssueFormDTO();
     int issueFormOrder = issueFormService.getIssueFormSize(issueSeq) + 1; // 이슈폼 배치번호 설정 (기존 이슈폼 개수 + 1)
+    issueFormDTO.setIssueSeq(issueSeq);
+    issueFormDTO.setIssueFormOrder(issueFormOrder);
+    int issueFormSeq;
 
     switch (selectedValue) {
       case "per":
+        // 이슈폼 생성
+        String perSeq = formsPerService.createPerSeq(); // perSeq 생성
+        issueFormDTO.setFormsSeq(perSeq);
+        issueFormSeq = issueFormService.addIssueForm(issueFormDTO);
         // perDTO 만들기
-        FormsPerDTO perDTO = new FormsPerDTO();
         int memSeq = (int) session.getAttribute("login");
+        FormsPerDTO perDTO = new FormsPerDTO();
+        perDTO.setPerSeq(perSeq);
+        perDTO.setIssueFormSeq(issueFormSeq);
         perDTO.setMemSeq(memSeq);
         // 담당자 이슈폼 생성
-        String perSeq = formsPerService.addFormsPer(perDTO);
-        // issueFormDTO 만들기
-        issueFormDTO.setFormsSeq(perSeq);
+        formsPerService.addFormsPer(perDTO);
         break;
       case "dat":
+        // 이슈폼 생성
+        String datSeq = formsDatService.createDatSeq(); // datSeq 생성
+        issueFormDTO.setFormsSeq(datSeq);
+        issueFormSeq = issueFormService.addIssueForm(issueFormDTO);
         // datDTO 만들기
         FormsDatDTO datDTO = new FormsDatDTO();
+        datDTO.setDatSeq(datSeq);
+        datDTO.setIssueFormSeq(issueFormSeq);
         // 날짜 이슈폼 생성
-        String datSeq = formsDatService.addFormsDat(datDTO);
-        // issueFormDTO 만들기
-        issueFormDTO.setFormsSeq(datSeq);
+        formsDatService.addFormsDat(datDTO);
         break;
       case "pri":
+        // 이슈폼 생성
+        String priSeq = formsPriService.createPriSeq(); // priSeq 생성
+        issueFormDTO.setFormsSeq(priSeq);
+        issueFormSeq = issueFormService.addIssueForm(issueFormDTO);
         // priDTO 만들기
         FormsPriDTO priDTO = new FormsPriDTO();
+        priDTO.setPriSeq(priSeq);
+        priDTO.setIssueFormSeq(issueFormSeq);
         // 우선순위 이슈폼 생성
-        String priSeq = formsPriService.addFormsPri(priDTO);
-        // issueFormDTO 만들기
-        issueFormDTO.setFormsSeq(priSeq);
+        formsPriService.addFormsPri(priDTO);
         break;
       case "che":
         break;
       case "dro":
         break;
       case "sim":
+        // 이슈폼 생성
+        String simSeq = formsSimService.createSimSeq(); // simSeq 생성
+        issueFormDTO.setFormsSeq(simSeq);
+        issueFormSeq = issueFormService.addIssueForm(issueFormDTO);
         // simDTO 만들기
         FormsSimDTO simDTO = new FormsSimDTO();
+        simDTO.setSimSeq(simSeq);
+        simDTO.setIssueFormSeq(issueFormSeq);
         // 간단한 텍스트 이슈폼 생성
-        String simSeq = formsSimService.addFormsSim(simDTO);
-        // issueFormDTO 만들기
-        issueFormDTO.setFormsSeq(simSeq);
+        formsSimService.addFormsSim(simDTO);
         break;
       case "par":
+        // 이슈폼 생성
+        String parSeq = formsParService.createParSeq(); // parSeq 생성
+        issueFormDTO.setFormsSeq(parSeq);
+        issueFormSeq = issueFormService.addIssueForm(issueFormDTO);
         // parDTO 만들기
         FormsParDTO parDTO = new FormsParDTO();
+        parDTO.setParSeq(parSeq);
+        parDTO.setIssueFormSeq(issueFormSeq);
         // 단락 이슈폼 생성
-        String parSeq = formsParService.addFormsPar(parDTO);
-        // issueFormDTO 만들기
-        issueFormDTO.setFormsSeq(parSeq);
+        formsParService.addFormsPar(parDTO);
         break;
     }
-
-    // issueFormDTO 만들기
-    issueFormDTO.setIssueSeq(issueSeq);
-    issueFormDTO.setIssueFormOrder(issueFormOrder);
-    // 이슈폼 생성
-    issueFormService.addIssueForm(issueFormDTO);
 
     // 이슈폼 문자열 만들기
     String result = issueFormListToHtmlCode(issueSeq);

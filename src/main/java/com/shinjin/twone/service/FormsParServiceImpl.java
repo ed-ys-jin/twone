@@ -11,18 +11,16 @@ public class FormsParServiceImpl implements FormsParService {
   @Autowired
   private FormsParDAO formsParDAO;
 
+  @Override
+  public String createParSeq() {
+    String parSeq = "par-" + formsParDAO.createParSeq();
+    return parSeq;
+  }
+
   /* 단락 이슈폼 생성 */
   @Override
-  public String addFormsPar(FormsParDTO parDTO) {
-    String result = null;
-    try {
-      formsParDAO.addFormsPar(parDTO);
-      // selectkey 를 활용하여 인서트 한 par_seq 바로 가져오기
-      result = "par-" + parDTO.getParSeq();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return result;
+  public int addFormsPar(FormsParDTO parDTO) {
+    return formsParDAO.addFormsPar(parDTO);
   }
 
   /* parTitle 변경 */
