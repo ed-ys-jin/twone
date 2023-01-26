@@ -172,72 +172,13 @@ button span,
                       <option value="che">체크박스</option>
                       <option value="dro">드롭다운</option>
                       <option value="sim">간단한 텍스트</option>
-                      <option value="par">단락</option>
+<%--                      <option value="par">단락</option>--%>
                     </select>
                   </div>
                 </div>
 
                 <div id="issue-form-list">
                   ${issueFormList}
-
-<!-- 담당자 샘플 -->
-<%--                  <div class="row mb-3">--%>
-<%--                    <label id="per-10-label-box" class="issue-label col-sm-2 col-form-label">--%>
-<%--                      <input id="per-10-label" type="text" value="담당자" onkeyup="updateLabel(this, 'per-10')">--%>
-<%--                    </label>--%>
-<%--                    <div id="per-10-value-box" class="custom-font col-sm-7">--%>
-<%--                      <select id="per-10-value" class="form-select" aria-label="Default select example" onchange="updateValue(this, 'per-10')">--%>
-<%--                        <option value="진윤석" selected>진윤석</option>--%>
-<%--                      </select>--%>
-<%--                    </div>--%>
-<%--                  </div>--%>
-
-<!-- 날짜 샘플 -->
-<%--                  <div class="row mb-3">--%>
-<%--                    <label id="dat-10-label-box" class="issue-label col-sm-2 col-form-label">--%>
-<%--                      <input id="dat-10-label" type="text" value="날짜" onkeyup="updateLabel(this, 'dat-10')">--%>
-<%--                    </label>--%>
-<%--                    <div id="dat-10-value-box" class="custom-font col-sm-10">--%>
-<%--                      <input id="dat-10-value" type="date" class="form-control" value="2023-01-25" onchange="updateValue(this, 'dat-10')">--%>
-<%--                    </div>--%>
-<%--                  </div>--%>
-
-<!-- 우선 순위 -->
-<%--                  <div class="row mb-3">--%>
-<%--                    <label id="pri-10-label-box" class="issue-label col-sm-2 col-form-label">--%>
-<%--                      <input id="pri-10-label" type="text" value="우선 순위" onkeyup="updateLabel(this, 'pri-10')">--%>
-<%--                    </label>--%>
-<%--                    <div id="pri-10-value-box" class="custom-font col-sm-10">--%>
-<%--                      <select id="pri-10-value" class="form-select" aria-label="Default select example" onchange="updateValue(this, 'pri-10')">--%>
-<%--                        <option value="Highest">Highest</option>--%>
-<%--                        <option value="High">High</option>--%>
-<%--                        <option value="Medium" selected>Medium</option>--%>
-<%--                        <option value="Low">Low</option>--%>
-<%--                        <option value="Lowest">Lowest</option>--%>
-<%--                      </select>--%>
-<%--                    </div>--%>
-<%--                  </div>--%>
-
-<!-- 간단한 텍스트 -->
-<%--                    <div class="row mb-3">--%>
-<%--                      <label id="sim-10-label-box" class="issue-label col-sm-2 col-form-label">--%>
-<%--                        <input id="sim-10-label" type="text" value="간단한 텍스트" onkeyup="updateLabel(this, 'sim-10')">--%>
-<%--                      </label>--%>
-<%--                      <div id="sim-10-value-box" class="custom-font col-sm-10">--%>
-<%--                        <input id="sim-10-value" type="text" class="form-control" value="없음" onchange="updateValue(this, 'sim-10')">--%>
-<%--                      </div>--%>
-<%--                    </div>--%>
-
-<!-- 단락 -->
-<%--                    <div class="row mb-3">--%>
-<%--                      <label id="par-10-label-box" class="issue-label col-sm-2 col-form-label">--%>
-<%--                        <input id="par-10-label" type="text" value="단락" onkeyup="updateLabel(this, 'par-10')">--%>
-<%--                      </label>--%>
-<%--                      <div id="par-10-value-box" class="custom-font col-sm-10">--%>
-<%--                        <div id="par-10-value" class="quill-editor-default" value="없음" onchange="updateValue(this, 'par-10')"></div>--%>
-<%--                      </div>--%>
-<%--                    </div>--%>
-
 
                 </div>
 
@@ -477,5 +418,20 @@ button span,
     // 결과값 받음
     xhttp.send();
   }
+
+  /* 단락 에디터 토글 */
+  // function toggleEditor(parSeq) {
+  //   const textarea = document.getElementById(parSeq + "-textarea-box");
+  //   const editor = document.getElementById(parSeq + "-value-box");
+  //
+  //   // input toggle
+  //   if(textarea.style.display != "none") {
+  //     textarea.style.display = "none";
+  //     editor.style.display = "block";
+  //   } else {
+  //     textarea.style.display = "block";
+  //     editor.style.display = "none";
+  //   }
+  // }
 
 </script>

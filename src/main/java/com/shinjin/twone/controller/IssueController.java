@@ -194,18 +194,18 @@ public class IssueController {
         // 간단한 텍스트 이슈폼 생성
         formsSimService.addFormsSim(simDTO);
         break;
-      case "par":
-        // 이슈폼 생성
-        String parSeq = formsParService.createParSeq(); // parSeq 생성
-        issueFormDTO.setFormsSeq(parSeq);
-        issueFormSeq = issueFormService.addIssueForm(issueFormDTO);
-        // parDTO 만들기
-        FormsParDTO parDTO = new FormsParDTO();
-        parDTO.setParSeq(parSeq);
-        parDTO.setIssueFormSeq(issueFormSeq);
-        // 단락 이슈폼 생성
-        formsParService.addFormsPar(parDTO);
-        break;
+//      case "par":
+//        // 이슈폼 생성
+//        String parSeq = formsParService.createParSeq(); // parSeq 생성
+//        issueFormDTO.setFormsSeq(parSeq);
+//        issueFormSeq = issueFormService.addIssueForm(issueFormDTO);
+//        // parDTO 만들기
+//        FormsParDTO parDTO = new FormsParDTO();
+//        parDTO.setParSeq(parSeq);
+//        parDTO.setIssueFormSeq(issueFormSeq);
+//        // 단락 이슈폼 생성
+//        formsParService.addFormsPar(parDTO);
+//        break;
     }
 
     // 이슈폼 문자열 만들기
@@ -243,10 +243,10 @@ public class IssueController {
           FormsSimDTO simDTO = formsSimService.getSimDTO(ifdto.getFormsSeq());
           result += simToHtmlCode(simDTO);
           break;
-        case "par":
-          FormsParDTO parDTO = formsParService.getParDTO(ifdto.getFormsSeq());
-          result += parToHtmlCode(parDTO);
-          break;
+//        case "par":
+//          FormsParDTO parDTO = formsParService.getParDTO(ifdto.getFormsSeq());
+//          result += parToHtmlCode(parDTO);
+//          break;
       }
     }
 
@@ -348,23 +348,26 @@ public class IssueController {
   }
 
   /* 단락 문자열 만들기 */
-  public String parToHtmlCode(FormsParDTO parDTO){
-
-    String parSeq = parDTO.getParSeq();
-    String result = "";
-
-    result += "<div class=\"row mb-3\">";
-    result += "<label id=\"" + parSeq + "-label-box\" class=\"issue-label col-sm-2 col-form-label\">";
-    result += "<input id=\"" + parSeq + "-label\" type=\"text\" value=\"" + parDTO.getParTitle() + "\" onkeyup=\"updateLabel(this, '" + parSeq + "')\">";
-    result += "</label>";
-    result += "<div id=\"" + parSeq + "-value-box\" class=\"custom-font col-sm-10\">";
-    result += "<div id=\"" + parSeq + "-value\" class=\"quill-editor-default\" value=\"" + parDTO.getParValue() + "\" onchange=\"updateValue(this, '" + parSeq + "')\"></div>";
-    result += "</div>";
-    result += "</div>";
-
-    return result;
-
-  }
+//  public String parToHtmlCode(FormsParDTO parDTO){
+//
+//    String parSeq = parDTO.getParSeq();
+//    String result = "";
+//
+//    result += "<div class=\"row mb-3\">";
+//    result += "<label id=\"" + parSeq + "-label-box\" class=\"issue-label col-sm-2 col-form-label\">";
+//    result += "<input id=\"" + parSeq + "-label\" type=\"text\" value=\"" + parDTO.getParTitle() + "\" onkeyup=\"updateLabel(this, '" + parSeq + "')\">";
+//    result += "</label>";
+//    result += "<div id=\"" + parSeq + "-textarea-box\" class=\"custom-font col-sm-10\" style=\"display: block\">";
+//    result += "<textarea id=\"" + parSeq + "-textarea\" class=\"form-control\" style=\"height: 100px\" value=\"" + parDTO.getParValue() + "\" onclick=\"toggleEditor('" + parSeq + "')\" readonly></textarea>";
+//    result += "</div>";
+//    result += "<div id=\"" + parSeq + "-value-box\" class=\"custom-font col-sm-10\" style=\"display: none\">";
+//    result += "<div id=\"" + parSeq + "-value\" class=\"quill-editor-default \" value=\"" + parDTO.getParValue() + "\" onchange=\"updateValue(this, '" + parSeq + "')\"></div>";
+//    result += "</div>";
+//    result += "</div>";
+//
+//    return result;
+//
+//  }
 
 }
 
