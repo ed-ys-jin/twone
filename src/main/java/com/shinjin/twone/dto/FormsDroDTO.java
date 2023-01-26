@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class FormsDroDTO {
     private String droSeq;
+    private int issueFormSeq;
     private String droTitle;
     private String droOption;
 }
