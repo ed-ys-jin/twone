@@ -118,10 +118,10 @@
 <script>
 
   /* 보드명 변경 */
-  function updateBoardName(inputText){
+  function updateBoardName(input){
 
     const inputBox = document.getElementById("board-update-box");
-    let boardName = inputText.value;
+    let boardName = input.value;
 
     // 입력 글자수 제어
     if(boardName.length > 30) {
@@ -163,10 +163,10 @@
   }
 
   /* 컬럼 생성 */
-  function addColumn(inputText) {
+  function addColumn(input) {
 
     const inputBox = document.getElementById("col-input-box");
-    let colName = inputText.value;
+    let colName = input.value;
 
     // 입력 글자수 제어
     if(colName.length > 30) {
@@ -209,9 +209,9 @@
   }
 
   /* 컬럼명 변경 */
-  function updateColName(inputText, colSeq){
+  function updateColName(input, colSeq){
     const inputBox = document.getElementById("col-update-box");
-    let colName = inputText.value;
+    let colName = input.value;
 
     // 입력 글자수 제어
     if(colName.length > 30) {

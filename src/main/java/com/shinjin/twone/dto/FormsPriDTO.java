@@ -6,5 +6,5 @@ import lombok.Data;
 public class FormsPriDTO {
     private String priSeq;
     private String priTitle;
-    private int priValue;
+    private String priValue;
 }

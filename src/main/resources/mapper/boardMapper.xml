@@ -5,7 +5,7 @@
     <!-- 샘플 보드 생성 -->
     <insert id="createSampleBoard" useGeneratedKeys="true" keyProperty="boardSeq" parameterType="BoardDTO">
         <selectKey keyProperty="boardSeq" resultType="int" order="BEFORE">
-            SELECT nextval('board_seq') AS board_seq FROM dual
+            SELECT nextval('board_seq') FROM dual
         </selectKey>
         INSERT INTO t_board
         VALUES (#{boardSeq}, #{projectSeq}, '샘플 보드')
@@ -14,7 +14,7 @@
     <!-- 보드 생성 -->
     <insert id="addBoard" useGeneratedKeys="true" keyProperty="boardSeq" parameterType="BoardDTO">
         <selectKey keyProperty="boardSeq" resultType="int" order="BEFORE">
-            SELECT nextval('board_seq') AS board_seq FROM dual
+            SELECT nextval('board_seq') FROM dual
         </selectKey>
         INSERT INTO t_board
         VALUES (#{boardSeq}, #{projectSeq}, #{boardName})

@@ -2,6 +2,34 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.FormsParDAO" >
 
+  <!-- 단락 이슈폼 생성 -->
+  <insert id="addFormsPar" useGeneratedKeys="true" keyProperty="parSeq" parameterType="FormsParDTO">
+    <selectKey keyProperty="parSeq" resultType="String" order="BEFORE">
+      SELECT nextval('par_seq') FROM dual
+    </selectKey>
+    INSERT INTO t_forms_par
+    VALUES (CONCAT('par-', #{parSeq}), '단락', '')
+  </insert>
 
+  <!-- parTitle 변경 -->
+  <update id="updateParTitle" parameterType="FormsParDTO">
+    UPDATE t_forms_par
+    SET par_title = #{parTitle}
+    WHERE par_seq = #{parSeq}
+  </update>
+
+  <!-- parValue 변경 -->
+  <update id="updateParValue" parameterType="FormsParDTO">
+    UPDATE t_forms_par
+    SET par_value = #{parValue}
+    WHERE par_seq = #{parSeq}
+  </update>
+
+  <!-- parDTO 불러오기 -->
+  <select id="getParDTO" parameterType="String" resultType="FormsParDTO">
+    SELECT *
+    FROM t_forms_par
+    WHERE par_seq = #{parSeq}
+  </select>
 
 </mapper>

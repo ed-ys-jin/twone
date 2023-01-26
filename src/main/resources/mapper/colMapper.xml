@@ -5,7 +5,7 @@
     <!-- 샘플 컬럼 생성 -->
     <insert id="createSampleColumn" useGeneratedKeys="true" keyProperty="colSeq" parameterType="ColDTO">
         <selectKey keyProperty="colSeq" resultType="int" order="BEFORE">
-            SELECT nextval('col_seq') AS col_seq FROM dual
+            SELECT nextval('col_seq') FROM dual
         </selectKey>
         INSERT INTO t_col
         VALUES (#{colSeq}, #{boardSeq}, #{projectSeq}, '샘플 컬럼', 0)
@@ -14,13 +14,13 @@
     <!-- Done 컬럼 생성 -->
     <insert id="addDoneColumn" parameterType="ColDTO">
         INSERT INTO t_col
-        VALUES ((SELECT nextval('col_seq') AS col_seq FROM dual), #{boardSeq}, #{projectSeq}, 'Done', 1)
+        VALUES ((SELECT nextval('col_seq') FROM dual), #{boardSeq}, #{projectSeq}, 'Done', 1)
     </insert>
 
     <!-- 컬럼 생성 -->
     <insert id="addColumn" parameterType="ColDTO">
         INSERT INTO t_col
-        VALUES ((SELECT nextval('col_seq') AS col_seq FROM dual), #{boardSeq}, #{projectSeq}, #{colName}, 0)
+        VALUES ((SELECT nextval('col_seq') FROM dual), #{boardSeq}, #{projectSeq}, #{colName}, 0)
     </insert>
 
     <!-- 컬럼명 변경 -->

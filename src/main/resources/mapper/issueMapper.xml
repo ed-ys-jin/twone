@@ -5,7 +5,7 @@
     <!-- 이슈 생성 -->
     <insert id="addIssue" useGeneratedKeys="true" keyProperty="issueSeq" parameterType="IssueDTO">
         <selectKey keyProperty="issueSeq" resultType="int" order="BEFORE">
-            SELECT nextval('issue_seq') AS issue_seq FROM dual
+            SELECT nextval('issue_seq') FROM dual
         </selectKey>
         INSERT INTO t_issue
         VALUES (#{issueSeq}, #{projectSeq}, #{boardSeq}, #{colSeq}, #{memSeq}

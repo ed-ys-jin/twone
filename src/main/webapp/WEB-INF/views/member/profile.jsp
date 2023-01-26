@@ -178,7 +178,7 @@
                       <div class="col-md-8 col-lg-9">
                         <c:choose>
                           <c:when test="${!empty memDTO.memImage}">
-                            <img src="${twone}/${memDTO.memImage}" id="profileImage" alt="Profile">
+                            <img src="${memDTO.memImage}" id="profileImage" alt="Profile">
                           </c:when>
                           <c:otherwise>
                             <img src="../resources/bootstrap/img/no_image.png" id="profileImage" alt="Profile">

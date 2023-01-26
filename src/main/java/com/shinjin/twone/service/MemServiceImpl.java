@@ -8,6 +8,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -111,6 +112,11 @@ public class MemServiceImpl implements MemService{
             e.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public List<MemDTO> getTeamMemberForIssueForm(int projectSeq) {
+        return memDAO.getTeamMemberForIssueForm(projectSeq);
     }
 
 }

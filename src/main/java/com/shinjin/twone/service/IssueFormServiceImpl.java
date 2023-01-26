@@ -13,6 +13,18 @@ public class IssueFormServiceImpl implements IssueFormService {
     @Autowired
     IssueFormDAO issueFormDAO;
 
+    /* 이슈폼 생성 */
+    @Override
+    public int addIssueForm(IssueFormDTO issueFormDTO) {
+        return issueFormDAO.addIssueForm(issueFormDTO);
+    }
+
+    /* 이슈폼 사이즈 구하기 */
+    @Override
+    public int getIssueFormSize(int issueSeq) {
+        return issueFormDAO.getIssueFormSize(issueSeq);
+    }
+
     /* 이슈폼 리스트 불러오기 by issueSeq */
     @Override
     public List<IssueFormDTO> getIssueFormList(int issueSeq) {
@@ -25,9 +37,4 @@ public class IssueFormServiceImpl implements IssueFormService {
         return issueFormDAO.deleteIssueForm(issueFormSeq);
     }
 
-    /* 이슈폼 자식 테이블 삭제 */
-    @Override
-    public int deleteFormsUnderIssue(IssueFormDTO issueFormDTO) {
-        return issueFormDAO.deleteFormsUnderIssue(issueFormDTO);
-    }
 }
