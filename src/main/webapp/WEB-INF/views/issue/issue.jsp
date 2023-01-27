@@ -99,7 +99,7 @@ button span,
                     </button>
 
                   </div>
-                </div>
+                </div><br>
 
                 <!-- 설명 -->
                 <div class="row mb-3">
@@ -107,7 +107,7 @@ button span,
                   <div id="issue-summary-box" class="custom-font col-sm-10">
                     <input id="issue-summary" type="text" class="form-control" value="${idto.issueSummary}" onkeyup="updateIssueDTO(this, 'summary')">
                   </div>
-                </div>
+                </div><br>
 
                 <!-- 레이블 -->
                 <div class="row mb-3">
@@ -115,15 +115,7 @@ button span,
                   <div class="custom-font col-sm-10">
                     <input type="text" class="form-control">
                   </div>
-                </div>
-
-              </div>
-            </div><!-- End Summary Card -->
-
-            <!-- Comment Card -->
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title"></h5>
+                </div><br>
 
                 <!-- 댓글 추가 -->
                 <div class="row mb-3">
@@ -131,19 +123,29 @@ button span,
                   <div class="custom-font col-sm-10">
                     <input type="text" class="form-control" placeholder="댓글 추가...">
                   </div>
-                </div>
+                </div><br>
 
                 <!-- 댓글 -->
                 <div class="row mb-3">
-                  <div class="col-sm-10">
-                    <img src="../resources/bootstrap/img/profile-img.jpg" alt="Profile" width="50">
-                    <p>작성자 | 작성일시<br>내용</p>
+                  <div class="row col-sm-10">
+                    <div class="col-sm-2">
+                      <img src="../resources/bootstrap/img/profile-img.jpg" alt="Profile" width="50">
+                    </div>
+                    <div class="col-sm-10">
+                      <p>
+                        작성자
+                        &nbsp;
+                        작성일시
+                        <br>
+                        내용
+                      </p>
+                    </div>
                   </div>
                 </div>
 
               </div>
-            </div>
-          </div><!-- End Comment Card -->
+            </div><!-- End Comment Card -->
+          </div><!-- End Summary Card -->
 
           <!-- Detail Card -->
           <div class="col-lg-6">
@@ -169,60 +171,15 @@ button span,
                       <option value="per">담당자</option>
                       <option value="dat">날짜</option>
                       <option value="pri">우선 순위</option>
-                      <option value="che">체크박스</option>
-                      <option value="dro">드롭다운</option>
                       <option value="sim">간단한 텍스트</option>
-<%--                      <option value="par">단락</option>--%>
                     </select>
                   </div>
                 </div>
 
                 <div id="issue-form-list">
                   ${issueFormList}
-
                 </div>
 
-
-                <%--
-                <!-- 체크박스 -->
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">체크박스</label>
-                  <div class="col-sm-10">
-
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="gridCheck1">
-                      <label class="form-check-label" for="gridCheck1">
-                        Example checkbox 1
-                      </label>
-                    </div>
-
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" id="gridCheck2">
-                      <label class="form-check-label" for="gridCheck2">
-                        Example checkbox 2
-                      </label>
-                    </div>
-
-                  </div>
-                </div>
-                --%>
-
-                <%--
-                <!-- 드롭다운 -->
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">드롭다운</label>
-                  <div class="custom-font col-sm-10">
-                    <select class="form-select" aria-label="Default select example">
-                      <option selected>없음</option>
-                      <option value="1">Example dropbox 1</option>
-                      <option value="2">Example dropbox 2</option>
-                    </select>
-                  </div>
-                </div>
-                --%>
-
-
-              <br><br>
               </div>
             </div>
           </div><!-- End Detail Card -->
@@ -418,20 +375,5 @@ button span,
     // 결과값 받음
     xhttp.send();
   }
-
-  /* 단락 에디터 토글 */
-  // function toggleEditor(parSeq) {
-  //   const textarea = document.getElementById(parSeq + "-textarea-box");
-  //   const editor = document.getElementById(parSeq + "-value-box");
-  //
-  //   // input toggle
-  //   if(textarea.style.display != "none") {
-  //     textarea.style.display = "none";
-  //     editor.style.display = "block";
-  //   } else {
-  //     textarea.style.display = "block";
-  //     editor.style.display = "none";
-  //   }
-  // }
 
 </script>

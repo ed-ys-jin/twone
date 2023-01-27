@@ -23,13 +23,7 @@ public class IssueFormController {
   @Autowired
   LinkedIssueService linkedIssueService;
   @Autowired
-  FormsCheService formsCheService;
-  @Autowired
   FormsDatService formsDatService;
-  @Autowired
-  FormsDroService formsDroService;
-  @Autowired
-  FormsParService formsParService;
   @Autowired
   FormsPerService formsPerService;
   @Autowired
@@ -78,10 +72,6 @@ public class IssueFormController {
         // 이슈폼 제목(Label) 변경
         formsPriService.updatePriTitle(priDTO);
         break;
-      case "che":
-        break;
-      case "dro":
-        break;
       case "sim":
         // simDTO 만들기
         FormsSimDTO simDTO = new FormsSimDTO();
@@ -90,14 +80,6 @@ public class IssueFormController {
         // 이슈폼 제목(Label) 변경
         formsSimService.updateSimTitle(simDTO);
         break;
-//      case "par":
-//        // parDTO 만들기
-//        FormsParDTO parDTO = new FormsParDTO();
-//        parDTO.setParSeq(formsSeq);
-//        parDTO.setParTitle(labelValue);
-//        // 이슈폼 제목(Label) 변경
-//        formsParService.updateParTitle(parDTO);
-//        break;
     }
 
     // 문자열 만들기
@@ -173,10 +155,6 @@ public class IssueFormController {
         }
         result += "</select>";
         break;
-      case "che":
-        break;
-      case "dro":
-        break;
       case "sim":
         // simDTO 만들기
         if(inputValue == null) {
@@ -190,19 +168,6 @@ public class IssueFormController {
         // 문자열 만들기
         result += "<input id=\"" + formsSeq + "-value\" type=\"text\" class=\"form-control\" value=\"" + inputValue + "\" onchange=\"updateValue(this, '" + formsSeq + "')\">";
         break;
-//      case "par":
-//        // parDTO 만들기
-//        if(inputValue == null) {
-//          inputValue = "";
-//        }
-//        FormsParDTO parDTO = new FormsParDTO();
-//        parDTO.setParSeq(formsSeq);
-//        parDTO.setParValue(inputValue);
-//        // 이슈폼 값(Value) 변경
-//        formsParService.updateParValue(parDTO);
-//        // 문자열 만들기
-//        result += "<div id=\"" + formsSeq + "-value\" class=\"quill-editor-default\" value=\"" + inputValue + "\" onchange=\"updateValue(this, '" + formsSeq + "')\"></div>";
-//        break;
     }
 
     return result;
