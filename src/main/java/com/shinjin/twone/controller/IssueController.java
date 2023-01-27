@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -24,6 +25,8 @@ public class IssueController {
   ColService colService;
   @Autowired
   IssueService issueService;
+  @Autowired
+  CommentService commentService;
   @Autowired
   IssueFormService issueFormService;
   @Autowired
@@ -56,6 +59,16 @@ public class IssueController {
     /* Attr : boardList(보드사이드바 출력용) */
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
     request.setAttribute("blist", boardList);
+
+    /* Attr : commentDTO */
+    List<CommentDTO> commentlist = commentService.getCommentList(issueSeq);
+    MemDTO memDTO;
+    for(CommentDTO cmtdto : commentlist){
+      memDTO = memService.getDto(cmtdto.getMemSeq());
+      cmtdto.setMemName(memDTO.getMemName());
+      cmtdto.setMemImage(memDTO.getMemImage());
+    }
+    request.setAttribute("cmtlist", commentlist);
 
     /* Attr : 이슈 세부사항 */
     String result = issueFormListToHtmlCode(issueSeq);
@@ -116,6 +129,55 @@ public class IssueController {
   public void deleteIssueProc(HttpServletRequest request) {
     int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
     issueService.deleteIssue(issueSeq);
+  }
+
+  /* 댓글 등록 */
+  @GetMapping("/project/addcomment")
+  @ResponseBody
+  public String addComment(HttpServletRequest request, HttpSession session) {
+
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    String inputValue = request.getParameter("inputValue");
+    int memSeq = (int) session.getAttribute("login");
+
+    // commentDTO 만들기
+    CommentDTO commentDTO = new CommentDTO();
+    commentDTO.setIssueSeq(issueSeq);
+    commentDTO.setMemSeq(memSeq);
+    commentDTO.setCommentValue(inputValue);
+    // 댓글 등록
+    commentService.addComment(commentDTO);
+
+    // 댓글 문자열 만들기
+    String result = "";
+    List<CommentDTO> commentlist = commentService.getCommentList(issueSeq);
+    MemDTO memDTO;
+    for(CommentDTO cmtdto : commentlist){
+      memDTO = memService.getDto(cmtdto.getMemSeq());
+      cmtdto.setMemName(memDTO.getMemName());
+      cmtdto.setMemImage(memDTO.getMemImage());
+    }
+
+    result += "<div class=\"row col-sm-10\">";
+    for(CommentDTO cmtdto : commentlist){
+      result += "<div class=\"col-sm-2\">";
+      if(cmtdto.getMemImage() != null){
+        result += "<img src=\"../" + cmtdto.getMemImage() + "\" class=\"rounded-circle\" alt=\"Profile\" width=\"50\">";
+      } else {
+        result += "<img src=\"../resources/bootstrap/img/profile-img.jpg\" alt=\"Profile\" width=\"50\">";
+      }
+      result += "</div>";
+
+      result += "<div class=\"col-sm-10\">";
+      result += "<p>" + cmtdto.getMemName() + "&nbsp;&nbsp;&nbsp;" + cmtdto.getCommentDate() + "<br>";
+      result += cmtdto.getCommentValue();
+      result += "</p>";
+      result += "</div>";
+    }
+
+    result += "</div>";
+
+    return result;
   }
 
   /*** 이슈폼 생성 ***/

@@ -10,7 +10,7 @@ button span,
 .custom-font input,
 .custom-font select
 {
-    font-size: 14px;
+    font-size: 15px;
     font-family: 'Nunito', sans-serif;
 }
 
@@ -25,7 +25,7 @@ button span,
 .issue-label input {
     border: none;
     font-family: 'Nunito', sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     width: 100px;
 }
 .date-info {
@@ -121,26 +121,37 @@ button span,
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">활동</label>
                   <div class="custom-font col-sm-10">
-                    <input type="text" class="form-control" placeholder="댓글 추가...">
+                    <input id="comment-value" type="text" class="form-control" placeholder="댓글 추가..." onkeyup="addComment(this)">
                   </div>
                 </div><br>
 
                 <!-- 댓글 -->
-                <div class="row mb-3">
-                  <div class="row col-sm-10">
-                    <div class="col-sm-2">
-                      <img src="../resources/bootstrap/img/profile-img.jpg" alt="Profile" width="50">
+                <div id="comment-box" class="row mb-3">
+                  <c:forEach var="cmtdto" items="${cmtlist}">
+                    <div class="row col-sm-10">
+                      <!-- 이미지 -->
+                      <div class="col-sm-2">
+                        <c:choose>
+                          <c:when test="${!empty cmtdto.memImage}">
+                            <img src="../${cmtdto.memImage}" class="rounded-circle" alt="Profile" width="50">
+                          </c:when>
+                          <c:otherwise>
+                            <img src="../resources/bootstrap/img/no_image.png" class="rounded-circle" alt="Profile" width="50">
+                          </c:otherwise>
+                        </c:choose>
+                      </div>
+                      <!-- 작성글 -->
+                      <div class="col-sm-10">
+                        <p>
+                          ${cmtdto.memName}
+                          &nbsp;&nbsp;&nbsp;
+                          ${cmtdto.commentDate}
+                          <br>
+                          ${cmtdto.commentValue}
+                        </p>
+                      </div>
                     </div>
-                    <div class="col-sm-10">
-                      <p>
-                        작성자
-                        &nbsp;
-                        작성일시
-                        <br>
-                        내용
-                      </p>
-                    </div>
-                  </div>
+                  </c:forEach>
                 </div>
 
               </div>
@@ -232,6 +243,7 @@ button span,
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
+
       // 이슈 제목의 입력값이 공백인 경우
       if(type == "title"){
         if(inputValue.trim() == ""){
@@ -374,6 +386,49 @@ button span,
     }
     // 결과값 받음
     xhttp.send();
+  }
+
+  /* 댓글 등록 */
+  function addComment(input){
+
+    const inputValue = input.value;
+    let valueElement = document.getElementById("comment-value");
+
+    // 입력 글자수 제어
+    if(inputValue.length > 100) {
+      alert("최대 100자까지만 작성할 수 있습니다.");
+      valueElement.value = inputValue.substring(0, 98); // 문자열 자르기
+      return;
+    }
+
+    // 엔터키 입력 시 IF문 실행
+    if (window.event.keyCode == 13) {
+
+      // 댓글 입력값이 공백인 경우
+      if (inputValue.trim() == "") {
+        alert("댓글을 최소 1글자 이상 입력해 주세요.");
+        return;
+      }
+
+      const url = "/project/addcomment?issueSeq=" + ${idto.issueSeq}
+                + "&inputValue=" + encodeURIComponent(inputValue);
+
+      // 연결 작업
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("GET", url, true);
+
+      // 콜백 작업 지정
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          // 태그 업데이트
+          document.getElementById("comment-box").innerHTML = this.responseText;
+          valueElement.blur();
+        }
+      };
+
+    // 결과값 받음
+    xhttp.send();
+    }
   }
 
 </script>

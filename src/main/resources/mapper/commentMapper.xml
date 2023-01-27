@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.CommentDAO" >
+
+  <!-- 댓글 등록 -->
+  <insert id="addComment" useGeneratedKeys="true" keyProperty="commentDate" parameterType="CommentDTO">
+    <selectKey keyProperty="commentDate" resultType="Date" order="BEFORE">
+      SELECT NOW() FROM dual
+    </selectKey>
+    INSERT INTO t_comment
+    VALUES ((SELECT nextval('comment_seq') AS comment_seq FROM dual), #{issueSeq}, #{memSeq}, #{commentDate}, #{commentValue})
+  </insert>
+
+  <!-- CommentList 불러오기 -->
+  <select id="getCommentList" parameterType="int" resultType="CommentDTO">
+    SELECT *
+    FROM t_comment
+    WHERE issue_seq = #{issueSeq}
+    ORDER BY comment_seq DESC
+  </select>
+
+</mapper>
