@@ -22,9 +22,27 @@ public class CommentServiceImpl implements CommentService {
     return commentDTO.getCommentDate();
   }
 
+  /* 댓글 수정 */
+  @Override
+  public int updateCommentValue(CommentDTO commentDTO) {
+    return commentDAO.updateCommentValue(commentDTO);
+  }
+
+  /* CommentDTO 불러오기 */
+  @Override
+  public CommentDTO getCommentDTO(int commentSeq) {
+    return commentDAO.getCommentDTO(commentSeq);
+  }
+
   /* CommentList 불러오기 */
   @Override
   public List<CommentDTO> getCommentList(int commentSeq) {
     return commentDAO.getCommentList(commentSeq);
+  }
+
+  /* 댓글 삭제 */
+  @Override
+  public int deleteComment(int commentSeq) {
+    return commentDAO.deleteComment(commentSeq);
   }
 }

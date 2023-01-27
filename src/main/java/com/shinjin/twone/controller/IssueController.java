@@ -134,7 +134,7 @@ public class IssueController {
   /* 댓글 등록 */
   @GetMapping("/project/addcomment")
   @ResponseBody
-  public String addComment(HttpServletRequest request, HttpSession session) {
+  public String addCommentProc(HttpServletRequest request, HttpSession session) {
 
     int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
     String inputValue = request.getParameter("inputValue");
@@ -149,6 +149,35 @@ public class IssueController {
     commentService.addComment(commentDTO);
 
     // 댓글 문자열 만들기
+    String result = commentListToHtmlCode(issueSeq, memSeq);
+
+    return result;
+  }
+
+  /*** 댓글 수정 ***/
+  @GetMapping("/project/updatecomment")
+  @ResponseBody
+  public String updateCommentProc(HttpServletRequest request, HttpSession session){
+    int memSeq = (int) session.getAttribute("login");
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    int commentSeq = Integer.parseInt(request.getParameter("commentSeq"));
+    String inputValue = request.getParameter("inputValue");
+
+    // CommentDTO 만들기
+    CommentDTO commentDTO = new CommentDTO();
+    commentDTO.setCommentSeq(commentSeq);
+    commentDTO.setCommentValue(inputValue);
+    // 댓글 수정
+    commentService.updateCommentValue(commentDTO);
+
+    // 댓글 문자열 만들기
+    String result = commentListToHtmlCode(issueSeq, memSeq);
+
+    return result;
+  }
+
+  /*** 댓글 문자열 만들기 ***/
+  public String commentListToHtmlCode(int issueSeq, int memSeq){
     String result = "";
     List<CommentDTO> commentlist = commentService.getCommentList(issueSeq);
     MemDTO memDTO;
@@ -158,26 +187,43 @@ public class IssueController {
       cmtdto.setMemImage(memDTO.getMemImage());
     }
 
-    result += "<div class=\"row col-sm-10\">";
     for(CommentDTO cmtdto : commentlist){
+      result += "<div class=\"row col-sm-10\">";
       result += "<div class=\"col-sm-2\">";
       if(cmtdto.getMemImage() != null){
         result += "<img src=\"../" + cmtdto.getMemImage() + "\" class=\"rounded-circle\" alt=\"Profile\" width=\"50\">";
       } else {
-        result += "<img src=\"../resources/bootstrap/img/profile-img.jpg\" alt=\"Profile\" width=\"50\">";
+        result += "<img src=\"../resources/bootstrap/img/profile-img.jpg\" class=\"rounded-circle\" alt=\"Profile\" width=\"50\">";
       }
       result += "</div>";
 
       result += "<div class=\"col-sm-10\">";
-      result += "<p>" + cmtdto.getMemName() + "&nbsp;&nbsp;&nbsp;" + cmtdto.getCommentDate() + "<br>";
+      result += "<p>";
+      result += cmtdto.getMemName() + "&nbsp;&nbsp;&nbsp;";
+      result += cmtdto.getCommentDate() + "<br>";
       result += cmtdto.getCommentValue();
+      if(memSeq == cmtdto.getMemSeq()){
+        result += "<br><a href=\"javascript:toggleCommentInput('comment-" + cmtdto.getCommentSeq() + "-update-box')\">수정</a>";
+        result += "&nbsp;<a href=\"javascript:deleteComment(" + cmtdto.getCommentSeq() + ")\">삭제</a>";
+      }
       result += "</p>";
+      result += "</div>";
+      result += "<div id=\"comment-" + cmtdto.getCommentSeq() + "-update-box\" class=\"col-sm-12\" style=\"display: none\">";
+      result += "<input id=\"comment-" + cmtdto.getCommentSeq() + "-update\" type=\"text\" class=\"form-control\" value=\"" + cmtdto.getCommentValue() + "\" onkeyup=\"updateComment(this, " + cmtdto.getCommentSeq() + ")\">";
+      result += "<h5 class=\"card-title\"></h5>";
+      result += "</div>";
       result += "</div>";
     }
 
-    result += "</div>";
-
     return result;
+  }
+
+  /*** 댓글 삭제 ***/
+  @GetMapping("/project/deletecomment")
+  @ResponseBody
+  public void deleteComment(HttpServletRequest request){
+    int commentSeq = Integer.parseInt(request.getParameter("commentSeq"));
+    commentService.deleteComment(commentSeq);
   }
 
   /*** 이슈폼 생성 ***/

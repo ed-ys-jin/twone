@@ -128,7 +128,7 @@ button span,
                 <!-- 댓글 -->
                 <div id="comment-box" class="row mb-3">
                   <c:forEach var="cmtdto" items="${cmtlist}">
-                    <div class="row col-sm-10">
+                    <div id="comment-${cmtdto.commentSeq}" class="row col-sm-10">
                       <!-- 이미지 -->
                       <div class="col-sm-2">
                         <c:choose>
@@ -148,7 +148,19 @@ button span,
                           ${cmtdto.commentDate}
                           <br>
                           ${cmtdto.commentValue}
+                          <c:choose>
+                            <c:when test="${login == cmtdto.memSeq}">
+                              <br>
+                              <a href="javascript:toggleCommentInput('comment-${cmtdto.commentSeq}-update-box')">수정</a>
+                              &nbsp;
+                              <a href="javascript:deleteComment(${cmtdto.commentSeq})">삭제</a>
+                            </c:when>
+                          </c:choose>
                         </p>
+                      </div>
+                      <div id="comment-${cmtdto.commentSeq}-update-box" class="col-sm-12" style="display: none">
+                        <input id="comment-${cmtdto.commentSeq}-update" type="text" class="form-control" value="${cmtdto.commentValue}" onkeyup="updateComment(this, ${cmtdto.commentSeq})">
+                        <h5 class="card-title"></h5>
                       </div>
                     </div>
                   </c:forEach>
@@ -277,7 +289,6 @@ button span,
 
     const selectBox = document.getElementById(selectBoxId); // 드롭다운 엘리먼트
 
-    // input toggle
     if(selectBox.style.display != "none") {
       selectBox.style.display = "none";
     } else {
@@ -380,8 +391,6 @@ button span,
       if (this.readyState == 4 && this.status == 200) {
         // 태그 업데이트
         document.getElementById(boxId).innerHTML = this.responseText;
-        // focus 해제
-        // valueId.blur();
       }
     }
     // 결과값 받음
@@ -431,4 +440,88 @@ button span,
     }
   }
 
+  /* 댓글 수정용 입력창 토글 */
+  function toggleCommentInput(commentInputId){
+    const commentInput = document.getElementById(commentInputId);
+
+    if(commentInput.style.display != "none"){
+      commentInput.style.display = "none";
+    } else {
+      commentInput.style.display = "block";
+    }
+  }
+
+  /* 댓글 수정 */
+  function updateComment(input, commentSeq){
+
+    const inputValue = input.value;
+    const commentInput = document.getElementById("comment-" + commentSeq + "-update");
+    const commentInputBox = document.getElementById("comment-" + commentSeq + "-update-box");
+
+    // 입력 글자수 제어
+    if(inputValue.length > 100) {
+      alert("최대 100자까지만 작성할 수 있습니다.");
+      commentInput.value = inputValue.substring(0, 98); // 문자열 자르기
+      return;
+    }
+
+    // 엔터키 입력 시 IF문 실행
+    if (window.event.keyCode == 13) {
+
+      // 댓글 입력값이 공백인 경우
+      if (inputValue.trim() == "") {
+        alert("댓글을 최소 1글자 이상 입력해 주세요.");
+        return;
+      }
+
+      // URL 만들기
+      let url = "/project/updatecomment?issueSeq=" + ${idto.issueSeq}
+              + "&commentSeq=" + commentSeq
+              + "&inputValue=" + inputValue;
+
+      // 연결 작업
+      const xhttp = new XMLHttpRequest();
+      xhttp.open("GET", url, true);
+
+      // 콜백 작업 지정
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          // 태그 업데이트
+          document.getElementById("comment-box").innerHTML = this.responseText;
+          // 댓글 수정용 입력창 숨기기
+          commentInputBox.style.display = "none";
+        }
+      }
+      // 결과값 받음
+      xhttp.send();
+    }
+  }
+
+  /* 댓글 삭제 */
+  function deleteComment(commentSeq){
+    alert(commentSeq);
+    // URL(+ 파라미터) 만들기
+    let url = "/project/deletecomment?commentSeq=" + commentSeq;
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 태그 삭제
+    document.getElementById("comment-" + commentSeq).remove();
+
+    // 결과값 받음
+    xhttp.send();
+  }
+
 </script>
+
+
+
+
+
+
+
+
+
+
