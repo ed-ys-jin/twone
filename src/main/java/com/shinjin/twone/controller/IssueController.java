@@ -131,7 +131,7 @@ public class IssueController {
     issueService.deleteIssue(issueSeq);
   }
 
-  /* 댓글 등록 */
+  /*** 댓글 등록 ***/
   @GetMapping("/project/addcomment")
   @ResponseBody
   public String addCommentProc(HttpServletRequest request, HttpSession session) {
@@ -300,6 +300,95 @@ public class IssueController {
     return result;
   }
 
+  /*** 이슈폼 위로 이동 ***/
+  @GetMapping("/project/moveup")
+  @ResponseBody
+  public String moveUpProc(HttpServletRequest request){
+
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    String formsSeq = request.getParameter("formsSeq");
+
+    // 배치순서 내림차순 정렬된 이슈폼 리스트 불러오기 (배치순서가 1 작은 번호와 바꿔야하므로 큰 수부터 찾아 내려간다)
+    List<IssueFormDTO> issueFormList = issueFormService.getIssueFormListDesc(issueSeq);
+    // 다음 순서에서 배치순서를 변경해야 함을 알려주는 flag
+    Boolean flag = false;
+
+    for(IssueFormDTO ifdto : issueFormList){
+      // flag가 올라가 있다면 [배치순서+1]
+      if(flag == true){
+        ifdto.setIssueFormOrder(ifdto.getIssueFormOrder() + 1);
+        issueFormService.updateIssueFormOrder(ifdto);
+        // for문 종료 (더이상 변경할 작업이 없음)
+        break;
+      }
+      // 사용자가 변경 요청한 이슈폼이면 [배치순서-1]
+      if(ifdto.getFormsSeq().equals(formsSeq)){
+        // 배치순서가 1 이라면 for문 종료 (1보다 낮은수 없음. 변경불가)
+        if(ifdto.getIssueFormOrder() == 1){
+          break;
+        }
+        ifdto.setIssueFormOrder(ifdto.getIssueFormOrder() - 1);
+        issueFormService.updateIssueFormOrder(ifdto);
+        // 다음 순서에서 +1 해야하므로 flag 올림
+        flag = true;
+      }
+    }
+
+    // 이슈폼 문자열 만들기
+    String result = issueFormListToHtmlCode(issueSeq);
+
+    return result;
+  }
+
+  /*** 이슈폼 아래로 이동 ***/
+  @GetMapping("/project/movedown")
+  @ResponseBody
+  public String moveDownProc(HttpServletRequest request){
+
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    String formsSeq = request.getParameter("formsSeq");
+
+    // 배치순서 오름차순 정렬된 이슈폼 리스트 불러오기 (배치순서가 1 큰 번호와 바꿔야하므로 작은 수부터 찾아 올라간다)
+    List<IssueFormDTO> issueFormList = issueFormService.getIssueFormList(issueSeq);
+    // 다음 순서에서 배치순서를 변경해야 함을 알려주는 flag
+    Boolean flag = false;
+
+    for(IssueFormDTO ifdto : issueFormList){
+      // flag가 올라가 있다면 [배치순서-1]
+      if(flag == true){
+        ifdto.setIssueFormOrder(ifdto.getIssueFormOrder() - 1);
+        issueFormService.updateIssueFormOrder(ifdto);
+        // for문 종료 (더이상 변경할 작업이 없음)
+        break;
+      }
+      // 사용자가 변경 요청한 이슈폼이면 [배치순서+1]
+      if(ifdto.getFormsSeq().equals(formsSeq)){
+        // 배치순서가 마지막 이라면 for문 종료 (더이상 높은수 없음. 변경불가)
+        if(ifdto.getIssueFormOrder() == issueFormList.size()){
+          break;
+        }
+        ifdto.setIssueFormOrder(ifdto.getIssueFormOrder() + 1);
+        issueFormService.updateIssueFormOrder(ifdto);
+        // 다음 순서에서 -1 해야하므로 flag 올림
+        flag = true;
+      }
+    }
+
+    // 이슈폼 문자열 만들기
+    String result = issueFormListToHtmlCode(issueSeq);
+
+    return result;
+  }
+
+  /*** 이슈폼 삭제 ***/
+  @GetMapping("/project/deleteforms")
+  @ResponseBody
+  public void deleteFormsProc(HttpServletRequest request){
+    String formsSeq = request.getParameter("formsSeq");
+    issueFormService.deleteIssueFormByFormsSeq(formsSeq);
+  }
+
+
   /* 이슈폼 문자열 만들기 */
   public String issueFormListToHtmlCode(int issueSeq){
 
@@ -340,13 +429,13 @@ public class IssueController {
 
     String result = "";
 
-    result += "<div class=\"row mb-3\">";
+    result += "<div id=\"forms-" + perSeq + "\" class=\"row mb-3\">";
 
     result += "<label id=\"" + perSeq + "-label-box\" class=\"issue-label col-sm-2 col-form-label\">";
     result += "<input id=\"" + perSeq + "-label\" type=\"text\" value=\"" + perDTO.getPerTitle() + "\" onkeyup=\"updateLabel(this, '" + perSeq + "')\">";
     result += "</label>";
 
-    result += "<div id=\"" + perSeq + "-value-box\" class=\"custom-font col-sm-10\">";
+    result += "<div id=\"" + perSeq + "-value-box\" class=\"custom-font col-sm-8\">";
     result += "<select id=\"" + perSeq + "-value\" class=\"form-select\" aria-label=\"Default select example\" onchange=\"updateValue(this, '" + perSeq + "')\">";
     for(MemDTO mdto : teamList){
       if(perDTO.getMemSeq() == mdto.getMemSeq()){
@@ -356,8 +445,17 @@ public class IssueController {
       }
     }
     result += "</select>";
-
     result += "</div>";
+
+    result += "<div class=\"custom-font col-sm-2\" align=\"right\">";
+    result += "<button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-collection\"></i></button>";
+    result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('up', '" + perSeq + "')\">위로 이동</a></li>";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('down', '" + perSeq + "')\">아래로 이동</a></li>";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:deleteForms('" + perSeq + "')\">구성요소 삭제</a></li>";
+    result += "</ul>";
+    result += "</div>";
+
     result += "</div>";
 
     return result;
@@ -371,14 +469,23 @@ public class IssueController {
     String datValue = format.format(datDTO.getDatValue());
     String result = "";
 
-    result += "<div class=\"row mb-3\">";
+    result += "<div id=\"forms-" + datSeq + "\" class=\"row mb-3\">";
 
     result += "<label id=\"" + datSeq + "-label-box\" class=\"issue-label col-sm-2 col-form-label\">";
     result += "<input id=\"" + datSeq + "-label\" type=\"text\" value=\"" + datDTO.getDatTitle() + "\" onkeyup=\"updateLabel(this, '" + datSeq + "')\">";
     result += "</label>";
 
-    result += "<div id=\"" + datSeq + "-value-box\" class=\"custom-font col-sm-10\">";
+    result += "<div id=\"" + datSeq + "-value-box\" class=\"custom-font col-sm-8\">";
     result += "<input id=\"" + datSeq + "-value\" type=\"date\" class=\"form-control\" value=\"" + datValue + "\" onchange=\"updateValue(this, '" + datSeq + "')\">";
+    result += "</div>";
+
+    result += "<div class=\"custom-font col-sm-2\" align=\"right\">";
+    result += "<button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-collection\"></i></button>";
+    result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('up', '" + datSeq + "')\">위로 이동</a></li>";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('down', '" + datSeq + "')\">아래로 이동</a></li>";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:deleteForms('" + datSeq + "')\">구성요소 삭제</a></li>";
+    result += "</ul>";
     result += "</div>";
 
     result += "</div>";
@@ -394,13 +501,13 @@ public class IssueController {
     String[] primary = {"Highest", "High", "Medium", "Low", "Lowest"};
     String result = "";
 
-    result += "<div class=\"row mb-3\">";
+    result += "<div id=\"forms-" + priSeq + "\" class=\"row mb-3\">";
 
     result += "<label id=\"" + priSeq + "-label-box\" class=\"issue-label col-sm-2 col-form-label\">";
     result += "<input id=\"" + priSeq + "-label\" type=\"text\" value=\"" + priDTO.getPriTitle() + "\" onkeyup=\"updateLabel(this, '" + priSeq + "')\">";
     result += "</label>";
 
-    result += "<div id=\"" + priSeq + "-value-box\" class=\"custom-font col-sm-10\">";
+    result += "<div id=\"" + priSeq + "-value-box\" class=\"custom-font col-sm-8\">";
     result += "<select id=\"" + priSeq + "-value\" class=\"form-select\" aria-label=\"Default select example\" onchange=\"updateValue(this, '" + priSeq + "')\">";
     // priValue 값과 일치하면 selected 삽입
     for(int i = 0; i < 5; i++){
@@ -409,8 +516,17 @@ public class IssueController {
       result += ">" + primary[i] + "</option>";
     }
     result += "</select>";
-
     result += "</div>";
+
+    result += "<div class=\"custom-font col-sm-2\" align=\"right\">";
+    result += "<button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-collection\"></i></button>";
+    result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('up', '" + priSeq + "')\">위로 이동</a></li>";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('down', '" + priSeq + "')\">아래로 이동</a></li>";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:deleteForms('" + priSeq + "')\">구성요소 삭제</a></li>";
+    result += "</ul>";
+    result += "</div>";
+
     result += "</div>";
 
     return result;
@@ -422,14 +538,23 @@ public class IssueController {
     String simSeq = simDTO.getSimSeq();
     String result = "";
 
-    result += "<div class=\"row mb-3\">";
+    result += "<div id=\"forms-" + simDTO.getSimSeq() + "\" class=\"row mb-3\">";
 
     result += "<label id=\"" + simSeq + "-label-box\" class=\"issue-label col-sm-2 col-form-label\">";
     result += "<input id=\"" + simSeq + "-label\" type=\"text\" value=\"" + simDTO.getSimTitle() + "\" onkeyup=\"updateLabel(this, '" + simSeq + "')\">";
     result += "</label>";
 
-    result += "<div id=\"" + simSeq + "-value-box\" class=\"custom-font col-sm-10\">";
+    result += "<div id=\"" + simSeq + "-value-box\" class=\"custom-font col-sm-8\">";
     result += "<input id=\"" + simSeq + "-value\" type=\"text\" class=\"form-control\" value=\"" + simDTO.getSimValue() + "\" onchange=\"updateValue(this, '" + simSeq + "')\">";
+    result += "</div>";
+
+    result += "<div class=\"custom-font col-sm-2\" align=\"right\">";
+    result += "<button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-collection\"></i></button>";
+    result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('up', '" + simSeq + "')\">위로 이동</a></li>";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('down', '" + simSeq + "')\">아래로 이동</a></li>";
+    result += "<li><a class=\"dropdown-item\" href=\"javascript:deleteForms('" + simSeq + "')\">구성요소 삭제</a></li>";
+    result += "</ul>";
     result += "</div>";
 
     result += "</div>";

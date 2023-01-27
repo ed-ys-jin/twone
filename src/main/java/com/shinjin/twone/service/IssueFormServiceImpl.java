@@ -21,22 +21,40 @@ public class IssueFormServiceImpl implements IssueFormService {
         return issueFormDTO.getIssueFormSeq();
     }
 
+    /* 배치순서 변경 */
+    @Override
+    public int updateIssueFormOrder(IssueFormDTO issueFormDTO) {
+        return issueFormDAO.updateIssueFormOrder(issueFormDTO);
+    }
+
     /* 이슈폼 사이즈 구하기 */
     @Override
     public int getIssueFormSize(int issueSeq) {
         return issueFormDAO.getIssueFormSize(issueSeq);
     }
 
-    /* 이슈폼 리스트 불러오기 by issueSeq */
+    /* 이슈폼 리스트 불러오기 by issueSeq (기본/ASC) */
     @Override
     public List<IssueFormDTO> getIssueFormList(int issueSeq) {
         return issueFormDAO.getIssueFormList(issueSeq);
+    }
+
+    /* 이슈폼 리스트 불러오기 by issueSeq (역순/DESC) */
+    @Override
+    public List<IssueFormDTO> getIssueFormListDesc(int issueSeq) {
+        return issueFormDAO.getIssueFormListDesc(issueSeq);
     }
 
     /* 이슈폼 삭제 */
     @Override
     public int deleteIssueForm(int issueFormSeq) {
         return issueFormDAO.deleteIssueForm(issueFormSeq);
+    }
+
+    /* 이슈폼 삭제 by formsSeq */
+    @Override
+    public int deleteIssueFormByFormsSeq(String formsSeq) {
+        return issueFormDAO.deleteIssueFormByFormsSeq(formsSeq);
     }
 
 }

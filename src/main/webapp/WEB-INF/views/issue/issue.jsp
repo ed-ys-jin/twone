@@ -499,7 +499,7 @@ button span,
 
   /* 댓글 삭제 */
   function deleteComment(commentSeq){
-    alert(commentSeq);
+
     // URL(+ 파라미터) 만들기
     let url = "/project/deletecomment?commentSeq=" + commentSeq;
 
@@ -509,6 +509,46 @@ button span,
 
     // 태그 삭제
     document.getElementById("comment-" + commentSeq).remove();
+
+    // 결과값 받음
+    xhttp.send();
+  }
+
+  function moveUpDown(updown, formsSeq){
+    let url;
+    // URL 만들기
+    if(updown == "up"){
+      url = "/project/moveup?issueSeq=" + ${idto.issueSeq} + "&formsSeq=" + formsSeq;
+    } else {
+      url = "/project/movedown?issueSeq=" + ${idto.issueSeq} + "&formsSeq=" + formsSeq;
+    }
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 콜백 작업 지정
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // 태그 업데이트
+        document.getElementById("issue-form-list").innerHTML = this.responseText;
+      }
+    }
+    // 결과값 받음
+    xhttp.send();
+  }
+
+  function deleteForms(formsSeq){
+
+    // URL 만들기
+    const url = "/project/deleteforms?formsSeq=" + formsSeq;
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 태그 삭제
+    document.getElementById("forms-" + formsSeq).remove();
 
     // 결과값 받음
     xhttp.send();
