@@ -254,6 +254,10 @@
   /* 컬럼 삭제 */
   function deleteColumn(colSeq) {
 
+    if(!confirm("컬럼을 삭제하시겠습니까?")){
+      return;
+    }
+
     // URL(+ 파라미터) 만들기
     let url = "/project/deletecolumn?colSeq=" + colSeq;
 
@@ -291,6 +295,11 @@
 
   /* 이슈 삭제 */
   function deleteIssue(issueSeq){
+
+    if(!confirm("이슈를 삭제하시겠습니까?")){
+      return;
+    }
+
     // URL(+ 파라미터) 만들기
     let url = "/project/deleteissue?issueSeq=" + issueSeq;
 
