@@ -16,4 +16,6 @@ public interface MemDAO {
     public String getPw(int memSeq); // 비밀번호 불러오기
     public int changePw(MemDTO memDTO); // 비밀번호 변경
     public List<MemDTO> getTeamMemberForIssueForm(int projectSeq); // 팀 멤버 불러오기 for 이슈폼
+    public int updateMemImage(MemDTO memDTO); // 이미지 업로드
+    public int deleteMemImage(int memSeq); // 기본 이미지로 변경
 }
