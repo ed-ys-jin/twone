@@ -217,8 +217,8 @@
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                     <c:choose>
-                        <c:when test="${!empty userimage}">
-                            <img src="/${userimage}" alt="Profile" class="rounded-circle">
+                        <c:when test="${!empty memDTO.memImage}">
+                            <img src="${memDTO.memImage}" alt="Profile" class="rounded-circle">
                         </c:when>
                         <c:otherwise>
                             <img src="../resources/bootstrap/img/no_image.png" alt="Profile" class="rounded-circle">

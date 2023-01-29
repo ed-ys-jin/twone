@@ -111,8 +111,10 @@ public class ProjectController {
         map.put("memSeq", memSeq);
         map.put("projectSeq", projectSeq);
         int check = projectService.checkSetting(map);
+        model.addAttribute("check", check);
 
-        if(check == 1) {
+        // 리더도 관리자 이기 때문에
+        if(check == 1 || check == 0) {
             model.addAttribute("navType", "setting");
             return "project/setting";
         }else{
@@ -128,5 +130,17 @@ public class ProjectController {
         int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
         projectService.deleteOne(projectSeq);
         return "redirect:/project";
+    }
+
+    // 프로젝트 정보 보기
+    @RequestMapping("/project/info")
+    public String projectInfo(HttpServletRequest request){
+        int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
+
+        ProjectDTO pdto = projectService.selectOne(projectSeq);
+
+        request.setAttribute("navType", "info");
+        request.setAttribute("pdto", pdto);
+        return "project/info";
     }
 }
