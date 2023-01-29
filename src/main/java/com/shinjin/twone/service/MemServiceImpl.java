@@ -119,4 +119,14 @@ public class MemServiceImpl implements MemService{
         return memDAO.getTeamMemberForIssueForm(projectSeq);
     }
 
+    @Override
+    public int updateMemImage(MemDTO memDTO) {
+        return memDAO.updateMemImage(memDTO);
+    }
+
+    @Override
+    public int deleteMemImage(int memSeq) {
+        return memDAO.deleteMemImage(memSeq);
+    }
+
 }

@@ -59,4 +59,14 @@ public class MemDAOImpl implements MemDAO {
     public List<MemDTO> getTeamMemberForIssueForm(int projectSeq) {
         return getTeamMemberForIssueForm(projectSeq);
     }
+
+    @Override
+    public int updateMemImage(MemDTO memDTO) {
+        return updateMemImage(memDTO);
+    }
+
+    @Override
+    public int deleteMemImage(int memSeq) {
+        return deleteMemImage(memSeq);
+    }
 }

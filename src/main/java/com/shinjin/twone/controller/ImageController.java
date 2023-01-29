@@ -23,8 +23,12 @@ public class ImageController {
   private ServletContext application;
 
   // 사진 업로드 (본인 피씨(로컬) 저장 경로)
-//  private final String savePath = "C:\\Users\\A\\IdeaProjects\\twone\\src\\main\\webapp\\resources\\upload\\"; //성주
-  private final String savePath = "/Users/jin/DevRoot/Workspace/Github/Twone/src/main/webapp/resources/upload/"; //윤석
+  // private final String savePath = "C:\\Users\\A\\IdeaProjects\\twone\\src\\main\\webapp\\resources\\upload\\"; //성주 - 1
+
+  private final String savePath = "/Users/sj/Desktop/twone/src/main/webapp/resources/upload";
+
+  // private final String savePath = "/Users/jin/DevRoot/Workspace/Github/Twone/src/main/webapp/resources/upload/"; //윤석
+
   // 리눅스 서버 경로
   //private final String savePath = "/var/lib/tomcat9/file_repo/";
 
@@ -34,7 +38,6 @@ public class ImageController {
   @RequestMapping("/image/profileImg")
   public String changeMemImage(MemDTO memDTO, HttpServletRequest request, HttpSession session){
 
-    System.out.println(memDTO.getMemPic());
     int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
     memDTO.setMemSeq(memSeq); // 수정할 정보를 담은 memDTO 만들기
 
@@ -65,7 +68,7 @@ public class ImageController {
       memImage = imgPath+memImage;
       memDTO.setMemImage(memImage);
     }
-    int check = memService.updateMemInfo(memDTO);
+    int check = memService.updateMemImage(memDTO);
     /* 회원정보 수정 */
     if(check == -1){ // 정보 수정 실패
       commonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
@@ -74,5 +77,19 @@ public class ImageController {
     return "redirect:/profile";
   }
 
+  @RequestMapping("/image/deleteImg")
+  public String deleteMemImage(HttpServletRequest request, HttpSession session){
+
+    int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
+
+    int check = memService.deleteMemImage(memSeq);
+
+    if(check == -1){ // 정보 수정 실패
+      commonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
+      return "/common/alert";
+    }
+    return "redirect:/profile";
+
+  }
 
 }

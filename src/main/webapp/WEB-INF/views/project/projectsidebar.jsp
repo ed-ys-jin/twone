@@ -71,6 +71,18 @@
             </a>
         </li>
 
+        <!-- 프로젝트 정보 -->
+        <li class="nav-heading">정보</li>
+
+
+        <li class="nav-item">
+            <a class="nav-link ${navType == 'info'? '':'collapsed'}" href="${twone}/project/info?projectSeq=${pdto.projectSeq}">
+                <i class="bi bi-info-circle"></i>
+                <span>프로젝트 정보</span>
+            </a>
+        </li>
+
+
         <!-- Setting Section -->
         <li class="nav-heading">설정</li>
 
