@@ -169,9 +169,9 @@ public class BoardController {
     int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
     int boardSeq = Integer.parseInt(request.getParameter("boardSeq"));
 
-    /* 보드 삭제 */
     boardService.deleteBoard(boardSeq);
 
+    // 보드 삭제 후 보드 페이지 재출력이 필요하여 '보드 출력' 메소드로 리다이렉트 시킨다.
     return "redirect:/project/board?projectSeq=" + projectSeq;
   }
 

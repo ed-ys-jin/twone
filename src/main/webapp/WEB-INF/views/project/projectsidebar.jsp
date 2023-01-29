@@ -40,7 +40,7 @@
                                 <div class="filter">
                                     <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li><a class="dropdown-item" href="${twone}/project/deleteboard?projectSeq=${pdto.projectSeq}&boardSeq=${bdto.boardSeq}">보드 삭제</a></li>
+                                        <li><a class="dropdown-item" href="javascript:deleteBoard(${bdto.boardSeq})">보드 삭제</a></li>
                                     </ul>
                                 </div><!-- End Three Dots Dropdown Menu Icon -->
                             </div>
@@ -159,5 +159,16 @@
             inputBox.style.display = "block";
         }
     }
+
+    /* 보드 삭제 */
+    function deleteBoard(boardSeq){
+
+        if(!confirm("보드를 삭제하시겠습니까?")){
+            return;
+        }
+
+        location.href="${twone}/project/deleteboard?projectSeq=${pdto.projectSeq}&boardSeq=" + boardSeq;
+    }
+
 
 </script>

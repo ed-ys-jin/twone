@@ -2,14 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.FormsPerDAO" >
 
+  <!-- perSeq 생성 -->
+  <select id="createPerSeq" resultType="int">
+    SELECT nextval('per_seq') FROM dual
+  </select>
 
   <!-- 담당자 이슈폼 생성 -->
-  <insert id="addFormsPer" useGeneratedKeys="true" keyProperty="perSeq" parameterType="FormsPerDTO">
-    <selectKey keyProperty="perSeq" resultType="String" order="BEFORE">
-      SELECT nextval('per_seq') FROM dual
-    </selectKey>
+  <insert id="addFormsPer" parameterType="FormsPerDTO">
     INSERT INTO t_forms_per
-    VALUES (CONCAT('per-', #{perSeq}), '담당자', #{memSeq})
+    VALUES (#{perSeq}, #{issueFormSeq}, '담당자', #{memSeq})
   </insert>
 
   <!-- perTitle 변경 -->

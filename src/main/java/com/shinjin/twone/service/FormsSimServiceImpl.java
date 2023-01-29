@@ -11,18 +11,16 @@ public class FormsSimServiceImpl implements FormsSimService{
   @Autowired
   private FormsSimDAO formsSimDAO;
 
+  @Override
+  public String createSimSeq() {
+    String simSeq = "sim-" + formsSimDAO.createSimSeq();
+    return simSeq;
+  }
+
   /* 간단한 텍스트 이슈폼 생성 */
   @Override
-  public String addFormsSim(FormsSimDTO simDTO) {
-    String result = null;
-    try {
-      formsSimDAO.addFormsSim(simDTO);
-      // selectkey 를 활용하여 인서트 한 sim_seq 바로 가져오기
-      result = "sim-" + simDTO.getSimSeq();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-    return result;
+  public int addFormsSim(FormsSimDTO simDTO) {
+    return formsSimDAO.addFormsSim(simDTO);
   }
 
   /* simTitle 변경 */

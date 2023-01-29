@@ -2,13 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.FormsSimDAO" >
 
+  <!-- simSeq 생성 -->
+  <select id="createSimSeq" resultType="int">
+    SELECT nextval('sim_seq') FROM dual
+  </select>
+
   <!-- 간단한 텍스트 이슈폼 생성 -->
-  <insert id="addFormsSim" useGeneratedKeys="true" keyProperty="simSeq" parameterType="FormsSimDTO">
-    <selectKey keyProperty="simSeq" resultType="String" order="BEFORE">
-      SELECT nextval('sim_seq') FROM dual
-    </selectKey>
+  <insert id="addFormsSim" parameterType="FormsSimDTO">
     INSERT INTO t_forms_sim
-    VALUES (CONCAT('sim-', #{simSeq}), '간단한 텍스트', '')
+    VALUES (#{simSeq}, #{issueFormSeq}, '간단한 텍스트', '')
   </insert>
 
   <!-- simTitle 변경 -->
