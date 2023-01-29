@@ -2,13 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.FormsPriDAO" >
 
+  <!-- priSeq 생성 -->
+  <select id="createPriSeq" resultType="int">
+    SELECT nextval('pri_seq') FROM dual
+  </select>
+
   <!-- 우선순위 이슈폼 생성 -->
-  <insert id="addFormsPri" useGeneratedKeys="true" keyProperty="priSeq" parameterType="FormsPriDTO">
-    <selectKey keyProperty="priSeq" resultType="String" order="BEFORE">
-      SELECT nextval('pri_seq') FROM dual
-    </selectKey>
+  <insert id="addFormsPri" parameterType="FormsPriDTO">
     INSERT INTO t_forms_pri
-    VALUES (CONCAT('pri-', #{priSeq}), '우선순위', 'Medium')
+    VALUES (#{priSeq}, #{issueFormSeq}, '우선순위', 'Medium')
   </insert>
 
   <!-- priTitle 변경 -->

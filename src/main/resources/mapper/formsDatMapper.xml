@@ -2,13 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.FormsDatDAO" >
 
+  <!-- datSeq 생성 -->
+  <select id="createDatSeq" resultType="int">
+    SELECT nextval('dat_seq') FROM dual
+  </select>
+
   <!-- 날짜 이슈폼 생성 -->
-  <insert id="addFormsDat" useGeneratedKeys="true" keyProperty="datSeq" parameterType="FormsDatDTO">
-    <selectKey keyProperty="datSeq" resultType="String" order="BEFORE">
-      SELECT nextval('dat_seq') FROM dual
-    </selectKey>
+  <insert id="addFormsDat" parameterType="FormsDatDTO">
     INSERT INTO t_forms_dat
-    VALUES (CONCAT('dat-', #{datSeq}), '날짜', NOW())
+    VALUES (#{datSeq}, #{issueFormSeq}, '날짜', NOW())
   </insert>
 
   <!-- datTitle 변경 -->

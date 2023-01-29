@@ -3,10 +3,20 @@
 <mapper namespace="com.shinjin.twone.dao.IssueFormDAO" >
 
     <!-- 이슈폼 생성 -->
-    <insert id="addIssueForm" parameterType="IssueFormDTO">
+    <insert id="addIssueForm" useGeneratedKeys="true" keyProperty="issueFormSeq" parameterType="IssueFormDTO">
+        <selectKey keyProperty="issueFormSeq" resultType="int" order="BEFORE">
+            SELECT nextval('issueform_seq') FROM dual
+        </selectKey>
         INSERT INTO t_issueform
-        VALUES ((SELECT nextval('issueform_seq') AS issueform_seq FROM dual), #{issueSeq}, #{formsSeq}, #{issueFormOrder})
+        VALUES (#{issueFormSeq}, #{issueSeq}, #{formsSeq}, #{issueFormOrder})
     </insert>
+
+    <!-- 배치순서 변경 -->
+    <update id="updateIssueFormOrder" parameterType="IssueFormDTO">
+        UPDATE t_issueform
+        SET issueform_order = #{issueFormOrder}
+        WHERE forms_seq = #{formsSeq}
+    </update>
 
     <!-- 이슈폼 사이즈 구하기 -->
     <select id="getIssueFormSize" parameterType="int" resultType="int">
@@ -15,12 +25,20 @@
         WHERE issue_seq = #{issueSeq}
     </select>
 
-    <!-- 이슈폼 리스트 불러오기 by issueSeq -->
+    <!-- 이슈폼 리스트 불러오기 by issueSeq (기본/ASC) -->
     <select id="getIssueFormList" parameterType="int" resultType="IssueFormDTO">
         SELECT *
         FROM t_issueform
         WHERE issue_seq = #{issueSeq}
         ORDER BY issueform_order ASC;
+    </select>
+
+    <!-- 이슈폼 리스트 불러오기 by issueSeq (역순/DESC) -->
+    <select id="getIssueFormListDesc" parameterType="int" resultType="IssueFormDTO">
+        SELECT *
+        FROM t_issueform
+        WHERE issue_seq = #{issueSeq}
+        ORDER BY issueform_order DESC;
     </select>
 
     <!-- 이슈폼 삭제 -->
@@ -29,10 +47,10 @@
         WHERE issueform_seq = #{issueFormSeq}
     </delete>
 
-    <!-- 이슈폼 자식 테이블 삭제 -->
-    <delete id="deleteFormsUnderIssue" parameterType="IssueFormDTO">
-        DELETE FROM #{formsTableName}
-        WHERE #{formsColName} = #{formsSeq}
+    <!-- 이슈폼 삭제 by formsSeq -->
+    <delete id="deleteIssueFormByFormsSeq" parameterType="String">
+        DELETE FROM t_issueform
+        WHERE forms_seq = #{formsSeq}
     </delete>
 
 </mapper>
