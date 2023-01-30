@@ -64,12 +64,12 @@ button span,
       </div><!-- End Page Title -->
 
       <%-- 생성일자, 업데이트일자 --%>
-      <div class="date-info col-lg-6">
-        <p>
-          최초작성 &nbsp; <fmt:formatDate value="${idto.issueRegdate}" pattern="y년 M월 d일 a h:mm" type="date"/><br>
-          업데이트 &nbsp; <fmt:formatDate value="${idto.issueUpdate}" pattern="y년 M월 d일 a h:mm" type="date"/>
-        </p>
-      </div>
+<%--      <div class="date-info col-lg-6">--%>
+<%--        <p>--%>
+<%--          최초작성 &nbsp; <fmt:formatDate value="${idto.issueRegdate}" pattern="y년 M월 d일" type="date"/><br>--%>
+<%--          업데이트 &nbsp; <fmt:formatDate value="${idto.issueUpdate}" pattern="y년 M월 d일" type="date"/>--%>
+<%--        </p>--%>
+<%--      </div>--%>
 
     </div>
 
@@ -83,23 +83,23 @@ button span,
               <div class="card-body">
                 <h5 class="card-title"></h5>
 
-                <div class="row mb-3">
-                  <div class="col-sm-12">
+<%--                <div class="row mb-3">--%>
+<%--                  <div class="col-sm-12">--%>
 
-                    <!-- 파일 첨부 -->
-                    <button type="button" class="btn btn-light">
-                      <img src="../resources/bootstrap/img/attach-clip.png" width="20"/>
-                      <span>첨부</span>
-                    </button>
-                    &nbsp;
-                    <!-- 이슈 연결 -->
-                    <button type="button" class="btn btn-light">
-                      <img src="../resources/bootstrap/img/attach-link.png" width="20"/>
-                      <span>이슈 연결</span>
-                    </button>
+<%--                    <!-- 파일 첨부 -->--%>
+<%--                    <button type="button" class="btn btn-light">--%>
+<%--                      <img src="../resources/bootstrap/img/attach-clip.png" width="20"/>--%>
+<%--                      <span>첨부</span>--%>
+<%--                    </button>--%>
+<%--                    &nbsp;--%>
+<%--                    <!-- 이슈 연결 -->--%>
+<%--                    <button type="button" class="btn btn-light">--%>
+<%--                      <img src="../resources/bootstrap/img/attach-link.png" width="20"/>--%>
+<%--                      <span>이슈 연결</span>--%>
+<%--                    </button>--%>
 
-                  </div>
-                </div><br>
+<%--                  </div>--%>
+<%--                </div><br>--%>
 
                 <!-- 설명 -->
                 <div class="row mb-3">
@@ -110,12 +110,12 @@ button span,
                 </div><br>
 
                 <!-- 레이블 -->
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">레이블</label>
-                  <div class="custom-font col-sm-10">
-                    <input type="text" class="form-control">
-                  </div>
-                </div><br>
+<%--                <div class="row mb-3">--%>
+<%--                  <label class="col-sm-2 col-form-label">레이블</label>--%>
+<%--                  <div class="custom-font col-sm-10">--%>
+<%--                    <input type="text" class="form-control">--%>
+<%--                  </div>--%>
+<%--                </div><br>--%>
 
                 <!-- 댓글 추가 -->
                 <div class="row mb-3">
