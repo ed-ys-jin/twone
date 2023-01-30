@@ -81,8 +81,12 @@ public class IssueController {
     request.setAttribute("cmtlist", commentlist);
 
     /* Attr : 이슈 세부사항 */
-    String result = issueFormListToHtmlCode(issueSeq, teamDTO.getTeamAllow());
-    request.setAttribute("issueFormList", result);
+    String issueFormList = issueFormListToHtmlCode(issueSeq, teamDTO.getTeamAllow());
+    request.setAttribute("issueFormList", issueFormList);
+
+    /* Attr : 댓글 */
+    String commentList = commentListToHtmlCode(issueSeq, memSeq);
+    request.setAttribute("commentList", commentList);
 
     return "issue/issue";
   }
@@ -188,7 +192,10 @@ public class IssueController {
 
   /*** 댓글 문자열 만들기 ***/
   public String commentListToHtmlCode(int issueSeq, int memSeq){
+
     String result = "";
+
+    // CommentDTO에 memName, memImage 설정
     List<CommentDTO> commentlist = commentService.getCommentList(issueSeq);
     MemDTO memDTO;
     for(CommentDTO cmtdto : commentlist){
@@ -197,8 +204,13 @@ public class IssueController {
       cmtdto.setMemImage(memDTO.getMemImage());
     }
 
+    // 문자열 만들기
+    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
     for(CommentDTO cmtdto : commentlist){
-      result += "<div class=\"row col-sm-10\">";
+      String commentDate = format.format(cmtdto.getCommentDate());
+      int commentSeq = cmtdto.getCommentSeq();
+
+      result += "<div id=\"comment-" + commentSeq + "\" class=\"row col-sm-10\">";
       result += "<div class=\"col-sm-2\">";
       if(cmtdto.getMemImage() != null){
         result += "<img src=\"../" + cmtdto.getMemImage() + "\" class=\"rounded-circle\" alt=\"Profile\" width=\"50\">";
@@ -209,17 +221,17 @@ public class IssueController {
 
       result += "<div class=\"col-sm-10\">";
       result += "<p>";
-      result += cmtdto.getMemName() + "&nbsp;&nbsp;&nbsp;";
-      result += cmtdto.getCommentDate() + "<br>";
+      result += cmtdto.getMemName() + " &nbsp;|&nbsp; ";
+      result += commentDate + "<br>";
       result += cmtdto.getCommentValue();
       if(memSeq == cmtdto.getMemSeq()){
-        result += "<br><a href=\"javascript:toggleCommentInput('comment-" + cmtdto.getCommentSeq() + "-update-box')\">수정</a>";
-        result += "&nbsp;<a href=\"javascript:deleteComment(" + cmtdto.getCommentSeq() + ")\">삭제</a>";
+        result += "<br><a href=\"javascript:toggleCommentInput('comment-" + commentSeq + "-update-box')\">수정</a>";
+        result += " &nbsp; <a href=\"javascript:deleteComment(" + commentSeq + ")\">삭제</a>";
       }
       result += "</p>";
       result += "</div>";
-      result += "<div id=\"comment-" + cmtdto.getCommentSeq() + "-update-box\" class=\"col-sm-12\" style=\"display: none\">";
-      result += "<input id=\"comment-" + cmtdto.getCommentSeq() + "-update\" type=\"text\" class=\"form-control\" value=\"" + cmtdto.getCommentValue() + "\" onkeyup=\"updateComment(this, " + cmtdto.getCommentSeq() + ")\">";
+      result += "<div id=\"comment-" + commentSeq + "-update-box\" class=\"col-sm-12\" style=\"display: none\">";
+      result += "<input id=\"comment-" + commentSeq + "-update\" type=\"text\" class=\"form-control\" value=\"" + cmtdto.getCommentValue() + "\" onkeyup=\"updateComment(this, " + commentSeq + ")\">";
       result += "<h5 class=\"card-title\"></h5>";
       result += "</div>";
       result += "</div>";

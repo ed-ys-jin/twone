@@ -16,7 +16,6 @@
 
   <div class="wrap">
     <h1>
-<%--      <span class="material-symbols-outlined">sync_saved_locally</span>--%>
       <a href="/project" rel="click"><img src="../resources/bootstrap/img/logo_sjb_withback.png" width="250px"></a>
     </h1><br>
     <p id="dynamic" class="lg-text"></p><br>
@@ -100,16 +99,12 @@
   let target = document.querySelector("#dynamic");
 
   // 랜덤 문자열 생성
-  let stringArr = ["Java JDK 1.8", "Spring Framework 5.0.2", "Spring Boot 2.7.7", "Jsp/Servlet 3.1", "Mybatis 3.5.3", "MySQL", "IntelliJ", "AWS", "Git/GitHub"];
-  // stringArr 배열에 있는 문자열 중 랜덤하게 하나를 선택
-  let selectString = stringArr[Math.floor(Math.random() * stringArr.length)];
-  // 랜덤하게 받은 문자열 1개의 문자를 개별 분리
-  let selectStringArr = selectString.split("");
-
-  // 랜덤 문자열 생성
   function randomString(){
+    // 랜덤 문자열 생성
     let stringArr = ["Java JDK 1.8", "Spring Framework 5.0.2", "Spring Boot 2.7.7", "Jsp/Servlet 3.1", "Mybatis 3.5.3", "MySQL", "IntelliJ", "AWS", "Git/GitHub"];
+    // stringArr 배열에 있는 문자열 중 랜덤하게 하나를 선택
     let selectString = stringArr[Math.floor(Math.random() * stringArr.length)];
+    // 랜덤하게 받은 문자열 1개의 문자를 개별 분리
     let selectStringArr = selectString.split("");
 
     return selectStringArr;   // 최종값 반환

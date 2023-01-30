@@ -141,43 +141,7 @@ button span,
 
                 <!-- 댓글 -->
                 <div id="comment-box" class="row mb-3">
-                  <c:forEach var="cmtdto" items="${cmtlist}">
-                    <div id="comment-${cmtdto.commentSeq}" class="row col-sm-10">
-                      <!-- 이미지 -->
-                      <div class="col-sm-2">
-                        <c:choose>
-                          <c:when test="${!empty cmtdto.memImage}">
-                            <img src="../${cmtdto.memImage}" class="rounded-circle" alt="Profile" width="50">
-                          </c:when>
-                          <c:otherwise>
-                            <img src="../resources/bootstrap/img/no_image.png" class="rounded-circle" alt="Profile" width="50">
-                          </c:otherwise>
-                        </c:choose>
-                      </div>
-                      <!-- 작성글 -->
-                      <div class="col-sm-10">
-                        <p>
-                          ${cmtdto.memName}
-                          &nbsp;|&nbsp;
-                          <fmt:formatDate value="${cmtdto.commentDate}" pattern="yyyy.MM.dd" />
-                          <br>
-                          ${cmtdto.commentValue}
-                          <c:choose>
-                            <c:when test="${login == cmtdto.memSeq}">
-                              <br>
-                              <a href="javascript:toggleCommentInput('comment-${cmtdto.commentSeq}-update-box')">수정</a>
-                              &nbsp;
-                              <a href="javascript:deleteComment(${cmtdto.commentSeq})">삭제</a>
-                            </c:when>
-                          </c:choose>
-                        </p>
-                      </div>
-                      <div id="comment-${cmtdto.commentSeq}-update-box" class="col-sm-12" style="display: none">
-                        <input id="comment-${cmtdto.commentSeq}-update" type="text" class="form-control" value="${cmtdto.commentValue}" onkeyup="updateComment(this, ${cmtdto.commentSeq})">
-                        <h5 class="card-title"></h5>
-                      </div>
-                    </div>
-                  </c:forEach>
+                  ${commentList}
                 </div>
 
               </div>
@@ -452,12 +416,12 @@ button span,
       // 콜백 작업 지정
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-          // 태그 업데이트
           document.getElementById("comment-box").innerHTML = this.responseText;
+          // 태그 업데이트
           valueElement.blur();
+          valueElement.value = null;
         }
       };
-
     // 결과값 받음
     xhttp.send();
     }
@@ -523,8 +487,8 @@ button span,
   /* 댓글 삭제 */
   function deleteComment(commentSeq){
 
-    // URL(+ 파라미터) 만들기
-    let url = "/project/deletecomment?commentSeq=" + commentSeq;
+    // URL 만들기
+    const url = "/project/deletecomment?commentSeq=" + commentSeq;
 
     // 연결 작업
     const xhttp = new XMLHttpRequest();
