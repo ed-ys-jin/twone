@@ -10,7 +10,7 @@
     </insert>
 
     <insert id="insertMasterTeam" parameterType="projectDTO">
-        INSERT into t_team values(nextval('team_seq'),#{projectSeq},#{memSeq},0)
+        INSERT into t_team values(nextval('team_seq'),#{projectSeq},#{memSeq},1)
     </insert>
 
     <select id="getList" parameterType="int" resultType="projectDTO">

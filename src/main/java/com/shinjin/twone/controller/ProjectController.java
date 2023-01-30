@@ -34,6 +34,7 @@ public class ProjectController {
     @Autowired
     LabelService labelService;
 
+
     @RequestMapping("/project")
     public String viewProjectList(HttpServletRequest request, Model model){
         int memSeq = (int) request.getSession().getAttribute("login");

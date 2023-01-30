@@ -248,7 +248,7 @@
             }
             tag +='"><div class="card-body test-card-body profile-card pt-4 d-flex flex-column align-items-center">';
 
-            if(dto.team_allow == 1 || login == member.mem_seq){ // 로그인세션의 팀 권한이 조회자가 아니면 보이게끔
+            if(dto.team_allow == 0 || dto.team_allow == 1 || login == member.mem_seq){ // 로그인세션의 팀 권한이 조회자가 아니면 보이게끔
                 tag += ' <div class="filter team-filter"><a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">';
 
                 if(login == member.mem_seq){
@@ -269,7 +269,7 @@
                 tag += member.mem_position;
             }
             tag += '</div>';
-            if (dto.team_allow == 1) { // 권한 변경
+            if (dto.team_allow == 1 || dto.team_allow == 0) { // 권한 변경
                 idx++;
                 tag += '<form  class="team-from" id="input' + idx + '" method="post" action="/project/changeAllow">'
                     + '<input type="hidden" value="' + member.mem_seq + '" name="memSeq">'
