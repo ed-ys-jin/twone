@@ -17,7 +17,15 @@
         UPDATE t_issue
         SET
             issue_title = #{issueTitle},
-            issue_summary = #{issueSummary}
+            issue_summary = #{issueSummary},
+            issue_update = NOW()
+        WHERE issue_seq = #{issueSeq}
+    </update>
+
+    <!-- 이슈 업데이트 일자 변경 -->
+    <update id="updateIssueUpdate" parameterType="int">
+        UPDATE t_issue
+        SET issue_update = NOW()
         WHERE issue_seq = #{issueSeq}
     </update>
 

@@ -18,6 +18,12 @@ public class IssueDAOImpl implements IssueDAO {
         return updateIssueDTO(issueDTO);
     }
 
+    /* 이슈 업데이트 일자 변경 */
+    @Override
+    public int updateIssueUpdate(int issueSeq) {
+        return updateIssueUpdate(issueSeq);
+    }
+
     /* IssueDTO 불러오기 */
     @Override
     public IssueDTO getIssueDTO(int issueSeq) {

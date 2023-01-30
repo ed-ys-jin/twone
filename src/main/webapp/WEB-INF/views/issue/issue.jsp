@@ -71,12 +71,12 @@ button span,
       </div><!-- End Page Title -->
 
       <%-- 생성일자, 업데이트일자 --%>
-<%--      <div class="date-info col-lg-6">--%>
-<%--        <p>--%>
-<%--          최초작성 &nbsp; <fmt:formatDate value="${idto.issueRegdate}" pattern="y년 M월 d일" type="date"/><br>--%>
-<%--          업데이트 &nbsp; <fmt:formatDate value="${idto.issueUpdate}" pattern="y년 M월 d일" type="date"/>--%>
-<%--        </p>--%>
-<%--      </div>--%>
+      <div id="issue-date-info" class="date-info col-lg-6">
+        <p><br><br>
+          최초작성 &nbsp;<fmt:formatDate value="${idto.issueRegdate}" pattern="yyyy.MM.dd" />
+          &nbsp; 업데이트 &nbsp;<fmt:formatDate value="${idto.issueUpdate}" pattern="yyyy.MM.dd" />
+        </p>
+      </div>
 
     </div>
 
@@ -158,8 +158,8 @@ button span,
                       <div class="col-sm-10">
                         <p>
                           ${cmtdto.memName}
-                          &nbsp;&nbsp;&nbsp;
-                          ${cmtdto.commentDate}
+                          &nbsp;|&nbsp;
+                          <fmt:formatDate value="${cmtdto.commentDate}" pattern="yyyy.MM.dd" />
                           <br>
                           ${cmtdto.commentValue}
                           <c:choose>
@@ -296,6 +296,7 @@ button span,
           if(type == "title"){
             valueElement.blur();
           }
+          updateDateInfo();
         }
       };
       // 결과값 받음
@@ -338,8 +339,9 @@ button span,
       if(this.readyState == 4 && this.status == 200){
         // 태그 업데이트
         document.getElementById("issue-form-list").innerHTML = this.responseText;
-        }
+        updateDateInfo();
       }
+    }
     // 결과값 받음
     xhttp.send();
   }
@@ -384,6 +386,7 @@ button span,
           document.getElementById(boxId).innerHTML = this.responseText;
           // focus 해제
           valueId.blur();
+          updateDateInfo();
         }
       };
       // 결과값 받음
@@ -410,6 +413,7 @@ button span,
       if (this.readyState == 4 && this.status == 200) {
         // 태그 업데이트
         document.getElementById(boxId).innerHTML = this.responseText;
+        updateDateInfo();
       }
     }
     // 결과값 받음
@@ -533,7 +537,7 @@ button span,
     xhttp.send();
   }
 
-  /* 이슈폼 위로 이동 */
+  /* 이슈폼 위/아래 이동 */
   function moveUpDown(updown, formsSeq){
     let url;
     // URL 만들기
@@ -552,6 +556,7 @@ button span,
       if (this.readyState == 4 && this.status == 200) {
         // 태그 업데이트
         document.getElementById("issue-form-list").innerHTML = this.responseText;
+        updateDateInfo();
       }
     }
     // 결과값 받음
@@ -572,6 +577,29 @@ button span,
     // 태그 삭제
     document.getElementById("forms-" + formsSeq).remove();
 
+    updateDateInfo();
+
+    // 결과값 받음
+    xhttp.send();
+  }
+
+  /* 이슈 업데이트 일자 변경 */
+  function updateDateInfo(){
+
+    // url 만들기
+    let url = "/project/updatedateinfo?issueSeq=" + ${idto.issueSeq};
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 콜백 작업 지정
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // 태그 업데이트
+        document.getElementById("issue-date-info").innerHTML = this.responseText;
+      }
+    }
     // 결과값 받음
     xhttp.send();
   }

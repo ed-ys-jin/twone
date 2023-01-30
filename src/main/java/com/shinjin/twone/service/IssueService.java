@@ -8,6 +8,7 @@ public interface IssueService {
 
     public int addIssue(IssueDTO issueDTO); // 이슈 생성
     public int updateIssueDTO(IssueDTO issueDTO); // IssueDTO 변경
+    public int updateIssueUpdate(int issueSeq); // 이슈 업데이트 일자 변경
     public IssueDTO getIssueDTO(int issueSeq); // IssueDTO 불러오기
     public List<IssueDTO> getIssueListByColSeq(int colSeq); // IssueList 불러오기 by bolSeq
     public List<Integer> getIssueSeqListUnderBoard(int boardSeq); // issueSeqList 불러오기 by boardSeq

@@ -92,10 +92,10 @@ public class IssueController {
   * -> 이유 : html 태그 작성하는 메소드를 컬럼 추가 메소드와 공유함
   */
 
-  /*** 이슈 제목 변경 ***/
+  /*** issueDTO 변경 ***/
   @GetMapping("/project/updateissuedto")
   @ResponseBody
-  public String updateIssueTitleProc(HttpServletRequest request){
+  public String updateIssueDTOProc(HttpServletRequest request){
 
     // 입력값, issueSeq, type 파라미터로 받기
     int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
@@ -303,6 +303,8 @@ public class IssueController {
         formsSimService.addFormsSim(simDTO);
         break;
     }
+    // 이슈 업데이트 일자 변경
+    issueService.updateIssueUpdate(issueSeq);
 
     // teamAllow 불러오기
     IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
@@ -360,6 +362,9 @@ public class IssueController {
     teamDTO.setMemSeq(memSeq);
     teamDTO = teamService.getTeamDTO(teamDTO);
 
+    // 이슈 업데이트 일자 변경
+    issueService.updateIssueUpdate(issueSeq);
+
     // 이슈폼 문자열 만들기
     String result = issueFormListToHtmlCode(issueSeq, teamDTO.getTeamAllow());
 
@@ -407,6 +412,9 @@ public class IssueController {
     teamDTO.setProjectSeq(issueDTO.getProjectSeq());
     teamDTO.setMemSeq(memSeq);
     teamDTO = teamService.getTeamDTO(teamDTO);
+
+    // 이슈 업데이트 일자 변경
+    issueService.updateIssueUpdate(issueSeq);
 
     // 이슈폼 문자열 만들기
     String result = issueFormListToHtmlCode(issueSeq, teamDTO.getTeamAllow());
@@ -637,6 +645,27 @@ public class IssueController {
       result += "</div>";
     }
     result += "</div>";
+
+    return result;
+  }
+
+  /* 이슈 업데이트 일자 변경 */
+  @GetMapping("/project/updatedateinfo")
+  @ResponseBody
+  public String updateDateInfo(HttpServletRequest request){
+    // 등록일자, 업데이트일자 불러오기
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
+    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+    String regdate = format.format(issueDTO.getIssueRegdate());
+    String update = format.format(issueDTO.getIssueUpdate());
+
+    // 문자열 만들기
+    String result = "";
+    result += "<p><br><br>";
+    result += "최초작성 &nbsp;" + regdate;
+    result += " &nbsp; 업데이트 &nbsp;" + update;
+    result += "</p>";
 
     return result;
   }
