@@ -34,7 +34,7 @@ public class IssueFormController {
   MemService memService;
 
   /*
-   * [이슈폼 추가] 메소드는 IssueController에 작성되어 있음
+   * [이슈폼 생성], [이슈폼 위로 이동], [이슈폼 아래로 이동] 메소드는 IssueController에 작성되어 있음
    * -> 이유 : html 태그 작성하는 메소드를 이슈 관련 메소드와 공유함
    */
 
@@ -171,6 +171,24 @@ public class IssueFormController {
     }
 
     return result;
+  }
+
+  /*** 이슈폼 삭제 ***/
+  @GetMapping("/project/deleteforms")
+  @ResponseBody
+  public void deleteFormsProc(HttpServletRequest request){
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    String formsSeq = request.getParameter("formsSeq");
+    // 이슈폼 삭제
+    issueFormService.deleteIssueFormByFormsSeq(formsSeq);
+    // 이슈폼 배치순서 재정렬
+    // 배치순서 오름차순 정렬된 이슈폼 리스트 불러오기
+    List<IssueFormDTO> issueFormList = issueFormService.getIssueFormList(issueSeq);
+    int num = 1;
+    for(IssueFormDTO ifdto : issueFormList){
+      ifdto.setIssueFormOrder(num++);
+      issueFormService.updateIssueFormOrder(ifdto);
+    }
   }
 
 }

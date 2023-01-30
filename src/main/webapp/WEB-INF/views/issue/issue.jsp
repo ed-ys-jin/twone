@@ -514,6 +514,7 @@ button span,
     xhttp.send();
   }
 
+  /* 이슈폼 위로 이동 */
   function moveUpDown(updown, formsSeq){
     let url;
     // URL 만들기
@@ -538,10 +539,12 @@ button span,
     xhttp.send();
   }
 
+  /* 이슈폼 삭제 */
   function deleteForms(formsSeq){
 
     // URL 만들기
-    const url = "/project/deleteforms?formsSeq=" + formsSeq;
+    const url = "/project/deleteforms?issueSeq=" + ${idto.issueSeq}
+              + "&formsSeq=" + formsSeq;
 
     // 연결 작업
     const xhttp = new XMLHttpRequest();

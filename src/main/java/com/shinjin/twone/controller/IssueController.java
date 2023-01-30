@@ -380,15 +380,6 @@ public class IssueController {
     return result;
   }
 
-  /*** 이슈폼 삭제 ***/
-  @GetMapping("/project/deleteforms")
-  @ResponseBody
-  public void deleteFormsProc(HttpServletRequest request){
-    String formsSeq = request.getParameter("formsSeq");
-    issueFormService.deleteIssueFormByFormsSeq(formsSeq);
-  }
-
-
   /* 이슈폼 문자열 만들기 */
   public String issueFormListToHtmlCode(int issueSeq){
 
