@@ -64,5 +64,11 @@ public class TeamServiceImpl implements TeamService {
     return teamDao.deleteMember(dto);
   }
 
+  /* TeamDTO 불러오기 */
+  @Override
+  public TeamDTO getTeamDTO(TeamDTO teamDTO) {
+    return teamDao.getTeamDTO(teamDTO);
+  }
+
 
 }

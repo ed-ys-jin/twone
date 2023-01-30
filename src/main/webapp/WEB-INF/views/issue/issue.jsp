@@ -51,7 +51,14 @@ button span,
       <div class="col-lg-6">
         <div class="pagetitle">
           <h1 id="issue-title-box">
-            <input id="issue-title" type="text" value="${idto.issueTitle}" onkeyup="updateIssueDTO(this, 'title')">
+            <c:choose>
+              <c:when test="${teamAllow == 3}">
+                <input id="issue-title" type="text" value="${idto.issueTitle}" readonly>
+              </c:when>
+              <c:otherwise>
+                <input id="issue-title" type="text" value="${idto.issueTitle}" onkeyup="updateIssueDTO(this, 'title')">
+              </c:otherwise>
+            </c:choose>
           </h1>
           <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
@@ -105,7 +112,14 @@ button span,
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">설명</label>
                   <div id="issue-summary-box" class="custom-font col-sm-10">
-                    <input id="issue-summary" type="text" class="form-control" value="${idto.issueSummary}" onkeyup="updateIssueDTO(this, 'summary')">
+                    <c:choose>
+                      <c:when test="${teamAllow == 3}">
+                        <input id="issue-summary" type="text" class="form-control" value="${idto.issueSummary}" readonly>
+                      </c:when>
+                      <c:otherwise>
+                        <input id="issue-summary" type="text" class="form-control" value="${idto.issueSummary}" onkeyup="updateIssueDTO(this, 'summary')">
+                      </c:otherwise>
+                    </c:choose>
                   </div>
                 </div><br>
 
@@ -179,12 +193,17 @@ button span,
                   <h5>세부 정보</h5>
                 </div><!-- End Card Title -->
 
-                <!-- Board Creation Button -->
-                <div class="d-grid gap-2 mt-3">
-                  <button class="btn btn-primary btn-light" type="button" onclick="toggleSelect('issue-select-box')">
-                    <img src="../resources/bootstrap/img/button_plus.png" width="17">
-                  </button>
-                </div>
+                <c:choose>
+                  <c:when test="${teamAllow == 3}"></c:when>
+                  <c:otherwise>
+                    <!-- IssueForm Creation Button -->
+                    <div class="d-grid gap-2 mt-3">
+                      <button class="btn btn-primary btn-light" type="button" onclick="toggleSelect('issue-select-box')">
+                        <img src="../resources/bootstrap/img/button_plus.png" width="17">
+                      </button>
+                    </div>
+                  </c:otherwise>
+                </c:choose>
                 <br>
                 <div class="row mb-3">
                   <div class="custom-font col-sm-12">

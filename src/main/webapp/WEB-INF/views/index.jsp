@@ -96,7 +96,7 @@
   let target = document.querySelector("#dynamic");
 
   // 랜덤 문자열 생성
-  let stringArr = ["Java JDK 1.8", "Spring Framework 5.0.2", "Spring Boot 2.7.7", "Jsp/Servlet 3.1", "Mybatis 3.5.3", "MySQL"];
+  let stringArr = ["Java JDK 1.8", "Spring Framework 5.0.2", "Spring Boot 2.7.7", "Jsp/Servlet 3.1", "Mybatis 3.5.3", "MySQL", "IntelliJ", "AWS", "Git/GitHub"];
   // stringArr 배열에 있는 문자열 중 랜덤하게 하나를 선택
   let selectString = stringArr[Math.floor(Math.random() * stringArr.length)];
   // 랜덤하게 받은 문자열 1개의 문자를 개별 분리
@@ -104,7 +104,7 @@
 
   // 랜덤 문자열 생성
   function randomString(){
-    let stringArr = ["Java JDK 1.8", "Spring Framework 5.0.2", "Spring Boot 2.7.7", "Jsp/Servlet 3.1", "Mybatis 3.5.3", "MySQL"];
+    let stringArr = ["Java JDK 1.8", "Spring Framework 5.0.2", "Spring Boot 2.7.7", "Jsp/Servlet 3.1", "Mybatis 3.5.3", "MySQL", "IntelliJ", "AWS", "Git/GitHub"];
     let selectString = stringArr[Math.floor(Math.random() * stringArr.length)];
     let selectStringArr = selectString.split("");
 

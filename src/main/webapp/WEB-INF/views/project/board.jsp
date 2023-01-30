@@ -11,9 +11,18 @@
   <!-- Page Title -->
   <div class="pagetitle">
     <h1>
-      <input id="board-update-box" type="text" value="${bdto.boardName}" onkeyup="updateBoardName(this)"
-             style="border: none; background-color: #f6f9ff; font-family: 'Nunito', sans-serif;
-             font-size: 24px; font-weight: 600; color: #012970">
+      <c:choose>
+        <c:when test="${teamAllow == 3}">
+          <input id="board-update-box" type="text" value="${bdto.boardName}"
+                 style="border: none; background-color: #f6f9ff; font-family: 'Nunito', sans-serif;
+                 font-size: 24px; font-weight: 600; color: #012970" readonly>
+        </c:when>
+        <c:otherwise>
+          <input id="board-update-box" type="text" value="${bdto.boardName}" onkeyup="updateBoardName(this)"
+                 style="border: none; background-color: #f6f9ff; font-family: 'Nunito', sans-serif;
+                 font-size: 24px; font-weight: 600; color: #012970">
+        </c:otherwise>
+      </c:choose>
     </h1>
 
     <nav style="--bs-breadcrumb-divider: '>';">
@@ -38,12 +47,13 @@
                 <c:when test="${cdto.colType == 1}">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><img src="../resources/bootstrap/img/checkmark.png" width="20"></a>
                 </c:when>
+                <c:when test="${teamAllow == 3}"></c:when>
                 <c:otherwise>
-                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li><a class="dropdown-item" href="javascript:addIssue(${cdto.colSeq})">이슈 추가</a></li>
-                      <li><a class="dropdown-item" href="javascript:deleteColumn(${cdto.colSeq})">컬럼 삭제</a></li>
-                    </ul>
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li><a class="dropdown-item" href="javascript:addIssue(${cdto.colSeq})">이슈 추가</a></li>
+                    <li><a class="dropdown-item" href="javascript:deleteColumn(${cdto.colSeq})">컬럼 삭제</a></li>
+                  </ul>
                 </c:otherwise>
               </c:choose>
             </div><!-- End Three Dots Dropdown Menu Icon -->
@@ -51,9 +61,18 @@
             <!-- Column Title -->
             <div class="card-body">
               <h5 class="card-title">
-                  <input id="col-update-box" type="text" value="${cdto.colName}" onkeyup="updateColName(this, ${cdto.colSeq})"
-                         style="border: none; font-family: 'Nunito', sans-serif;
-                         font-size: 18px; font-weight: 500; color: #012970">
+                <c:choose>
+                  <c:when test="${teamAllow  == 3}">
+                    <input id="col-update-box" type="text" value="${cdto.colName}"
+                           style="border: none; font-family: 'Nunito', sans-serif;
+                           font-size: 18px; font-weight: 500; color: #012970" readonly>
+                  </c:when>
+                  <c:otherwise>
+                    <input id="col-update-box" type="text" value="${cdto.colName}" onkeyup="updateColName(this, ${cdto.colSeq})"
+                           style="border: none; font-family: 'Nunito', sans-serif;
+                           font-size: 18px; font-weight: 500; color: #012970">
+                  </c:otherwise>
+                </c:choose>
               </h5>
             </div>
 
@@ -69,13 +88,18 @@
                         <a href="${twone}/project/issue?issueSeq=${idto.issueSeq}" style="color: black">
                           <p>${idto.issueTitle}</p>
                         </a>
-                        <!-- Three Dots Dropdown Menu Icon -->
-                        <div class="filter">
-                          <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li><a class="dropdown-item" href="javascript:deleteIssue(${idto.issueSeq})">이슈 삭제</a></li>
-                          </ul>
-                        </div><!-- End Three Dots Dropdown Menu Icon -->
+                        <c:choose>
+                          <c:when test="${teamAllow == 3}"></c:when>
+                          <c:otherwise>
+                            <!-- Three Dots Dropdown Menu Icon -->
+                            <div class="filter">
+                              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                <li><a class="dropdown-item" href="javascript:deleteIssue(${idto.issueSeq})">이슈 삭제</a></li>
+                              </ul>
+                            </div><!-- End Three Dots Dropdown Menu Icon -->
+                          </c:otherwise>
+                        </c:choose>
 
                         <hr>
                         <p class="mb-0">${idto.issueCode}</p>
@@ -94,12 +118,17 @@
 
       <div class="col-lg-2" style="min-width: 300px">
 
-        <!-- Column Creation Button -->
-        <div class="col-sm-1">
-          <button type="button" class="btn btn-light" onclick="toggleInput('col-input-box')">
-            <img src="../resources/bootstrap/img/button_plus.png">
-          </button>
-        </div>
+        <c:choose>
+          <c:when test="${teamAllow == 3}"></c:when>
+          <c:otherwise>
+            <!-- Column Creation Button -->
+            <div class="col-sm-1">
+              <button type="button" class="btn btn-light" onclick="toggleInput('col-input-box')">
+                <img src="../resources/bootstrap/img/button_plus.png">
+              </button>
+            </div>
+          </c:otherwise>
+        </c:choose>
 
         <!-- Column Creation Input Box -->
         <div class="col-sm-12" style="margin-top: 12px">
