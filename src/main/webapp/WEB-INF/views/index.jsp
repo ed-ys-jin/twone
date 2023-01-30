@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -19,6 +21,8 @@
     </h1><br>
     <p id="dynamic" class="lg-text"></p><br>
     <p class="sm-text">TWONE Project &nbsp; | &nbsp; Team SJB</p>
+    <br><br>
+    <p>본 서비스는 크롬(PC) 환경에 최적화되어 있습니다.</p>
   </div>
 
 </body>
