@@ -32,8 +32,8 @@
     }
 
     body{
-        background-color: darkslateblue;
-        /*background-color: black;*/
+        /*background-color: darkslateblue;*/
+        background-color: #99D8FF;
     }
 
     .wrap{
@@ -44,6 +44,7 @@
         transform: translate(-50%, -50%);
 
         color: white;
+        text-shadow: 2px 2px 4px steelblue;
         text-align: center;     /* 아이콘도 영향을 받아 중앙정렬 */
     }
 
