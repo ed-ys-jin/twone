@@ -14,6 +14,8 @@ public interface ProjectDAO {
     public List<ProjectDTO> getList(int memSeq);
     public ProjectDTO selectOne(int projectSeq);
     public int deleteOne(int projectSeq);
+    public int checkKey(ProjectDTO pdto);
+    public String checkLeaderPw(int memSeq);
     public int checkSetting(Map<String, Integer> map);
 
 }

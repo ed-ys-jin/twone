@@ -1,10 +1,8 @@
 package com.shinjin.twone.controller;
 
 import com.shinjin.twone.common.commonMethod;
-import com.shinjin.twone.dto.MemDTO;
-import com.shinjin.twone.dto.ProjectDTO;
-import com.shinjin.twone.service.MemService;
-import com.shinjin.twone.service.ProjectService;
+import com.shinjin.twone.dto.*;
+import com.shinjin.twone.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +21,18 @@ public class ProjectController {
     ProjectService projectService;
     @Autowired
     MemService memService;
+    @Autowired
+    BoardService boardService;
+    @Autowired
+    ColService colService;
+    @Autowired
+    IssueService issueService;
+    @Autowired
+    IssueFormService issueFormService;
+    @Autowired
+    LinkedIssueService linkedIssueService;
+    @Autowired
+    LabelService labelService;
 
     @RequestMapping("/project")
     public String viewProjectList(HttpServletRequest request, Model model){
@@ -57,9 +67,32 @@ public class ProjectController {
 
         // 자동 팀 생성 (내가 만들었으니 관리자로)
         // 프로젝트 시퀀스 가져온걸 다시 보내기
-        projectDto.setProjectSeq(projectSeq);
+//        projectDto.setProjectSeq(projectSeq); // selectOne 으로 대체 [윤석 230118]
+        projectDto = projectService.selectOne(projectSeq);
         projectService.insertMasterTeam(projectDto);
-        
+
+        // 샘플 보드 생성
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setProjectSeq(projectSeq);
+        int boardSeq = boardService.createSampleBoard(boardDTO);
+
+        // 샘플 컬럼 생성
+        ColDTO colDTO = new ColDTO();
+        colDTO.setProjectSeq(projectSeq);
+        colDTO.setBoardSeq(boardSeq);
+        int colSeq = colService.createSampleColumn(colDTO); // 일반 컬럼
+        colService.addDoneColumn(colDTO); // Done 컬럼
+
+        // 샘플 이슈 생성
+        IssueDTO issueDTO = new IssueDTO();
+        issueDTO.setProjectSeq(projectSeq);
+        issueDTO.setBoardSeq(boardSeq);
+        issueDTO.setColSeq(colSeq);
+        issueDTO.setMemSeq(memSeq);
+        issueDTO.setIssueCode(projectDto.getProjectKey() + "-");
+        issueDTO.setIssueTitle("샘플 이슈");
+        issueService.addIssue(issueDTO);
+
         return "redirect:/project";
     }
 
@@ -94,7 +127,6 @@ public class ProjectController {
     public String deleteProject(HttpServletRequest request){
         int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
         projectService.deleteOne(projectSeq);
-
         return "redirect:/project";
     }
 }

@@ -1,24 +1,20 @@
 package com.shinjin.twone.controller;
 
 import com.shinjin.twone.common.commonMethod;
-import com.shinjin.twone.dto.MemDTO;
+import com.shinjin.twone.dto.BoardDTO;
 import com.shinjin.twone.dto.ProjectDTO;
 import com.shinjin.twone.dto.TeamDTO;
 
-import com.shinjin.twone.service.ProjectService;
-import com.shinjin.twone.service.TeamService;
-import org.apache.tomcat.util.buf.StringUtils;
+import com.shinjin.twone.service.*;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.awt.image.ImageProducer;
 import java.util.*;
 
 
@@ -29,9 +25,15 @@ public class TeamController {
   TeamService teamService;
   @Autowired
   ProjectService projectService;
+  @Autowired
+  BoardService boardService;
+
+  @Autowired
+  EmailService emailService;
+
   HttpSession session;
 
-// 사용자 페이지로 이동
+  // 사용자 페이지로 이동
   @RequestMapping("/project/team")
   public String teamView(HttpServletRequest request) throws Exception{
 
@@ -80,7 +82,7 @@ public class TeamController {
     Set<String> key = tdto.keySet();
 
     HashMap<String,Object> dto = new HashMap<String,Object>();
-    for(String k : key){ //mem_cert, team_allow
+    for(String k : key){
       if(tdto.get(k).equals("")){
         dto.put(("\"" + k + "\"" ),null);
       }else if((tdto.get(k)+"").matches("[+-]?\\d*(\\.\\d+)?")){
@@ -92,16 +94,21 @@ public class TeamController {
     String sdto = dto.toString().replaceAll("=",":") ;
     JSONObject json = (JSONObject)parser.parse(sdto);
 
+    // 보드 리스트 문자열에 담기
+    List<BoardDTO> boardList = boardService.getBoardList(pSeq);
+    request.setAttribute("blist", boardList);
+
     request.setAttribute("teamList",teamlist);
     request.setAttribute("dto",json);
     request.setAttribute("allowList",allowList);
     request.setAttribute("leader",leader);
     request.setAttribute("pdto", pdto);
     request.setAttribute("navType","team");
+
     return "/team/team";
   }
 
-//  권한 변경
+  // 권한 변경
   @RequestMapping("/project/changeAllow")
   public String chageAllow(HttpServletRequest request){
     int allow = Integer.parseInt(request.getParameter("allow"));
@@ -112,9 +119,6 @@ public class TeamController {
     dto.setTeamAllow(allow);
     dto.setMemSeq(memSeq);
     dto.setProjectSeq(projectSeq);
-    System.out.println(dto.getProjectSeq() +"project");
-    System.out.println(dto.getMemSeq() +"memSeq");
-    System.out.println(dto.getTeamAllow() +"allow");
 
     int check = teamService.changeAllow(dto);
     if(check == -1 ){
@@ -125,9 +129,20 @@ public class TeamController {
       return "/common/alert";
   }
 
+
+//  @PostMapping("/project/memberAdd")
+//  public String emailConfirm(HttpServletRequest request) throws Exception {
+//
+//    String email = request.getParameter("email");
+//    String confirm = emailService.sendSimpleMessage(email);
+//    System.out.println(confirm +"컨펌이다!!");
+//
+//    return confirm;
+//  }
+
   //사용자 추가
   @RequestMapping("/project/memberAdd")
-  public String memberAdd(HttpServletRequest request) {
+  public String memberAdd(HttpServletRequest request) throws Exception {
     String email = request.getParameter("email");
     int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
 
@@ -148,29 +163,28 @@ public class TeamController {
       if (dto != null) { // 중복
         commonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자가 이미 존재합니다.");
         return "/common/alert";
-      }
+      } else { //중복되지 않는다면 인증 메일 보낸 후 코드테이블에 정보 추가
+
       int checkAdd = teamService.memberAdd(map);
-      if (checkAdd != 0) {
-        commonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자를 추가하었습니다.");
-      } else {
-        commonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자를 다시 확인해주세요.");
+        if (checkAdd != 0) {
+          commonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자를 추가하었습니다.");
+        } else {
+          commonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자를 다시 확인해주세요.");
+        }
+        return "/common/alert";
       }
-      return "/common/alert";
     }
   }
 
-    @RequestMapping(value ={"/project/deleteMember", "/project/Withdrawal"})
-    public String deleteMember(HttpServletRequest request){
+  // 사용자 삭제
+  @RequestMapping(value ={"/project/deleteMember", "/project/Withdrawal"})
+  public String deleteMember(HttpServletRequest request){
       int mSeq = Integer.parseInt(request.getParameter("memberSeq"));
       int pSeq = Integer.parseInt(request.getParameter("projectSeq"));
 
       TeamDTO dto = new TeamDTO();
       dto.setProjectSeq(pSeq);
       dto.setMemSeq(mSeq);
-
-//      if(request.getServletPath().equals("/project/Withdrawal")){
-//
-//      }
 
       int check = teamService.deleteMember(dto);
       if(check != 0){

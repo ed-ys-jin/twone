@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.FormsPriDAO" >
+
+  <!-- 우선순위 이슈폼 생성 -->
+  <insert id="addFormsPri" useGeneratedKeys="true" keyProperty="priSeq" parameterType="FormsPriDTO">
+    <selectKey keyProperty="priSeq" resultType="String" order="BEFORE">
+      SELECT nextval('pri_seq') FROM dual
+    </selectKey>
+    INSERT INTO t_forms_pri
+    VALUES (CONCAT('pri-', #{priSeq}), '우선순위', 'Medium')
+  </insert>
+
+  <!-- priTitle 변경 -->
+  <update id="updatePriTitle" parameterType="FormsPriDTO">
+    UPDATE t_forms_pri
+    SET pri_title = #{priTitle}
+    WHERE pri_seq = #{priSeq}
+  </update>
+
+  <!-- priValue 변경 -->
+  <update id="updatePriValue" parameterType="FormsPriDTO">
+    UPDATE t_forms_pri
+    SET pri_value = #{priValue}
+    WHERE pri_seq = #{priSeq}
+  </update>
+
+  <!-- priDTO 불러오기 -->
+  <select id="getPriDTO" parameterType="String" resultType="FormsPriDTO">
+    SELECT *
+    FROM t_forms_pri
+    WHERE pri_seq = #{priSeq}
+  </select>
+
+</mapper>

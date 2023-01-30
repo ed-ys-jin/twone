@@ -11,7 +11,45 @@ import java.util.List;
 public class ColServiceImpl implements ColService {
 
     @Autowired
-    ColDAO colDAO;
+    private ColDAO colDAO;
+
+    /* 샘플 컬럼 생성 */
+    @Override
+    public int createSampleColumn(ColDTO colDTO) {
+        colDAO.createSampleColumn(colDTO);
+        // selectkey 를 활용하여 인서트 한 col_seq 바로 가져오기
+        return colDTO.getColSeq();
+    }
+
+    /* Done 컬럼 생성 */
+    @Override
+    public int addDoneColumn(ColDTO colDTO) {
+        return colDAO.addDoneColumn(colDTO);
+    }
+
+    /* 컬럼 생성 */
+    @Override
+    public int addColumn(ColDTO colDTO) {
+        int result = -1;
+        try {
+            result = colDAO.addColumn(colDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /* 컬럼명 변경 */
+    @Override
+    public int updateColName(ColDTO colDTO) {
+        int result = -1;
+        try {
+            result = colDAO.updateColName(colDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     /* 컬럼 리스트 불러오기 */
     @Override
@@ -19,15 +57,26 @@ public class ColServiceImpl implements ColService {
         return colDAO.getColList(boardSeq);
     }
 
-    /* 컬럼 생성 */
+    /* ColDTO 불러오기 */
     @Override
-    public int addColumn(ColDTO colDTO) {
-        return colDAO.addColumn(colDTO);
+    public ColDTO getColDTO(int colSeq) {
+        return colDAO.getColDTO(colSeq);
     }
 
-    /* 컬럼 삭제 */
+    /* 컬럼 삭제 by colSeq */
     @Override
     public int deleteColumn(int colSeq) {
         return colDAO.deleteColumn(colSeq);
+    }
+
+    /* 컬럼 삭제 by boardSeq */
+    @Override
+    public int deleteColumnByBoardSeq(int boardSeq) {
+        return colDAO.deleteColumnByBoardSeq(boardSeq);
+    }
+
+    @Override
+    public int deleteColumnByProjectSeq(int projectSeq) {
+        return colDAO.deleteColumnByBoardSeq(projectSeq);
     }
 }

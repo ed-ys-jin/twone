@@ -5,13 +5,10 @@
     <!-- 회원가입 -->
     <insert id="signup" parameterType="MemDTO">
         INSERT INTO t_mem
-            (mem_seq, mem_email, mem_name, mem_pw
-            , mem_cert, mem_pwexpiry, mem_delcheck
-            , mem_image, mem_position, mem_dept, mem_company)
         VALUES
             ((SELECT nextval('mem_seq') AS mem_seq FROM dual), #{memEmail}, #{memName}, #{memPw}
-            , 0, (SELECT DATE_ADD(NOW(), INTERVAL 6 MONTH)), 0
-            , null, null, null, null)
+            , (SELECT DATE_ADD(NOW(), INTERVAL 6 MONTH)), 0, 0
+            , null, null, null, null, null)
     </insert>
 
     <!-- 회원탈퇴 -->
@@ -24,11 +21,22 @@
     <!-- 회원정보 수정 -->
     <update id="updateMemInfo" parameterType="MemDTO">
         UPDATE t_mem
-        SET mem_image = #{memImage},
-            mem_name = #{memName},
-            mem_position = #{memPosition},
-            mem_dept = #{memDept},
-            mem_company = #{memCompany}
+        SET
+            <if test="memName!='' and memName != null">
+                mem_name = #{memName},
+            </if>
+            <if test="memPosition!='' and memPosition != null">
+                mem_position = #{memPosition},
+            </if>
+            <if test="memDept!='' and memDept != null">
+                mem_dept = #{memDept},
+            </if>
+            <if test="memCompany!='' and memCompany != null">
+                mem_company = #{memCompany}
+            </if>
+            <if test="memImage!='' and memImage != null">
+                mem_image = #{memImage}
+            </if>
         WHERE mem_seq = #{memSeq}
     </update>
 
@@ -67,6 +75,24 @@
         WHERE mem_seq = #{memSeq}
     </select>
 
+    <!-- 팀 멤버 불러오기 for 이슈폼 -->
+    <select id="getTeamMemberForIssueForm" parameterType="int" resultType="MemDTO">
+        SELECT m.*
+        FROM t_team t, t_mem m
+        WHERE t.project_seq = #{projectSeq}
+            and t.team_allow != 3
+            and t.mem_seq = m.mem_seq
+    </select>
+
+    <!-- 사용자 메일인증 키값 저장-->
+    <update id="updateMemKey" parameterType="MemDTO">
+        UPDATE t_mem SET mem_key= #{memKey} WHERE mem_email= #{memEmail}
+    </update>
+
+    <!-- 메일 인증 여부 변경   -->
+    <update id="changeMailCert" parameterType="Map">
+        UPDATE t_mem SET mem_cert = 1 WHERE mem_email= #{email} and mem_key= #{key}
+    </update>
 
 
 </mapper>

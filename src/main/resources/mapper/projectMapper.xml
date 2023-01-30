@@ -10,7 +10,7 @@
     </insert>
 
     <insert id="insertMasterTeam" parameterType="projectDTO">
-        INSERT into t_team values(nextval('team_seq'),#{projectSeq},#{memSeq},1)
+        INSERT into t_team values(nextval('team_seq'),#{projectSeq},#{memSeq},0)
     </insert>
 
     <select id="getList" parameterType="int" resultType="projectDTO">
@@ -22,6 +22,14 @@
 
     <select id="selectOne" parameterType="int" resultType="projectDTO">
         select * from t_project where project_seq = #{projectSeq}
+    </select>
+
+    <select id="checkKey" parameterType="String" resultType="int">
+        select count(*) from t_project where project_seq = #{projectSeq} and project_key = #{projectKey}
+    </select>
+
+    <select id="checkLeaderPw" parameterType="int" resultType="String">
+        select mem_pw from t_mem where mem_seq = #{memSeq}
     </select>
 
     <delete id="deleteOne" parameterType="int">

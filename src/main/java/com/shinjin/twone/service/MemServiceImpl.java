@@ -8,17 +8,18 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
-public class MemServiceImpl implements MemService{
+public class MemServiceImpl implements MemService {
 
     @Autowired
     private MemDAO memDAO;
 
     /* 유효성 검사 */
     @Override
-    public Map<String, String> validatorHandling(Errors errors){
+    public Map<String, String> validatorHandling(Errors errors) {
         Map<String, String> validatorResult = new HashMap<>();
 
         /* 유효성 검사에 실패한 필드 목록을 받음 */
@@ -32,37 +33,67 @@ public class MemServiceImpl implements MemService{
     /* 중복 이메일 확인 */
     @Override
     public int checkDupl(String email) {
-        return memDAO.checkDupl(email);
+        int result = -1;
+        try {
+            result = memDAO.checkDupl(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /* 회원등록 */
     @Override
     public int signup(MemDTO memDTO) {
-        return memDAO.signup(memDTO);
+        int result = -1;
+        try {
+            result = memDAO.signup(memDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /* 로그인 */
     @Override
     public MemDTO login(MemDTO memDTO) {
-        return memDAO.login(memDTO);
+        MemDTO dto = null;
+        try {
+            dto = memDAO.login(memDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dto;
     }
 
     /* 회원탈퇴 */
     @Override
     public int withdraw(MemDTO memDTO) {
-        return memDAO.withdraw(memDTO);
+        int result = 0;
+        try {
+            result = memDAO.withdraw(memDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /* memDTO 불러오기 */
     @Override
-    public MemDTO getDto(int memSeq){
+    public MemDTO getDto(int memSeq) {
         return memDAO.getDto(memSeq);
     }
 
     /* 회원정보 수정 */
     @Override
     public int updateMemInfo(MemDTO memDTO) {
-        return memDAO.updateMemInfo(memDTO);
+        int result = -1;
+        try {
+            result = memDAO.updateMemInfo(memDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /* 비밀번호 불러오기 */
@@ -74,7 +105,28 @@ public class MemServiceImpl implements MemService{
     /* 비밀번호 변경 */
     @Override
     public int changePw(MemDTO memDTO) {
-        return memDAO.changePw(memDTO);
+        int result = -1;
+        try {
+            result = memDAO.changePw(memDTO);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public List<MemDTO> getTeamMemberForIssueForm(int projectSeq) {
+        return memDAO.getTeamMemberForIssueForm(projectSeq);
+    }
+
+    @Override
+    public void updateMemKey(MemDTO memDTO) {
+        memDAO.updateMemKey(memDTO);
+    }
+
+    @Override
+    public void changeMailCert(Map<String, String> map) {
+        memDAO.changeMailCert(map);
     }
 
 }

@@ -30,6 +30,16 @@ public class ProjectDAOImpl implements ProjectDAO{
     }
 
     @Override
+    public int checkKey(ProjectDTO pdto) {
+        return checkKey(pdto);
+    }
+
+    @Override
+    public String checkLeaderPw(int memSeq) {
+        return checkLeaderPw(memSeq);
+    }
+
+    @Override
     public int deleteOne(int projectSeq) {
         return deleteOne(projectSeq);
     }

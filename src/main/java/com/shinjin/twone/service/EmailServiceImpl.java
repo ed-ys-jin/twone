@@ -18,34 +18,30 @@ public class EmailServiceImpl implements EmailService{
   @Autowired
   JavaMailSender emailSender;
 
-  public static final String ePw = createKey();
+  public static final String key = createKey();
 
   private MimeMessage createMessage(String to)throws Exception{
     System.out.println("보내는 대상 : "+ to);
-    System.out.println("인증 번호 : "+ePw);
+    System.out.println("인증 번호 : "+key);
     MimeMessage  message = emailSender.createMimeMessage();
 
     message.addRecipients(RecipientType.TO, to);//보내는 대상
-    message.setSubject("이메일 인증 테스트");//제목
+    message.setSubject("TWONE 이메일 인증");//제목
 
     String msgg="";
     msgg+= "<div style='margin:20px;'>";
-    msgg+= "<h1> 안녕하세요 임준호입니다. </h1>";
+    msgg+= "<h1> 안녕하세요 TWONE 입니다. </h1>";
     msgg+= "<br>";
-    msgg+= "<p>아래 코드를 복사해 입력해주세요<p>";
+    msgg+= "<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.<p>";
     msgg+= "<br>";
     msgg+= "<p>감사합니다.<p>";
     msgg+= "<br>";
-    msgg+= "<div align='center' style='border:1px solid black; font-family:verdana';>";
-    msgg+= "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
-    msgg+= "<div style='font-size:130%'>";
-    msgg+= "CODE : <strong>";
-    msgg+= ePw+"</strong><div><br/> ";
-    msgg+= "</div>";
+    msgg+= "<a href='http://localhost:8080/signUpConfirm?email=" + to;
+    msgg+= "&key=" + key;
+    msgg+= "'target='blank'>이메일 인증 확인</a>";
     message.setText(msgg, "utf-8", "html");//내용
-    message.setFrom(new InternetAddress("jeewon1202@gmail.com","봉!지원"));//보내는 사람
+    message.setFrom(new InternetAddress("twon.shinjinbong@gmail.com","towon"));//보내는 사람
 
-    System.out.println(message +"메세지여");
     return message;
   }
 
@@ -74,6 +70,8 @@ public class EmailServiceImpl implements EmailService{
     }
     return key.toString();
   }
+
+  // 이메일 전송
   @Override
   public String sendSimpleMessage(String to)throws Exception {
     // TODO Auto-generated method stub
@@ -84,6 +82,6 @@ public class EmailServiceImpl implements EmailService{
       es.printStackTrace();
       throw new IllegalArgumentException();
     }
-    return ePw;
+    return key;
   }
 }

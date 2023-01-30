@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shinjin.twone.dao.IssueFormDAO" >
+
+    <!-- 이슈폼 생성 -->
+    <insert id="addIssueForm" parameterType="IssueFormDTO">
+        INSERT INTO t_issueform
+        VALUES ((SELECT nextval('issueform_seq') AS issueform_seq FROM dual), #{issueSeq}, #{formsSeq}, #{issueFormOrder})
+    </insert>
+
+    <!-- 이슈폼 사이즈 구하기 -->
+    <select id="getIssueFormSize" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM t_issueform
+        WHERE issue_seq = #{issueSeq}
+    </select>
+
+    <!-- 이슈폼 리스트 불러오기 by issueSeq -->
+    <select id="getIssueFormList" parameterType="int" resultType="IssueFormDTO">
+        SELECT *
+        FROM t_issueform
+        WHERE issue_seq = #{issueSeq}
+        ORDER BY issueform_order ASC;
+    </select>
+
+    <!-- 이슈폼 삭제 -->
+    <delete id="deleteIssueForm" parameterType="int">
+        DELETE FROM t_issueform
+        WHERE issueform_seq = #{issueFormSeq}
+    </delete>
+
+    <!-- 이슈폼 자식 테이블 삭제 -->
+    <delete id="deleteFormsUnderIssue" parameterType="IssueFormDTO">
+        DELETE FROM #{formsTableName}
+        WHERE #{formsColName} = #{formsSeq}
+    </delete>
+
+</mapper>

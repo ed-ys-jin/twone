@@ -12,22 +12,50 @@ public class ColDAOImpl implements ColDAO {
         return getColList(boardSeq);
     }
 
+    /* 샘플 컬럼 생성 */
+    @Override
+    public int createSampleColumn(ColDTO colDTO) {
+        return createSampleColumn(colDTO);
+    }
+
+    /* Done 컬럼 생성 */
+    @Override
+    public int addDoneColumn(ColDTO colDTO) {
+        return addDoneColumn(colDTO);
+    }
+
     /* 컬럼 생성 */
     @Override
     public int addColumn(ColDTO colDTO) {
-        int result = -1;
-        try {
-            result = addColumn(colDTO);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
+        return addColumn(colDTO);
     }
 
-    /* 컬럼 삭제 */
+    /* 컬럼명 변경 */
+    @Override
+    public int updateColName(ColDTO colDTO) {
+        return updateColName(colDTO);
+    }
+
+    /* ColDTO 불러오기 */
+    @Override
+    public ColDTO getColDTO(int colSeq) {
+        return getColDTO(colSeq);
+    }
+
+    /* 컬럼 삭제 by colSeq */
     @Override
     public int deleteColumn(int colSeq) {
-        System.out.println("11111");
         return deleteColumn(colSeq);
+    }
+
+    /* 컬럼 삭제 by boardSeq */
+    @Override
+    public int deleteColumnByBoardSeq(int boardSeq) {
+        return deleteColumnByBoardSeq(boardSeq);
+    }
+
+    @Override
+    public int deleteColumnByProjectSeq(int projectSeq) {
+        return deleteColumnByProjectSeq(projectSeq);
     }
 }
