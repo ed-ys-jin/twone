@@ -169,8 +169,7 @@
 
     // input toggle
     if (inputBox.style.display != "none") {
-      // 입력창 숨길때 입력값 삭제
-      inputBox.value = null;
+      inputBox.value = null; // 입력창 숨길때 입력값 삭제
       inputBox.style.display = "none";
     } else {
       inputBox.style.display = "block";

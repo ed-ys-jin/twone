@@ -73,8 +73,8 @@ button span,
       <%-- 생성일자, 업데이트일자 --%>
       <div id="issue-date-info" class="date-info col-lg-6">
         <p><br><br>
-          최초작성 &nbsp;<fmt:formatDate value="${idto.issueRegdate}" pattern="yyyy.MM.dd" />
-          &nbsp; 업데이트 &nbsp;<fmt:formatDate value="${idto.issueUpdate}" pattern="yyyy.MM.dd" />
+          최초작성 &nbsp;<fmt:formatDate value="${idto.issueRegdate}" pattern="yyyy.MM.dd HH:mm:ss" />
+          &nbsp; 업데이트 &nbsp;<fmt:formatDate value="${idto.issueUpdate}" pattern="yyyy.MM.dd HH:mm:ss" />
         </p>
       </div>
 
@@ -202,7 +202,6 @@ button span,
 
   /* 이슈 세부사항 수정 */
   function updateIssueDTO(input, type){
-
     let boxId = null; // 출력 위치 지정 엘리먼트 ID
     let valueId = null; // Value 엘리먼트 ID
     let maxLength = 0; // 입력 제한 길이
@@ -238,7 +237,6 @@ button span,
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 이슈 제목의 입력값이 공백인 경우
       if(type == "title"){
         if(inputValue.trim() == ""){
@@ -254,13 +252,12 @@ button span,
       // 콜백 작업 지정
       xhttp.onreadystatechange = function (){
         if(this.readyState == 4 && this.status == 200){
-          // 태그 업데이트
-          document.getElementById(boxId).innerHTML = this.responseText;
+          updateDateInfo(); // 이슈 업데이트 일시 수정
+          document.getElementById(boxId).innerHTML = this.responseText; // 태그 업데이트
           // 이슈 제목인 경우 focus 해제
           if(type == "title"){
             valueElement.blur();
           }
-          updateDateInfo();
         }
       };
       // 결과값 받음
@@ -270,27 +267,23 @@ button span,
 
   /* 드롭다운(이슈폼 추가) 토글 */
   function toggleSelect(selectBoxId) {
-
     const selectBox = document.getElementById(selectBoxId); // 드롭다운 엘리먼트
 
     if(selectBox.style.display != "none") {
       selectBox.style.display = "none";
     } else {
-      // 드롭다운 출력할 때 기본옵션("구성요소 출력하기") select
-      selectBox.options[0].selected = true;
+      selectBox.options[0].selected = true; // 드롭다운 출력할 때 기본옵션("구성요소 출력하기") select
       selectBox.style.display = "block";
     }
   }
 
   /* 이슈폼 추가 */
   function addIssueForm(selectedOption){
-
     const selectedValue = selectedOption.value; // 선택된 옵션명
 
-    // 드롭다운(이슈폼 추가) 숨기기
-    toggleSelect("issue-select-box");
+    toggleSelect("issue-select-box"); // 드롭다운(이슈폼 추가) 숨기기
 
-    // URL(+ 파라미터) 만들기
+    // URL 만들기
     let url = "/project/addissueform?issueSeq=" + ${idto.issueSeq}
             + "&selectedValue=" + selectedValue;
 
@@ -301,9 +294,8 @@ button span,
     // 콜백 작업 지정
     xhttp.onreadystatechange = function (){
       if(this.readyState == 4 && this.status == 200){
-        // 태그 업데이트
-        document.getElementById("issue-form-list").innerHTML = this.responseText;
-        updateDateInfo();
+        updateDateInfo(); // 이슈 업데이트 일시 수정
+        document.getElementById("issue-form-list").innerHTML = this.responseText; // 태그 업데이트
       }
     }
     // 결과값 받음
@@ -312,7 +304,6 @@ button span,
 
   /* 이슈폼 제목(Label) 변경 */
   function updateLabel(input, formsSeq){
-
     const labelValue = input.value; // 입력값
     const valueId = formsSeq + "-label";
     const boxId = valueId + "-box";
@@ -327,14 +318,13 @@ button span,
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 이슈 제목의 입력값이 공백인 경우
       if (labelValue.trim() == "") {
         alert("구성요소 이름을 최소 1글자 이상 입력해 주세요.");
         return;
       }
 
-      // URL(+ 파라미터) 만들기
+      // URL 만들기
       let url = "/project/updatelabel?issueSeq=" + ${idto.issueSeq}
           + "&labelValue=" + labelValue
           + "&formsSeq=" + formsSeq;
@@ -346,11 +336,9 @@ button span,
       // 콜백 작업 지정
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-          // 태그 업데이트
-          document.getElementById(boxId).innerHTML = this.responseText;
-          // focus 해제
-          valueId.blur();
-          updateDateInfo();
+          updateDateInfo(); // 이슈 업데이트 일시 수정
+          document.getElementById(boxId).innerHTML = this.responseText; // 태그 업데이트
+          valueId.blur(); // focus 해제
         }
       };
       // 결과값 받음
@@ -363,7 +351,7 @@ button span,
     const inputValue = input.value;
     const boxId = formsSeq + "-value-box";
 
-    // URL(+ 파라미터) 만들기
+    // URL 만들기
     let url = "/project/updatevalue?issueSeq=" + ${idto.issueSeq}
         + "&inputValue=" + inputValue
         + "&formsSeq=" + formsSeq;
@@ -375,9 +363,8 @@ button span,
     // 콜백 작업 지정
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
-        // 태그 업데이트
-        document.getElementById(boxId).innerHTML = this.responseText;
-        updateDateInfo();
+        updateDateInfo(); // 이슈 업데이트 일시 수정
+        document.getElementById(boxId).innerHTML = this.responseText; // 태그 업데이트
       }
     }
     // 결과값 받음
@@ -386,7 +373,6 @@ button span,
 
   /* 댓글 등록 */
   function addComment(input){
-
     const inputValue = input.value;
     let valueElement = document.getElementById("comment-value");
 
@@ -399,13 +385,13 @@ button span,
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 댓글 입력값이 공백인 경우
       if (inputValue.trim() == "") {
         alert("댓글을 최소 1글자 이상 입력해 주세요.");
         return;
       }
 
+      // url 만들기
       const url = "/project/addcomment?issueSeq=" + ${idto.issueSeq}
                 + "&inputValue=" + encodeURIComponent(inputValue);
 
@@ -416,8 +402,7 @@ button span,
       // 콜백 작업 지정
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-          document.getElementById("comment-box").innerHTML = this.responseText;
-          // 태그 업데이트
+          document.getElementById("comment-box").innerHTML = this.responseText; // 태그 업데이트
           valueElement.blur();
           valueElement.value = null;
         }
@@ -440,7 +425,6 @@ button span,
 
   /* 댓글 수정 */
   function updateComment(input, commentSeq){
-
     const inputValue = input.value;
     const commentInput = document.getElementById("comment-" + commentSeq + "-update");
     const commentInputBox = document.getElementById("comment-" + commentSeq + "-update-box");
@@ -454,7 +438,6 @@ button span,
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 댓글 입력값이 공백인 경우
       if (inputValue.trim() == "") {
         alert("댓글을 최소 1글자 이상 입력해 주세요.");
@@ -473,10 +456,8 @@ button span,
       // 콜백 작업 지정
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-          // 태그 업데이트
-          document.getElementById("comment-box").innerHTML = this.responseText;
-          // 댓글 수정용 입력창 숨기기
-          commentInputBox.style.display = "none";
+          document.getElementById("comment-box").innerHTML = this.responseText; // 태그 업데이트
+          commentInputBox.style.display = "none"; // 댓글 수정용 입력창 숨기기
         }
       }
       // 결과값 받음
@@ -486,7 +467,6 @@ button span,
 
   /* 댓글 삭제 */
   function deleteComment(commentSeq){
-
     // URL 만들기
     const url = "/project/deletecomment?commentSeq=" + commentSeq;
 
@@ -518,9 +498,8 @@ button span,
     // 콜백 작업 지정
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
-        // 태그 업데이트
-        document.getElementById("issue-form-list").innerHTML = this.responseText;
-        updateDateInfo();
+        updateDateInfo(); // 이슈 업데이트 일시 수정
+        document.getElementById("issue-form-list").innerHTML = this.responseText; // 태그 업데이트
       }
     }
     // 결과값 받음
@@ -529,7 +508,6 @@ button span,
 
   /* 이슈폼 삭제 */
   function deleteForms(formsSeq){
-
     // URL 만들기
     const url = "/project/deleteforms?issueSeq=" + ${idto.issueSeq}
               + "&formsSeq=" + formsSeq;
@@ -541,6 +519,7 @@ button span,
     // 태그 삭제
     document.getElementById("forms-" + formsSeq).remove();
 
+    // 이슈 업데이트 일시 수정
     updateDateInfo();
 
     // 결과값 받음
@@ -549,7 +528,6 @@ button span,
 
   /* 이슈 업데이트 일자 변경 */
   function updateDateInfo(){
-
     // url 만들기
     let url = "/project/updatedateinfo?issueSeq=" + ${idto.issueSeq};
 

@@ -205,7 +205,7 @@ public class IssueController {
     }
 
     // 문자열 만들기
-    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
     for(CommentDTO cmtdto : commentlist){
       String commentDate = format.format(cmtdto.getCommentDate());
       int commentSeq = cmtdto.getCommentSeq();
@@ -668,7 +668,7 @@ public class IssueController {
     // 등록일자, 업데이트일자 불러오기
     int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
     IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
-    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd");
+    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
     String regdate = format.format(issueDTO.getIssueRegdate());
     String update = format.format(issueDTO.getIssueUpdate());
 

@@ -206,14 +206,13 @@
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 공백이 입력된 경우
       if(colName.trim() == ""){
         alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
         return;
       }
 
-      // URL(+ 파라미터) 만들기
+      // URL 만들기
       let url = "/project/addcolumn?boardSeq=" + ${bdto.boardSeq}
               + "&colName=" + encodeURIComponent(colName);
 
@@ -251,7 +250,6 @@
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 입력값이 공백인 경우
       if(colName.trim() == ""){
         alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
@@ -269,10 +267,8 @@
       // 콜백 작업 지정
       xhttp.onreadystatechange = function (){
         if(this.readyState == 4 && this.status == 200){
-          // 컬럼 리스트 업데이트
-          document.getElementById("column-list-card").innerHTML = this.responseText;
-          // inputBox focus 해제
-          inputBox.blur();
+          document.getElementById("column-list-card").innerHTML = this.responseText; // 컬럼 리스트 업데이트
+          inputBox.blur(); // inputBox focus 해제
         }
       };
       // 결과값 받음
@@ -304,7 +300,7 @@
 
   /* 이슈 생성 */
   function addIssue(colSeq){
-    // URL(+ 파라미터) 만들기
+    // URL 만들기
     let url = "/project/addissue?colSeq=" + colSeq;
 
     // 연결 작업
@@ -329,7 +325,7 @@
       return;
     }
 
-    // URL(+ 파라미터) 만들기
+    // URL 만들기
     let url = "/project/deleteissue?issueSeq=" + issueSeq;
 
     // 연결 작업
