@@ -62,12 +62,17 @@ public class MemDAOImpl implements MemDAO {
     }
 
     @Override
-    public void updateMemKey(MemDTO memDTO) {
-        updateMemKey(memDTO);
+    public int updateMemKey(MemDTO memDTO) {
+        return updateMemKey(memDTO);
     }
 
     @Override
     public void changeMailCert(Map<String, String> map) {
         changeMailCert(map);
+    }
+
+    @Override
+    public int timeOut() {
+        return timeOut();
     }
 }

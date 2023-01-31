@@ -120,13 +120,18 @@ public class MemServiceImpl implements MemService {
     }
 
     @Override
-    public void updateMemKey(MemDTO memDTO) {
-        memDAO.updateMemKey(memDTO);
+    public int updateMemKey(MemDTO memDTO) {
+       return memDAO.updateMemKey(memDTO);
     }
 
     @Override
     public void changeMailCert(Map<String, String> map) {
         memDAO.changeMailCert(map);
+    }
+
+    @Override
+    public int timeOut() {
+        return memDAO.timeOut();
     }
 
 }

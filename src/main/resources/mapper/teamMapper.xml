@@ -31,8 +31,8 @@
     </insert>
 
     <!-- 사용자 존재 여부-->
-    <select id="checkMember" parameterType="String" resultType="int">
-        select t_mem.mem_seq from t_mem where mem_email=#{email}
+    <select id="checkMember" parameterType="String" resultType="MemDTO">
+        select * from t_mem where mem_email=#{email}
     </select>
 
     <!-- 팀 테이블 한 레코드 가져오기-->

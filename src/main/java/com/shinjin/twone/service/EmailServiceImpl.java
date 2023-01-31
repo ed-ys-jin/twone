@@ -18,9 +18,10 @@ public class EmailServiceImpl implements EmailService{
   @Autowired
   JavaMailSender emailSender;
 
-  public static final String key = createKey();
+  public String key = "";
 
   private MimeMessage createMessage(String to)throws Exception{
+    key = createKey();
     System.out.println("보내는 대상 : "+ to);
     System.out.println("인증 번호 : "+key);
     MimeMessage  message = emailSender.createMimeMessage();
@@ -82,6 +83,7 @@ public class EmailServiceImpl implements EmailService{
       es.printStackTrace();
       throw new IllegalArgumentException();
     }
+    System.out.println(key + "키다아아아아아앙");
     return key;
   }
 }

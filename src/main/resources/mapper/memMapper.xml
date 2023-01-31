@@ -8,7 +8,7 @@
         VALUES
             ((SELECT nextval('mem_seq') AS mem_seq FROM dual), #{memEmail}, #{memName}, #{memPw}
             , (SELECT DATE_ADD(NOW(), INTERVAL 6 MONTH)), 0, 0
-            , null, null, null, null, null)
+            , null, null, null, null, null, null)
     </insert>
 
     <!-- 회원탈퇴 -->
@@ -86,12 +86,18 @@
 
     <!-- 사용자 메일인증 키값 저장-->
     <update id="updateMemKey" parameterType="MemDTO">
-        UPDATE t_mem SET mem_key= #{memKey} WHERE mem_email= #{memEmail}
+        UPDATE t_mem SET mem_key= #{memKey} , mem_key_date = NOW() WHERE mem_email= #{memEmail}
     </update>
 
     <!-- 메일 인증 여부 변경   -->
     <update id="changeMailCert" parameterType="Map">
-        UPDATE t_mem SET mem_cert = 1 WHERE mem_email= #{email} and mem_key= #{key}
+        UPDATE t_mem SET mem_cert = 1 , mem_key = null, mem_key_date = null WHERE mem_email= #{email} and mem_key= #{key}
+    </update>
+
+    <!-- 발급일 하루 지난 사용자의 발급일, 발급일자, 이메일 인증 변경-->
+    <update id="timeOut">
+        update t_mem set mem_key_date = null, mem_key = null , mem_cert =2  where  date_add(mem_key_date, interval 1 DAY )
+        <![CDATA[ < ]]> (SELECT NOW())
     </update>
 
 

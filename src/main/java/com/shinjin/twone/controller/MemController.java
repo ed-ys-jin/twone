@@ -54,15 +54,17 @@ public class MemController {
             commonMethod.setAttribute(model, "/signup", "이미 등록된 이메일 계정입니다.");
             return "/common/alert";
         }
-
+        System.out.println("1");
         /* 회원 등록 */
         // 회원 등록 성공
         if(memService.signup(memDTO) != -1) {
             // 임의의 key 생성 & 이메일 발송
+            System.out.println("2");
             String key = emailService.sendSimpleMessage(memDTO.getMemEmail());
             memDTO.setMemKey(key);
             memDTO.setMemEmail(memDTO.getMemEmail());
-            memService.updateMemKey(memDTO);
+            int keyChek = memService.updateMemKey(memDTO);
+            System.out.println(keyChek);
 
             commonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "등록하신 이메일로 인증요청 메일이 발송되었습니다. 메일 인증 후 로그인을 진행해 주세요.");
         // 회원 등록 실패
@@ -275,10 +277,7 @@ public class MemController {
     /*메일 링크 인증시 인증 여부 변경*/
     @RequestMapping ("/signUpConfirm")
     public void changeMailCert(@RequestParam Map<String,String> map ){
-        System.out.println(map.get("email"));
-        System.out.println(map.get("key"));
         memService.changeMailCert(map);
-        System.out.println("변경");
     }
 
 }

@@ -18,7 +18,9 @@ public interface MemDAO {
     public int changePw(MemDTO memDTO); // 비밀번호 변경
     public List<MemDTO> getTeamMemberForIssueForm(int projectSeq); // 팀 멤버 불러오기 for 이슈폼
 
-    public void updateMemKey(MemDTO memDTO); // 사용자 메일 키값 저장
+    public int updateMemKey(MemDTO memDTO); // 사용자 메일 키값 저장
 
     public void changeMailCert(Map<String, String> map); // 메일인증 여부 변경
+
+    public int timeOut(); // 발급일 하루 지난 사용자의 발급일, 발급일자, 이메일 인증 변경
 }

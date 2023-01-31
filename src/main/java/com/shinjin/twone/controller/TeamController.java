@@ -2,6 +2,7 @@ package com.shinjin.twone.controller;
 
 import com.shinjin.twone.common.commonMethod;
 import com.shinjin.twone.dto.BoardDTO;
+import com.shinjin.twone.dto.MemDTO;
 import com.shinjin.twone.dto.ProjectDTO;
 import com.shinjin.twone.dto.TeamDTO;
 
@@ -46,6 +47,7 @@ public class TeamController {
     Set<String> keys = teamList.get(0).keySet();
     List<HashMap<String,Object>> list = new ArrayList<>();
 
+    // json 방식으로 문자열 만들기
     for(HashMap<String,Object> m : teamList){
         allowList.add((Integer) m.get("team_allow"));
         HashMap<String,Object> map = new HashMap<>();
@@ -61,11 +63,11 @@ public class TeamController {
       list.add(map);
     }
 
+
     JSONParser parser = new JSONParser();
     JSONArray teamlist = new JSONArray();
-//    System.out.println(list);
-    for(HashMap<String,Object> map:list){
 
+    for(HashMap<String,Object> map:list){
       String str = map.toString().replaceAll("=",":") ;
       JSONObject json = (JSONObject)parser.parse(str);
       teamlist.add(json);
@@ -79,8 +81,10 @@ public class TeamController {
     map.put("mSeq", login);
     map.put("pSeq",pSeq);
     HashMap<String,Object> tdto = teamService.selectOne(map);
-    Set<String> key = tdto.keySet();
 
+    Set<String> key = tdto.keySet();
+    
+    //json문자에서 숫자,문자 판별하여 따옴표 붙이기
     HashMap<String,Object> dto = new HashMap<String,Object>();
     for(String k : key){
       if(tdto.get(k).equals("")){
@@ -124,21 +128,12 @@ public class TeamController {
     if(check == -1 ){
       commonMethod.setAttribute(request,"/project/team?projectSeq="+projectSeq,"변경을 다시 시도해주세요.");
     }else{
-      commonMethod.setAttribute(request, "/project/team?projectSeq="+projectSeq,"변경이 완료되었습니다.");
+      commonMethod.setAttribute(request, "/project/team?projectSeq="+projectSeq);
     }
       return "/common/alert";
   }
 
 
-//  @PostMapping("/project/memberAdd")
-//  public String emailConfirm(HttpServletRequest request) throws Exception {
-//
-//    String email = request.getParameter("email");
-//    String confirm = emailService.sendSimpleMessage(email);
-//    System.out.println(confirm +"컨펌이다!!");
-//
-//    return confirm;
-//  }
 
   //사용자 추가
   @RequestMapping("/project/memberAdd")
@@ -147,14 +142,16 @@ public class TeamController {
     int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
 
     //사용자 존재여부
-    Integer checkMem = teamService.checkMember(email);
-    if (checkMem == null) { //사용자가 존재하지 않음
+    MemDTO memDto = teamService.checkMember(email);
+    
+    // 사용자가 존재하지 않거나, 이메일 인증이 진행되지 않았거나, 탈퇴계정인 경우
+    if (memDto == null || memDto.getMemCert() == 2 ||memDto.getMemCert() == 0 || memDto.getMemDelcheck() == 1) { //사용자가 존재하지 않음
       commonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자를 다시 확인해주세요.");
       return "/common/alert";
 
     } else { // 사용자 존재
       HashMap<String, Object> map = new HashMap<String, Object>();
-      map.put("mSeq", checkMem);
+      map.put("mSeq", memDto.getMemSeq());
       map.put("pSeq", projectSeq);
 
       // 팀 추가시 사용자 중복 확인

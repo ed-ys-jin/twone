@@ -18,7 +18,7 @@ public interface TeamService {
   public int memberAdd(HashMap<String, Object> map);
 
 
-  public Integer checkMember(String email);
+  public MemDTO checkMember(String email);
 
   public TeamDTO checkOne(HashMap<String, Object> map);
   public HashMap<String, Object> selectOne(HashMap<String, Object> map);
