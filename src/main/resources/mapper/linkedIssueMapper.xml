@@ -2,10 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.shinjin.twone.dao.LinkedIssueDAO" >
 
-    <!-- 링크된이슈 삭제 -->
-    <delete id="deleteLinkedIssue" parameterType="int">
-        DELETE FROM t_linked_issue
-        WHERE linked_main = #{issueSeq} || issue_seq = #{issueSeq}
-    </delete>
+  <!-- 이슈 링크하기 -->
+  <insert id="addIssueLink" parameterType="LinkedIssueDTO">
+    INSERT INTO t_linked_issue
+    VALUES ((SELECT nextval('linked_seq') AS linked_seq FROM dual), #{linkedMain}, #{issueSeq})
+  </insert>
+
+  <!-- 이슈 링크 해제 -->
+  <delete id="deleteIssueLink" parameterType="LinkedIssueDTO">
+    DELETE FROM t_linked_issue
+    WHERE linked_seq IN (SELECT linked_seq FROM (SELECT linked_seq FROM t_linked_issue WHERE linked_main = #{linkedMain} AND issue_seq = #{issueSeq}) temp)
+       OR linked_seq IN (SELECT linked_seq FROM (SELECT linked_seq FROM t_linked_issue WHERE linked_main = #{issueSeq} AND issue_seq = #{linkedMain}) temp);
+  </delete>
 
 </mapper>

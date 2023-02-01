@@ -88,6 +88,14 @@ public class IssueController {
     String commentList = commentListToHtmlCode(issueSeq, memSeq);
     request.setAttribute("commentList", commentList);
 
+    /* Attr : 링크 가능한 이슈 리스트 */
+    List<IssueDTO> unlinkedIssueList = issueService.getUnlinkedIssueList(issueDTO);
+    request.setAttribute("unlinkedIssueList", unlinkedIssueList);
+
+    /* Attr : 링크된 이슈 리스트 */
+    List<IssueDTO> linkedIssueList = issueService.getLinkedIssueList(issueSeq);
+    request.setAttribute("linkedIssueList", linkedIssueList);
+
     return "issue/issue";
   }
 
@@ -96,10 +104,10 @@ public class IssueController {
   * -> 이유 : html 태그 작성하는 메소드를 컬럼 추가 메소드와 공유함
   */
 
-  /*** issueDTO 변경 ***/
-  @GetMapping("/project/updateissuedto")
+  /*** 이슈 기본정보 변경 ***/
+  @GetMapping("/project/updateissueinfo")
   @ResponseBody
-  public String updateIssueDTOProc(HttpServletRequest request){
+  public String updateIssueInfoProc(HttpServletRequest request){
 
     // 입력값, issueSeq, type 파라미터로 받기
     int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
@@ -135,6 +143,40 @@ public class IssueController {
     }
 
     return result;
+  }
+
+  /*** 이슈 링크 ***/
+  @GetMapping("/project/linkissue")
+  @ResponseBody
+  public String linkIssueProc(HttpServletRequest request){
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    int linkIssueSeq = Integer.parseInt(request.getParameter("linkIssueSeq"));
+
+    // LinkedIssueDTO 만들기
+    LinkedIssueDTO linkedIssueDTO = new LinkedIssueDTO();
+    linkedIssueDTO.setLinkedMain(issueSeq); // 메인 이슈
+    linkedIssueDTO.setIssueSeq(linkIssueSeq); // 링크된 이슈
+    int num = linkedIssueService.addIssueLink(linkedIssueDTO);
+
+
+    // 문자열 만들기
+    String result = linkedIssueListToHtmlCode(issueSeq);
+
+    return result;
+  }
+
+  /*** 이슈 링크 해제 ***/
+  @GetMapping("/project/unlinkissue")
+  @ResponseBody
+  public void unlinkIssueProces(HttpServletRequest request){
+    int issueSeq1 = Integer.parseInt(request.getParameter("issueSeq"));
+    int issueSeq2 = Integer.parseInt(request.getParameter("linkedIssueSeq"));
+
+    // LinkedIssueDTO 만들기
+    LinkedIssueDTO linkedIssueDTO = new LinkedIssueDTO();
+    linkedIssueDTO.setLinkedMain(issueSeq1);
+    linkedIssueDTO.setIssueSeq(issueSeq2);
+    int num = linkedIssueService.deleteIssueLink(linkedIssueDTO);
   }
 
   /*** 이슈 삭제 ***/
@@ -431,6 +473,26 @@ public class IssueController {
     // 이슈폼 문자열 만들기
     String result = issueFormListToHtmlCode(issueSeq, teamDTO.getTeamAllow());
 
+    return result;
+  }
+
+  /* 이슈 링크 문자열 만들기 */
+  public String linkedIssueListToHtmlCode(int issueSeq){
+    List<IssueDTO> linkedIssueList = issueService.getLinkedIssueList(issueSeq);
+    String result = "";
+    for(IssueDTO idto : linkedIssueList){
+      issueSeq = idto.getIssueSeq();
+      result += "<li id=\"issue-link-" + issueSeq + "\">";
+      result += "<button type=\"button\" class=\"list-group-item list-group-item-action\">";
+      result += "<a href=\"javascript:unlinkIssue(" + issueSeq + ")\">";
+      result += "<i class=\"bi bi-dash-circle\"></i>";
+      result += "</a>&nbsp;&nbsp;";
+      result += "<a href=\"/project/issue?issueSeq=" + issueSeq + "\">";
+      result += idto.getIssueTitle();
+      result += "</a>";
+      result += "</button>";
+      result += "</li>";
+    }
     return result;
   }
 

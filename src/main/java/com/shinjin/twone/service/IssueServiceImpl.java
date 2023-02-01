@@ -55,6 +55,18 @@ public class IssueServiceImpl implements IssueService {
         return issueDAO.getIssueSeqListUnderProject(projectSeq);
     }
 
+    /* 링크 가능한 이슈 리스트 불러오기 */
+    @Override
+    public List<IssueDTO> getUnlinkedIssueList(IssueDTO issueDTO) {
+        return issueDAO.getUnlinkedIssueList(issueDTO);
+    }
+
+    /* 링크된 이슈 리스트 불러오기 */
+    @Override
+    public List<IssueDTO> getLinkedIssueList(int issueSeq) {
+        return issueDAO.getLinkedIssueList(issueSeq);
+    }
+
     /* 이슈 삭제 by issueSeq */
     @Override
     public int deleteIssue(int issueSeq) {

@@ -15,6 +15,8 @@ public interface IssueDAO {
     public List<IssueDTO> getIssueListByColSeq(int colSeq); // IssueList 불러오기 by colSeq
     public List<Integer> getIssueSeqListUnderBoard(int boardSeq); // issueSeqList 불러오기 by boardSeq
     public List<Integer> getIssueSeqListUnderProject(int projectSeq); // issueSeqList 불러오기 by projectSeq
+    public List<IssueDTO> getUnlinkedIssueList(IssueDTO issueDTO); // 링크 가능한 이슈 리스트 불러오기
+    public List<IssueDTO> getLinkedIssueList(int issueSeq); // 링크된 이슈 리스트 불러오기
     public int deleteIssue(int issueSeq); // 이슈 삭제 by issueSeq
     public int deleteIssueByColSeq(int colSeq); // 이슈 삭제 by colSeq
     public int deleteIssueByBoardSeq(int boardSeq); // 이슈 삭제 by boardSeq

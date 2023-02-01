@@ -56,7 +56,7 @@ button span,
                 <input id="issue-title" type="text" value="${idto.issueTitle}" readonly>
               </c:when>
               <c:otherwise>
-                <input id="issue-title" type="text" value="${idto.issueTitle}" onkeyup="updateIssueDTO(this, 'title')">
+                <input id="issue-title" type="text" value="${idto.issueTitle}" onkeyup="updateIssueInfo(this, 'title')">
               </c:otherwise>
             </c:choose>
           </h1>
@@ -90,23 +90,51 @@ button span,
               <div class="card-body">
                 <h5 class="card-title"></h5>
 
-<%--                <div class="row mb-3">--%>
-<%--                  <div class="col-sm-12">--%>
-
+                <div class="row mb-3">
+                  <div  class="col-sm-5">
 <%--                    <!-- 파일 첨부 -->--%>
 <%--                    <button type="button" class="btn btn-light">--%>
 <%--                      <img src="../resources/bootstrap/img/attach-clip.png" width="20"/>--%>
 <%--                      <span>첨부</span>--%>
 <%--                    </button>--%>
 <%--                    &nbsp;--%>
-<%--                    <!-- 이슈 연결 -->--%>
-<%--                    <button type="button" class="btn btn-light">--%>
-<%--                      <img src="../resources/bootstrap/img/attach-link.png" width="20"/>--%>
-<%--                      <span>이슈 연결</span>--%>
-<%--                    </button>--%>
+                    <!-- 이슈 연결 -->
+                    <button type="button" class="btn btn-light" onclick="toggleSelect('issue-link-select-box')">
+                      <img src="../resources/bootstrap/img/attach-link.png" width="20"/>
+                      <span>이슈 연결</span>
+                    </button>
+                  </div>
+                  <div class="custom-font col-sm-7">
+                    <!-- Issue Link Dropdown -->
+                    <select id="issue-link-select-box" class="form-select" style="display: none" aria-label="default select example" onchange="linkIssue(this)">
+                      <option selected>연결할 이슈를 선택하세요.</option>
+                      <div id="issue-link-select-list">
+                        <c:forEach var="unlinkdto" items="${unlinkedIssueList}">
+                          <option id="issue-link-select-${unlinkdto.issueSeq}" value="${unlinkdto.issueSeq}">${unlinkdto.issueTitle}</option>
+                        </c:forEach>
+                      </div>
+                    </select>
+                  </div>
+                </div><br>
 
-<%--                  </div>--%>
-<%--                </div><br>--%>
+                <!-- 링크된 이슈 리스트 -->
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label">링크</label>
+                  <ol id="issue-link-complete" class="custom-font col-sm-10 list-group" style="padding-top: 0; list-style: none">
+                    <c:forEach var="linkeddto" items="${linkedIssueList}">
+                      <li id="issue-link-${linkeddto.issueSeq}">
+                        <button type="button" class="list-group-item list-group-item-action">
+                          <a href="javascript:unlinkIssue(${linkeddto.issueSeq})">
+                            <i class="bi bi-dash-circle"></i>
+                          </a>&nbsp;&nbsp;
+                          <a href="${twone}/project/issue?issueSeq=${linkeddto.issueSeq}">
+                            ${linkeddto.issueTitle}
+                          </a>
+                        </button>
+                      </li>
+                    </c:forEach>
+                  </ol>
+                </div><br>
 
                 <!-- 설명 -->
                 <div class="row mb-3">
@@ -117,7 +145,7 @@ button span,
                         <input id="issue-summary" type="text" class="form-control" value="${idto.issueSummary}" readonly>
                       </c:when>
                       <c:otherwise>
-                        <input id="issue-summary" type="text" class="form-control" value="${idto.issueSummary}" onkeyup="updateIssueDTO(this, 'summary')">
+                        <input id="issue-summary" type="text" class="form-control" value="${idto.issueSummary}" onkeyup="updateIssueInfo(this, 'summary')">
                       </c:otherwise>
                     </c:choose>
                   </div>
@@ -201,12 +229,12 @@ button span,
 <script>
 
   /* 이슈 세부사항 수정 */
-  function updateIssueDTO(input, type){
+  function updateIssueInfo(input, type){
     let boxId = null; // 출력 위치 지정 엘리먼트 ID
     let valueId = null; // Value 엘리먼트 ID
     let maxLength = 0; // 입력 제한 길이
     const inputValue = input.value; // 입력값
-    let url = "/project/updateissuedto?issueSeq=" + ${idto.issueSeq}
+    let url = "/project/updateissueinfo?issueSeq=" + ${idto.issueSeq}
             + "&inputValue=" + encodeURIComponent(inputValue);
 
     switch (type) {
@@ -263,6 +291,54 @@ button span,
       // 결과값 받음
       xhttp.send();
     }
+  }
+
+  /* 이슈 링크 걸기 */
+  function linkIssue(selectedOption){
+    const selectedValue = selectedOption.value; // 선택된 옵션명
+
+    toggleSelect("issue-link-select-box"); // 드롭다운(이슈 링크) 숨기기
+
+    // URL 만들기
+    let url = "/project/linkissue?issueSeq=" + ${idto.issueSeq}
+            + "&linkIssueSeq=" + selectedValue;
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 콜백 작업 지정
+    xhttp.onreadystatechange = function (){
+      if(this.readyState == 4 && this.status == 200){
+        updateDateInfo(); // 이슈 업데이트 일시 수정
+        document.getElementById("issue-link-complete").innerHTML = this.responseText; // 태그 업데이트
+        document.getElementById("issue-link-select-" + selectedValue).remove(); // 태그 삭제
+      }
+    }
+    // 결과값 받음
+    xhttp.send();
+  }
+
+  /* 이슈 링크 해제 */
+  function unlinkIssue(linkedIssueSeq){
+    // URL 만들기
+    let url = "/project/unlinkissue?issueSeq=" + ${idto.issueSeq}
+            + "&linkedIssueSeq=" + linkedIssueSeq;
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 콜백 작업 지정
+    xhttp.onreadystatechange = function (){
+      if(this.readyState == 4 && this.status == 200){
+        updateDateInfo(); // 이슈 업데이트 일시 수정
+        document.getElementById("issue-link-" + linkedIssueSeq).remove(); // 태그 삭제
+      }
+    }
+
+    // 결과값 받음
+    xhttp.send();
   }
 
   /* 드롭다운(이슈폼 추가) 토글 */
