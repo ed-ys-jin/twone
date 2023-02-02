@@ -149,7 +149,6 @@
                 <div class="allowTitle">관리자</div>
                 <div id="manager"></div>
             </div>
-<%--            <hr style="border: 1px solid #8eb3f5f5;">--%>
             <div class="line">
                 <div class="allowTitle">구성원</div>
                 <div id="member"></div>
@@ -224,7 +223,8 @@
         }
     }
 </script>
-<script language="JavaScript">
+<script >
+    // view 정렬을 위해 페이지가 로드되자마자 실행
     window.onload = function () {
         let teamList = ${teamList};
         const leader = ${leader};
@@ -236,18 +236,14 @@
         const reader = document.getElementById("reader");
         let idx = 0;
 
-        console.log(${allowList});
 
         teamList.forEach(member => {
-            console.log(member.mem_position);
 
             let tag = '<div class="col-2 card-wrrap"> <div class="card team-card" style="';
-            console.log(${leder == dto.memSeq});
             if (leader == member.mem_seq) {
                 tag += 'border: 3px solid #0d6efd3b;';
             }
             tag +='"><div class="card-body test-card-body profile-card pt-4 d-flex flex-column align-items-center">';
-
             if(dto.team_allow == 1 || login == member.mem_seq){ // 로그인세션의 팀 권한이 조회자가 아니면 보이게끔
                 tag += ' <div class="filter team-filter"><a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a> <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">';
 

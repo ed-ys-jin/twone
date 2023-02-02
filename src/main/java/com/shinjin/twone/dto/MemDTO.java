@@ -45,4 +45,6 @@ public class MemDTO {
 
     /*프로필 이미지*/
     private MultipartFile memPic;
+
+    private String memKey;
 }

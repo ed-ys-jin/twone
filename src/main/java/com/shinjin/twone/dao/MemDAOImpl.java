@@ -3,6 +3,7 @@ package com.shinjin.twone.dao;
 import com.shinjin.twone.dto.MemDTO;
 
 import java.util.List;
+import java.util.Map;
 
 public class MemDAOImpl implements MemDAO {
 
@@ -60,6 +61,22 @@ public class MemDAOImpl implements MemDAO {
         return getTeamMemberForIssueForm(projectSeq);
     }
 
+    
+    @Override
+    public int updateMemKey(MemDTO memDTO) {
+        return updateMemKey(memDTO);
+    }
+
+    @Override
+    public void changeMailCert(Map<String, String> map) {
+        changeMailCert(map);
+    }
+
+    @Override
+    public int timeOut() {
+        return timeOut();
+    }
+    
     @Override
     public int updateMemImage(MemDTO memDTO) {
         return updateMemImage(memDTO);

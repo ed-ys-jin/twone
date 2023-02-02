@@ -46,7 +46,7 @@ public class TeamServiceImpl implements TeamService {
   }
 
   @Override
-  public Integer checkMember(String email) {
+  public MemDTO checkMember(String email) {
     return teamDao.checkMember(email);
   }
 

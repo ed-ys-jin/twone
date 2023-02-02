@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class MemServiceImpl implements MemService{
+public class MemServiceImpl implements MemService {
 
     @Autowired
     private MemDAO memDAO;
 
     /* 유효성 검사 */
     @Override
-    public Map<String, String> validatorHandling(Errors errors){
+    public Map<String, String> validatorHandling(Errors errors) {
         Map<String, String> validatorResult = new HashMap<>();
 
         /* 유효성 검사에 실패한 필드 목록을 받음 */
@@ -80,7 +80,7 @@ public class MemServiceImpl implements MemService{
 
     /* memDTO 불러오기 */
     @Override
-    public MemDTO getDto(int memSeq){
+    public MemDTO getDto(int memSeq) {
         return memDAO.getDto(memSeq);
     }
 
@@ -119,6 +119,22 @@ public class MemServiceImpl implements MemService{
         return memDAO.getTeamMemberForIssueForm(projectSeq);
     }
 
+    @Override
+
+    public int updateMemKey(MemDTO memDTO) {
+       return memDAO.updateMemKey(memDTO);
+    }
+
+    @Override
+    public void changeMailCert(Map<String, String> map) {
+        memDAO.changeMailCert(map);
+    }
+
+    @Override
+    public int timeOut() {
+        return memDAO.timeOut();
+    }
+    
     @Override
     public int updateMemImage(MemDTO memDTO) {
         return memDAO.updateMemImage(memDTO);

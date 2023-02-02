@@ -2,13 +2,13 @@ package com.shinjin.twone.controller;
 
 import com.shinjin.twone.common.commonMethod;
 import com.shinjin.twone.dto.MemDTO;
+import com.shinjin.twone.service.EmailService;
 import com.shinjin.twone.service.MemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +23,9 @@ public class MemController {
     @Autowired
     private MemService memService;
 
+    @Autowired
+    EmailService emailService;
+
     /*** 회원가입 ***/
     @RequestMapping("/signup")
     public String signupView(){
@@ -30,7 +33,7 @@ public class MemController {
     }
 
     @PostMapping("/signup")
-    public String signupProc(@Valid MemDTO memDTO, Errors errors, Model model) {
+    public String signupProc(@Valid MemDTO memDTO, Errors errors, Model model)throws Exception {
 
         /* 유효성 검사 */
         if(errors.hasErrors()){ // 유효성 검사 실패
@@ -51,11 +54,19 @@ public class MemController {
             commonMethod.setAttribute(model, "/signup", "이미 등록된 이메일 계정입니다.");
             return "/common/alert";
         }
-
+        System.out.println("1");
         /* 회원 등록 */
         // 회원 등록 성공
         if(memService.signup(memDTO) != -1) {
-            commonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "TWONE 회원이 되었습니다. 로그인을 진행해 주세요.");
+            // 임의의 key 생성 & 이메일 발송
+            System.out.println("2");
+            String key = emailService.sendSimpleMessage(memDTO.getMemEmail());
+            memDTO.setMemKey(key);
+            memDTO.setMemEmail(memDTO.getMemEmail());
+            int keyChek = memService.updateMemKey(memDTO);
+            System.out.println(keyChek);
+
+            commonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "등록하신 이메일로 인증요청 메일이 발송되었습니다. 메일 인증 후 로그인을 진행해 주세요.");
         // 회원 등록 실패
         } else {
             commonMethod.setAttribute(model, "/signup", "회원가입에 실패하였습니다. 관리자에게 문의해 주세요.");
@@ -97,6 +108,7 @@ public class MemController {
     public String loginProc(MemDTO memDTO, HttpServletRequest request, HttpServletResponse response) {
 
         MemDTO dto = memService.login(memDTO); // DTO 불러오기
+        System.out.println(dto.getMemCert());
 
         /* 로그인 가능 여부 확인 */
         // 일치하는 ('가입중' 상태의) 이메일 계정이 없음
@@ -106,6 +118,9 @@ public class MemController {
         // 일치하는 이메일은 존재하나, 비밀번호 다름
         } else if(!dto.getMemPw().equals(memDTO.getMemPw())) {
             commonMethod.setAttribute(request, "/login", "비밀번호가 일치하지 않습니다.");
+            return "common/alert";
+        } else if (dto.getMemCert() == 0){
+            commonMethod.setAttribute(request, "/login", "메일 인증이 진행되지 않았습니다.");
             return "common/alert";
         }
 
@@ -257,6 +272,12 @@ public class MemController {
         }
 
         return "/common/alert";
+    }
+
+    /*메일 링크 인증시 인증 여부 변경*/
+    @RequestMapping ("/signUpConfirm")
+    public void changeMailCert(@RequestParam Map<String,String> map ){
+        memService.changeMailCert(map);
     }
 
 }

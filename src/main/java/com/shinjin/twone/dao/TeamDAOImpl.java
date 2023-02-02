@@ -35,7 +35,7 @@ public class TeamDAOImpl implements TeamDAO{
   }
 
   @Override
-  public Integer checkMember(String email) {
+  public MemDTO checkMember(String email) {
     return checkMember(email);
   }
 
