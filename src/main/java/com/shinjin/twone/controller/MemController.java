@@ -59,13 +59,10 @@ public class MemController {
         // 회원 등록 성공
         if(memService.signup(memDTO) != -1) {
             // 임의의 key 생성 & 이메일 발송
-            System.out.println("2");
             String key = emailService.sendSimpleMessage(memDTO.getMemEmail());
             memDTO.setMemKey(key);
             memDTO.setMemEmail(memDTO.getMemEmail());
             int keyChek = memService.updateMemKey(memDTO);
-            System.out.println(keyChek);
-
             commonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "등록하신 이메일로 인증요청 메일이 발송되었습니다. 메일 인증 후 로그인을 진행해 주세요.");
         // 회원 등록 실패
         } else {
@@ -108,7 +105,6 @@ public class MemController {
     public String loginProc(MemDTO memDTO, HttpServletRequest request, HttpServletResponse response) {
 
         MemDTO dto = memService.login(memDTO); // DTO 불러오기
-        System.out.println(dto.getMemCert());
 
         /* 로그인 가능 여부 확인 */
         // 일치하는 ('가입중' 상태의) 이메일 계정이 없음
@@ -119,7 +115,7 @@ public class MemController {
         } else if(!dto.getMemPw().equals(memDTO.getMemPw())) {
             commonMethod.setAttribute(request, "/login", "비밀번호가 일치하지 않습니다.");
             return "common/alert";
-        } else if (dto.getMemCert() == 0){
+        } else if (dto.getMemCert() == 0 || dto.getMemCert() == 2){
             commonMethod.setAttribute(request, "/login", "메일 인증이 진행되지 않았습니다.");
             return "common/alert";
         }

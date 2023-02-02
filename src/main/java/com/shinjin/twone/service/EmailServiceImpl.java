@@ -41,7 +41,7 @@ public class EmailServiceImpl implements EmailService{
     msgg+= "&key=" + key;
     msgg+= "'target='blank'>이메일 인증 확인</a>";
     message.setText(msgg, "utf-8", "html");//내용
-    message.setFrom(new InternetAddress("twon.shinjinbong@gmail.com","towon"));//보내는 사람
+    message.setFrom(new InternetAddress("twone.shinjinbong@gmail.com","twone"));//보내는 사람
 
     return message;
   }
