@@ -176,20 +176,19 @@ button span,
                   <h5>세부 정보</h5>
                 </div><!-- End Card Title -->
 
-                <c:choose>
-                  <c:when test="${teamAllow != 3}">
-                    <!-- IssueForm Creation Button -->
-                    <div class="d-grid gap-2 mt-3">
-                      <button class="btn btn-primary btn-light" type="button" onclick="toggleSelect('issue-select-box')">
+                <div class="row mb-3">
+
+                  <!-- IssueForm Creation Button -->
+                  <c:choose>
+                    <c:when test="${teamAllow != 3}">
+                      <button class="btn btn-primary btn-light col-sm-2" type="button" onclick="toggleSelect('issue-select-box')">
                         <img src="../resources/bootstrap/img/button_plus.png" width="17">
                       </button>
-                    </div>
-                  </c:when>
-                </c:choose>
-                <br>
-                <div class="row mb-3">
-                  <div class="custom-font col-sm-12">
-                    <!-- Board Creation Input Box -->
+                    </c:when>
+                  </c:choose>
+
+                  <!-- Board Creation Input Box -->
+                  <div class="custom-font col-sm-8">
                     <select class="form-select" id="issue-select-box" style="display: none" aria-label="default select example" onchange="addIssueForm(this)">
                       <option selected>구성요소 추가하기</option>
                       <option value="per">담당자</option>

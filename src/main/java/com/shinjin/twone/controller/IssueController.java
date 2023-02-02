@@ -71,16 +71,6 @@ public class IssueController {
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
     request.setAttribute("blist", boardList);
 
-    /* Attr : commentList(댓글) */
-    List<CommentDTO> commentlist = commentService.getCommentList(issueSeq);
-    MemDTO memDTO;
-    for(CommentDTO cmtdto : commentlist){
-      memDTO = memService.getDto(cmtdto.getMemSeq());
-      cmtdto.setMemName(memDTO.getMemName());
-      cmtdto.setMemImage(memDTO.getMemImage());
-    }
-    request.setAttribute("cmtlist", commentlist);
-
     /* Attr : 댓글 문자열 */
     String commentList = commentListToHtmlCode(issueSeq, memSeq);
     request.setAttribute("commentList", commentList);
@@ -98,6 +88,27 @@ public class IssueController {
     request.setAttribute("linkedIssueList", linkedIssueList);
 
     return "issue/issue";
+  }
+
+  /* 이슈 업데이트 일자 변경 */
+  @GetMapping("/project/updatedateinfo")
+  @ResponseBody
+  public String updateDateInfo(HttpServletRequest request){
+    // 등록일자, 업데이트일자 불러오기
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
+    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+    String regdate = format.format(issueDTO.getIssueRegdate());
+    String update = format.format(issueDTO.getIssueUpdate());
+
+    // 문자열 만들기
+    String result = "";
+    result += "<p><br><br>";
+    result += "최초작성 &nbsp;" + regdate;
+    result += " &nbsp; 업데이트 &nbsp;" + update;
+    result += "</p>";
+
+    return result;
   }
 
   /*
@@ -236,56 +247,6 @@ public class IssueController {
 
     // 댓글 문자열 만들기
     String result = commentListToHtmlCode(issueSeq, memSeq);
-
-    return result;
-  }
-
-  /*** 댓글 문자열 만들기 ***/
-  public String commentListToHtmlCode(int issueSeq, int memSeq){
-
-    String result = "";
-
-    // CommentDTO에 memName, memImage 설정
-    List<CommentDTO> commentlist = commentService.getCommentList(issueSeq);
-    MemDTO memDTO;
-    for(CommentDTO cmtdto : commentlist){
-      memDTO = memService.getDto(cmtdto.getMemSeq());
-      cmtdto.setMemName(memDTO.getMemName());
-      cmtdto.setMemImage(memDTO.getMemImage());
-    }
-
-    // 문자열 만들기
-    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-    for(CommentDTO cmtdto : commentlist){
-      String commentDate = format.format(cmtdto.getCommentDate());
-      int commentSeq = cmtdto.getCommentSeq();
-
-      result += "<div id=\"comment-" + commentSeq + "\" class=\"row col-sm-10\">";
-      result += "<div class=\"col-sm-2\">";
-      if(cmtdto.getMemImage() != null){
-        result += "<img src=\"../" + cmtdto.getMemImage() + "\" class=\"rounded-circle\" alt=\"Profile\" width=\"50\">";
-      } else {
-        result += "<img src=\"../resources/bootstrap/img/profile-img.jpg\" class=\"rounded-circle\" alt=\"Profile\" width=\"50\">";
-      }
-      result += "</div>";
-
-      result += "<div class=\"col-sm-10\">";
-      result += "<p>";
-      result += cmtdto.getMemName() + " &nbsp;|&nbsp; ";
-      result += commentDate + "<br>";
-      result += cmtdto.getCommentValue();
-      if(memSeq == cmtdto.getMemSeq()){
-        result += "<br><a href=\"javascript:toggleCommentInput('comment-" + commentSeq + "-update-box')\">수정</a>";
-        result += " &nbsp; <a href=\"javascript:deleteComment(" + commentSeq + ")\">삭제</a>";
-      }
-      result += "</p>";
-      result += "</div>";
-      result += "<div id=\"comment-" + commentSeq + "-update-box\" class=\"col-sm-12\" style=\"display: none\">";
-      result += "<input id=\"comment-" + commentSeq + "-update\" type=\"text\" class=\"form-control\" value=\"" + cmtdto.getCommentValue() + "\" onkeyup=\"updateComment(this, " + commentSeq + ")\">";
-      result += "<h5 class=\"card-title\"></h5>";
-      result += "</div>";
-      result += "</div>";
-    }
 
     return result;
   }
@@ -484,7 +445,59 @@ public class IssueController {
     return result;
   }
 
-  /* 이슈 링크 문자열 만들기 */
+  /* 댓글 문자열 만들기 */
+  public String commentListToHtmlCode(int issueSeq, int memSeq){
+
+    String result = "";
+
+    // CommentDTO에 memName, memImage 설정
+    List<CommentDTO> commentlist = commentService.getCommentList(issueSeq);
+    MemDTO memDTO;
+    for(CommentDTO cmtdto : commentlist){
+      memDTO = memService.getDto(cmtdto.getMemSeq());
+      cmtdto.setMemName(memDTO.getMemName());
+      cmtdto.setMemImage(memDTO.getMemImage());
+    }
+
+    // 문자열 만들기
+    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
+    for(CommentDTO cmtdto : commentlist){
+      String commentDate = format.format(cmtdto.getCommentDate());
+      int commentSeq = cmtdto.getCommentSeq();
+
+      result += "<div id=\"comment-" + commentSeq + "\" class=\"row col-sm-10\">";
+      result += "<div class=\"col-sm-2\">";
+      if(cmtdto.getMemImage() != null){
+        result += "<img src=\"../" + cmtdto.getMemImage() + "\" class=\"rounded-circle\" alt=\"Profile\" width=\"50\">";
+      } else {
+        result += "<img src=\"../resources/bootstrap/img/profile-img.jpg\" class=\"rounded-circle\" alt=\"Profile\" width=\"50\">";
+      }
+      result += "</div>";
+
+      result += "<div class=\"col-sm-10\">";
+      result += "<p>";
+      result += cmtdto.getMemName() + " &nbsp;|&nbsp; ";
+      result += commentDate + "<br>";
+      result += cmtdto.getCommentValue();
+      if(memSeq == cmtdto.getMemSeq()){
+        result += "<br><a href=\"javascript:toggleCommentInput('comment-" + commentSeq + "-update-box')\">수정</a>";
+        result += " &nbsp; <a href=\"javascript:deleteComment(" + commentSeq + ")\">삭제</a>";
+      }
+      result += "</p>";
+      result += "</div>";
+      result += "<label class=\"issue-label col-sm-2 col-form-label\">";
+      result += "</label>";
+      result += "<div id=\"comment-" + commentSeq + "-update-box\" class=\"col-sm-8\" style=\"display: none\">";
+      result += "<input id=\"comment-" + commentSeq + "-update\" type=\"text\" class=\"form-control\" value=\"" + cmtdto.getCommentValue() + "\" onkeyup=\"updateComment(this, " + commentSeq + ")\">";
+      result += "<h5 class=\"card-title\"></h5>";
+      result += "</div>";
+      result += "</div>";
+    }
+
+    return result;
+  }
+
+  /* 링크된 이슈 리스트 문자열 만들기 */
   public String linkedIssueListToHtmlCode(HttpSession session, int issueSeq){
     // teamAllow 불러오기
     IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
@@ -752,27 +765,6 @@ public class IssueController {
       result += "</div>";
     }
     result += "</div>";
-
-    return result;
-  }
-
-  /* 이슈 업데이트 일자 변경 */
-  @GetMapping("/project/updatedateinfo")
-  @ResponseBody
-  public String updateDateInfo(HttpServletRequest request){
-    // 등록일자, 업데이트일자 불러오기
-    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
-    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
-    SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-    String regdate = format.format(issueDTO.getIssueRegdate());
-    String update = format.format(issueDTO.getIssueUpdate());
-
-    // 문자열 만들기
-    String result = "";
-    result += "<p><br><br>";
-    result += "최초작성 &nbsp;" + regdate;
-    result += " &nbsp; 업데이트 &nbsp;" + update;
-    result += "</p>";
 
     return result;
   }
