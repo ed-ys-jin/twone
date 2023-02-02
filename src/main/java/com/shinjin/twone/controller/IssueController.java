@@ -534,6 +534,7 @@ public class IssueController {
     IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
     List<IssueDTO> unlinkedIssueList = issueService.getUnlinkedIssueList(issueDTO);
     String result = "";
+    result += "<option selected>연결할 이슈를 선택하세요.</option>";
     for(IssueDTO idto : unlinkedIssueList){
       issueSeq = idto.getIssueSeq();
       result += "<option id=\"issue-link-select-" + issueSeq + "\" value=\"" + issueSeq + "\">" + idto.getIssueTitle() + "</option>";

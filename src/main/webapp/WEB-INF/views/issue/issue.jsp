@@ -111,10 +111,7 @@ button span,
                   <div class="custom-font col-sm-7">
                     <!-- Issue Link Dropdown -->
                     <select id="issue-link-select-box" class="form-select" style="display: none" aria-label="default select example" onchange="linkIssue(this)">
-                      <option selected>연결할 이슈를 선택하세요.</option>
-                      <div id="issue-link-select-list">
-                        ${unlinkedIssueList}
-                      </div>
+                      ${unlinkedIssueList}
                     </select>
                   </div>
                 </div><br>
@@ -323,8 +320,8 @@ button span,
       if(this.readyState == 4 && this.status == 200){
         updateDateInfo(); // 이슈 업데이트 일시 수정
         document.getElementById("issue-link-" + linkedIssueSeq).remove(); // 태그 삭제
-        document.getElementById("issue-link-select-list").innerHTML = this.responseText; // 태그 업데이트
-        alert("4444");
+        console.log(document.getElementById("issue-link-select-box"));
+        document.getElementById("issue-link-select-box").innerHTML = this.responseText; // 태그 업데이트
       }
     }
 
