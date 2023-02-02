@@ -66,12 +66,17 @@ public class ImageController {
       memImage = imgPath+memImage;
       memDTO.setMemImage(memImage);
     }
+
+    // 회원정보 수정
     int check = memService.updateMemImage(memDTO);
-    /* 회원정보 수정 */
     if(check == -1){ // 정보 수정 실패
       commonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
       return "/common/alert";
     }
+
+    // 수정된 프로필 이미지 세션에 업로드
+    request.getSession().setAttribute("userimage", memDTO.getMemImage()); // member image
+
     return "redirect:/profile";
   }
 
@@ -86,6 +91,10 @@ public class ImageController {
       commonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
       return "/common/alert";
     }
+
+    // 프로필 이미지 세션에서 삭제
+    session.removeAttribute("userimage");
+
     return "redirect:/profile";
 
   }

@@ -196,6 +196,7 @@ public class MemController {
         // 회원탈퇴 성공
         if(memService.withdraw(memDTO) != 0){
             commonMethod.setAttribute(model, "/login", "회원탈퇴 처리가 완료되었습니다. 그동안 TWONE 서비스를 이용해 주셔서 감사합니다. 더욱더 노력하고 발전하는 TWONE이 되도록 노력하겠습니다.");
+            session.invalidate(); // 세션 해제
         // 회원탈퇴 실패
         } else {
             commonMethod.setAttribute(model, "/withdraw", "비밀번호 불일치 등의 이유로 회원탈퇴 처리에 실패했습니다. 담당자에게 문의해 주세요.");
