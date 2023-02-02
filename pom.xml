@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.shinjin</groupId>
-    <artifactId>Twone</artifactId>
+    <artifactId>twone</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>Twone</name>
-    <description>Twone</description>
+    <name>twone</name>
+    <description>twone</description>
     <properties>
         <java.version>1.8</java.version>
     </properties>

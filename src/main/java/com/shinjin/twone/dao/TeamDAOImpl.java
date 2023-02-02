@@ -53,6 +53,12 @@ public class TeamDAOImpl implements TeamDAO{
     return deleteMember(dto);
   }
 
+  /* TeamDTO 불러오기 */
+  @Override
+  public TeamDTO getTeamDTO(TeamDTO teamDTO) {
+    return getTeamDTO(teamDTO);
+  }
+
 
 }
 

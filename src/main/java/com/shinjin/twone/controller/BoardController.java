@@ -4,7 +4,6 @@ import com.shinjin.twone.dto.*;
 import com.shinjin.twone.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,9 +25,7 @@ public class BoardController {
   @Autowired
   private IssueService issueService;
   @Autowired
-  private IssueFormService issueFormService;
-  @Autowired
-  private LinkedIssueService linkedIssueService;
+  private TeamService teamService;
 
   /*** 보드 출력 ***/
   @RequestMapping("project/board")
@@ -46,6 +43,13 @@ public class BoardController {
     int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
     ProjectDTO pdto = projectService.selectOne(projectSeq);
     request.setAttribute("pdto", pdto);
+
+    /* Attr : teamAllow */
+    TeamDTO teamDTO = new TeamDTO();
+    teamDTO.setProjectSeq(projectSeq);
+    teamDTO.setMemSeq(memSeq);
+    teamDTO = teamService.getTeamDTO(teamDTO);
+    request.setAttribute("teamAllow", teamDTO.getTeamAllow());
 
     /* Attr : boardList(보드사이드바 출력용) */
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);

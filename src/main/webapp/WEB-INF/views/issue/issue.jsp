@@ -51,7 +51,14 @@ button span,
       <div class="col-lg-6">
         <div class="pagetitle">
           <h1 id="issue-title-box">
-            <input id="issue-title" type="text" value="${idto.issueTitle}" onkeyup="updateIssueDTO(this, 'title')">
+            <c:choose>
+              <c:when test="${teamAllow == 3}">
+                <input id="issue-title" type="text" value="${idto.issueTitle}" readonly>
+              </c:when>
+              <c:otherwise>
+                <input id="issue-title" type="text" value="${idto.issueTitle}" onkeyup="updateIssueInfo(this, 'title')">
+              </c:otherwise>
+            </c:choose>
           </h1>
           <nav style="--bs-breadcrumb-divider: '>';">
             <ol class="breadcrumb">
@@ -64,10 +71,10 @@ button span,
       </div><!-- End Page Title -->
 
       <%-- 생성일자, 업데이트일자 --%>
-      <div class="date-info col-lg-6">
-        <p>
-          최초작성 &nbsp; <fmt:formatDate value="${idto.issueRegdate}" pattern="y년 M월 d일 a h:mm" type="date"/><br>
-          업데이트 &nbsp; <fmt:formatDate value="${idto.issueUpdate}" pattern="y년 M월 d일 a h:mm" type="date"/>
+      <div id="issue-date-info" class="date-info col-lg-6">
+        <p><br><br>
+          최초작성 &nbsp;<fmt:formatDate value="${idto.issueRegdate}" pattern="yyyy.MM.dd HH:mm:ss" />
+          &nbsp; 업데이트 &nbsp;<fmt:formatDate value="${idto.issueUpdate}" pattern="yyyy.MM.dd HH:mm:ss" />
         </p>
       </div>
 
@@ -84,38 +91,64 @@ button span,
                 <h5 class="card-title"></h5>
 
                 <div class="row mb-3">
-                  <div class="col-sm-12">
-
-                    <!-- 파일 첨부 -->
-                    <button type="button" class="btn btn-light">
-                      <img src="../resources/bootstrap/img/attach-clip.png" width="20"/>
-                      <span>첨부</span>
-                    </button>
-                    &nbsp;
+                  <div  class="col-sm-5">
+<%--                    <!-- 파일 첨부 -->--%>
+<%--                    <button type="button" class="btn btn-light">--%>
+<%--                      <img src="../resources/bootstrap/img/attach-clip.png" width="20"/>--%>
+<%--                      <span>첨부</span>--%>
+<%--                    </button>--%>
+<%--                    &nbsp;--%>
                     <!-- 이슈 연결 -->
-                    <button type="button" class="btn btn-light">
-                      <img src="../resources/bootstrap/img/attach-link.png" width="20"/>
-                      <span>이슈 연결</span>
-                    </button>
-
+                    <c:choose>
+                      <c:when test="${teamAllow != 3}">
+                        <button type="button" class="btn btn-light" onclick="toggleSelect('issue-link-select-box')">
+                          <img src="../resources/bootstrap/img/attach-link.png" width="20"/>
+                          <span>이슈 연결</span>
+                        </button>
+                      </c:when>
+                    </c:choose>
                   </div>
+                  <div class="custom-font col-sm-7">
+                    <!-- Issue Link Dropdown -->
+                    <select id="issue-link-select-box" class="form-select" style="display: none" aria-label="default select example" onchange="linkIssue(this)">
+                      <option selected>연결할 이슈를 선택하세요.</option>
+                      <div id="issue-link-select-list">
+                        ${unlinkedIssueList}
+                      </div>
+                    </select>
+                  </div>
+                </div><br>
+
+                <!-- 링크된 이슈 리스트 -->
+                <div class="row mb-3">
+                  <label class="col-sm-2 col-form-label">링크</label>
+                  <ol id="issue-link-complete" class="custom-font col-sm-10 list-group" style="padding-top: 0; list-style: none">
+                    ${linkedIssueList}
+                  </ol>
                 </div><br>
 
                 <!-- 설명 -->
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">설명</label>
                   <div id="issue-summary-box" class="custom-font col-sm-10">
-                    <input id="issue-summary" type="text" class="form-control" value="${idto.issueSummary}" onkeyup="updateIssueDTO(this, 'summary')">
+                    <c:choose>
+                      <c:when test="${teamAllow == 3}">
+                        <input id="issue-summary" type="text" class="form-control" value="${idto.issueSummary}" readonly>
+                      </c:when>
+                      <c:otherwise>
+                        <input id="issue-summary" type="text" class="form-control" value="${idto.issueSummary}" onkeyup="updateIssueInfo(this, 'summary')">
+                      </c:otherwise>
+                    </c:choose>
                   </div>
                 </div><br>
 
                 <!-- 레이블 -->
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">레이블</label>
-                  <div class="custom-font col-sm-10">
-                    <input type="text" class="form-control">
-                  </div>
-                </div><br>
+<%--                <div class="row mb-3">--%>
+<%--                  <label class="col-sm-2 col-form-label">레이블</label>--%>
+<%--                  <div class="custom-font col-sm-10">--%>
+<%--                    <input type="text" class="form-control">--%>
+<%--                  </div>--%>
+<%--                </div><br>--%>
 
                 <!-- 댓글 추가 -->
                 <div class="row mb-3">
@@ -127,43 +160,7 @@ button span,
 
                 <!-- 댓글 -->
                 <div id="comment-box" class="row mb-3">
-                  <c:forEach var="cmtdto" items="${cmtlist}">
-                    <div id="comment-${cmtdto.commentSeq}" class="row col-sm-10">
-                      <!-- 이미지 -->
-                      <div class="col-sm-2">
-                        <c:choose>
-                          <c:when test="${!empty cmtdto.memImage}">
-                            <img src="../${cmtdto.memImage}" class="rounded-circle" alt="Profile" width="50">
-                          </c:when>
-                          <c:otherwise>
-                            <img src="../resources/bootstrap/img/no_image.png" class="rounded-circle" alt="Profile" width="50">
-                          </c:otherwise>
-                        </c:choose>
-                      </div>
-                      <!-- 작성글 -->
-                      <div class="col-sm-10">
-                        <p>
-                          ${cmtdto.memName}
-                          &nbsp;&nbsp;&nbsp;
-                          ${cmtdto.commentDate}
-                          <br>
-                          ${cmtdto.commentValue}
-                          <c:choose>
-                            <c:when test="${login == cmtdto.memSeq}">
-                              <br>
-                              <a href="javascript:toggleCommentInput('comment-${cmtdto.commentSeq}-update-box')">수정</a>
-                              &nbsp;
-                              <a href="javascript:deleteComment(${cmtdto.commentSeq})">삭제</a>
-                            </c:when>
-                          </c:choose>
-                        </p>
-                      </div>
-                      <div id="comment-${cmtdto.commentSeq}-update-box" class="col-sm-12" style="display: none">
-                        <input id="comment-${cmtdto.commentSeq}-update" type="text" class="form-control" value="${cmtdto.commentValue}" onkeyup="updateComment(this, ${cmtdto.commentSeq})">
-                        <h5 class="card-title"></h5>
-                      </div>
-                    </div>
-                  </c:forEach>
+                  ${commentList}
                 </div>
 
               </div>
@@ -179,16 +176,19 @@ button span,
                   <h5>세부 정보</h5>
                 </div><!-- End Card Title -->
 
-                <!-- Board Creation Button -->
-                <div class="d-grid gap-2 mt-3">
-                  <button class="btn btn-primary btn-light" type="button" onclick="toggleSelect('issue-select-box')">
-                    <img src="../resources/bootstrap/img/button_plus.png" width="17">
-                  </button>
-                </div>
-                <br>
                 <div class="row mb-3">
-                  <div class="custom-font col-sm-12">
-                    <!-- Board Creation Input Box -->
+
+                  <!-- IssueForm Creation Button -->
+                  <c:choose>
+                    <c:when test="${teamAllow != 3}">
+                      <button class="btn btn-primary btn-light col-sm-2" type="button" onclick="toggleSelect('issue-select-box')">
+                        <img src="../resources/bootstrap/img/button_plus.png" width="17">
+                      </button>
+                    </c:when>
+                  </c:choose>
+
+                  <!-- Board Creation Input Box -->
+                  <div class="custom-font col-sm-8">
                     <select class="form-select" id="issue-select-box" style="display: none" aria-label="default select example" onchange="addIssueForm(this)">
                       <option selected>구성요소 추가하기</option>
                       <option value="per">담당자</option>
@@ -218,13 +218,12 @@ button span,
 <script>
 
   /* 이슈 세부사항 수정 */
-  function updateIssueDTO(input, type){
-
+  function updateIssueInfo(input, type){
     let boxId = null; // 출력 위치 지정 엘리먼트 ID
     let valueId = null; // Value 엘리먼트 ID
     let maxLength = 0; // 입력 제한 길이
     const inputValue = input.value; // 입력값
-    let url = "/project/updateissuedto?issueSeq=" + ${idto.issueSeq}
+    let url = "/project/updateissueinfo?issueSeq=" + ${idto.issueSeq}
             + "&inputValue=" + encodeURIComponent(inputValue);
 
     switch (type) {
@@ -255,7 +254,6 @@ button span,
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 이슈 제목의 입력값이 공백인 경우
       if(type == "title"){
         if(inputValue.trim() == ""){
@@ -271,8 +269,8 @@ button span,
       // 콜백 작업 지정
       xhttp.onreadystatechange = function (){
         if(this.readyState == 4 && this.status == 200){
-          // 태그 업데이트
-          document.getElementById(boxId).innerHTML = this.responseText;
+          updateDateInfo(); // 이슈 업데이트 일시 수정
+          document.getElementById(boxId).innerHTML = this.responseText; // 태그 업데이트
           // 이슈 제목인 경우 focus 해제
           if(type == "title"){
             valueElement.blur();
@@ -284,29 +282,75 @@ button span,
     }
   }
 
+  /* 이슈 링크 걸기 */
+  function linkIssue(selectedOption){
+    const selectedValue = selectedOption.value; // 선택된 옵션명
+
+    toggleSelect("issue-link-select-box"); // 드롭다운(이슈 링크) 숨기기
+
+    // URL 만들기
+    let url = "/project/linkissue?issueSeq=" + ${idto.issueSeq}
+            + "&linkIssueSeq=" + selectedValue;
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 콜백 작업 지정
+    xhttp.onreadystatechange = function (){
+      if(this.readyState == 4 && this.status == 200){
+        updateDateInfo(); // 이슈 업데이트 일시 수정
+        document.getElementById("issue-link-complete").innerHTML = this.responseText; // 태그 업데이트
+        document.getElementById("issue-link-select-" + selectedValue).remove(); // 태그 삭제
+      }
+    }
+    // 결과값 받음
+    xhttp.send();
+  }
+
+  /* 이슈 링크 해제 */
+  function unlinkIssue(linkedIssueSeq){
+    // URL 만들기
+    let url = "/project/unlinkissue?issueSeq=" + ${idto.issueSeq}
+            + "&linkedIssueSeq=" + linkedIssueSeq;
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 콜백 작업 지정
+    xhttp.onreadystatechange = function (){
+      if(this.readyState == 4 && this.status == 200){
+        updateDateInfo(); // 이슈 업데이트 일시 수정
+        document.getElementById("issue-link-" + linkedIssueSeq).remove(); // 태그 삭제
+        document.getElementById("issue-link-select-list").innerHTML = this.responseText; // 태그 업데이트
+        alert("4444");
+      }
+    }
+
+    // 결과값 받음
+    xhttp.send();
+  }
+
   /* 드롭다운(이슈폼 추가) 토글 */
   function toggleSelect(selectBoxId) {
-
     const selectBox = document.getElementById(selectBoxId); // 드롭다운 엘리먼트
 
     if(selectBox.style.display != "none") {
       selectBox.style.display = "none";
     } else {
-      // 드롭다운 출력할 때 기본옵션("구성요소 출력하기") select
-      selectBox.options[0].selected = true;
+      selectBox.options[0].selected = true; // 드롭다운 출력할 때 기본옵션("구성요소 출력하기") select
       selectBox.style.display = "block";
     }
   }
 
   /* 이슈폼 추가 */
   function addIssueForm(selectedOption){
-
     const selectedValue = selectedOption.value; // 선택된 옵션명
 
-    // 드롭다운(이슈폼 추가) 숨기기
-    toggleSelect("issue-select-box");
+    toggleSelect("issue-select-box"); // 드롭다운(이슈폼 추가) 숨기기
 
-    // URL(+ 파라미터) 만들기
+    // URL 만들기
     let url = "/project/addissueform?issueSeq=" + ${idto.issueSeq}
             + "&selectedValue=" + selectedValue;
 
@@ -317,17 +361,16 @@ button span,
     // 콜백 작업 지정
     xhttp.onreadystatechange = function (){
       if(this.readyState == 4 && this.status == 200){
-        // 태그 업데이트
-        document.getElementById("issue-form-list").innerHTML = this.responseText;
-        }
+        updateDateInfo(); // 이슈 업데이트 일시 수정
+        document.getElementById("issue-form-list").innerHTML = this.responseText; // 태그 업데이트
       }
+    }
     // 결과값 받음
     xhttp.send();
   }
 
   /* 이슈폼 제목(Label) 변경 */
   function updateLabel(input, formsSeq){
-
     const labelValue = input.value; // 입력값
     const valueId = formsSeq + "-label";
     const boxId = valueId + "-box";
@@ -342,14 +385,13 @@ button span,
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 이슈 제목의 입력값이 공백인 경우
       if (labelValue.trim() == "") {
         alert("구성요소 이름을 최소 1글자 이상 입력해 주세요.");
         return;
       }
 
-      // URL(+ 파라미터) 만들기
+      // URL 만들기
       let url = "/project/updatelabel?issueSeq=" + ${idto.issueSeq}
           + "&labelValue=" + labelValue
           + "&formsSeq=" + formsSeq;
@@ -361,10 +403,9 @@ button span,
       // 콜백 작업 지정
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-          // 태그 업데이트
-          document.getElementById(boxId).innerHTML = this.responseText;
-          // focus 해제
-          valueId.blur();
+          updateDateInfo(); // 이슈 업데이트 일시 수정
+          document.getElementById(boxId).innerHTML = this.responseText; // 태그 업데이트
+          valueId.blur(); // focus 해제
         }
       };
       // 결과값 받음
@@ -377,7 +418,7 @@ button span,
     const inputValue = input.value;
     const boxId = formsSeq + "-value-box";
 
-    // URL(+ 파라미터) 만들기
+    // URL 만들기
     let url = "/project/updatevalue?issueSeq=" + ${idto.issueSeq}
         + "&inputValue=" + inputValue
         + "&formsSeq=" + formsSeq;
@@ -389,8 +430,8 @@ button span,
     // 콜백 작업 지정
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
-        // 태그 업데이트
-        document.getElementById(boxId).innerHTML = this.responseText;
+        updateDateInfo(); // 이슈 업데이트 일시 수정
+        document.getElementById(boxId).innerHTML = this.responseText; // 태그 업데이트
       }
     }
     // 결과값 받음
@@ -399,7 +440,6 @@ button span,
 
   /* 댓글 등록 */
   function addComment(input){
-
     const inputValue = input.value;
     let valueElement = document.getElementById("comment-value");
 
@@ -412,13 +452,13 @@ button span,
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 댓글 입력값이 공백인 경우
       if (inputValue.trim() == "") {
         alert("댓글을 최소 1글자 이상 입력해 주세요.");
         return;
       }
 
+      // url 만들기
       const url = "/project/addcomment?issueSeq=" + ${idto.issueSeq}
                 + "&inputValue=" + encodeURIComponent(inputValue);
 
@@ -429,12 +469,11 @@ button span,
       // 콜백 작업 지정
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-          // 태그 업데이트
-          document.getElementById("comment-box").innerHTML = this.responseText;
+          document.getElementById("comment-box").innerHTML = this.responseText; // 태그 업데이트
           valueElement.blur();
+          valueElement.value = null;
         }
       };
-
     // 결과값 받음
     xhttp.send();
     }
@@ -453,7 +492,6 @@ button span,
 
   /* 댓글 수정 */
   function updateComment(input, commentSeq){
-
     const inputValue = input.value;
     const commentInput = document.getElementById("comment-" + commentSeq + "-update");
     const commentInputBox = document.getElementById("comment-" + commentSeq + "-update-box");
@@ -467,7 +505,6 @@ button span,
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 댓글 입력값이 공백인 경우
       if (inputValue.trim() == "") {
         alert("댓글을 최소 1글자 이상 입력해 주세요.");
@@ -486,10 +523,8 @@ button span,
       // 콜백 작업 지정
       xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-          // 태그 업데이트
-          document.getElementById("comment-box").innerHTML = this.responseText;
-          // 댓글 수정용 입력창 숨기기
-          commentInputBox.style.display = "none";
+          document.getElementById("comment-box").innerHTML = this.responseText; // 태그 업데이트
+          commentInputBox.style.display = "none"; // 댓글 수정용 입력창 숨기기
         }
       }
       // 결과값 받음
@@ -499,9 +534,8 @@ button span,
 
   /* 댓글 삭제 */
   function deleteComment(commentSeq){
-
-    // URL(+ 파라미터) 만들기
-    let url = "/project/deletecomment?commentSeq=" + commentSeq;
+    // URL 만들기
+    const url = "/project/deletecomment?commentSeq=" + commentSeq;
 
     // 연결 작업
     const xhttp = new XMLHttpRequest();
@@ -514,6 +548,7 @@ button span,
     xhttp.send();
   }
 
+  /* 이슈폼 위/아래 이동 */
   function moveUpDown(updown, formsSeq){
     let url;
     // URL 만들기
@@ -530,18 +565,19 @@ button span,
     // 콜백 작업 지정
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
-        // 태그 업데이트
-        document.getElementById("issue-form-list").innerHTML = this.responseText;
+        updateDateInfo(); // 이슈 업데이트 일시 수정
+        document.getElementById("issue-form-list").innerHTML = this.responseText; // 태그 업데이트
       }
     }
     // 결과값 받음
     xhttp.send();
   }
 
+  /* 이슈폼 삭제 */
   function deleteForms(formsSeq){
-
     // URL 만들기
-    const url = "/project/deleteforms?formsSeq=" + formsSeq;
+    const url = "/project/deleteforms?issueSeq=" + ${idto.issueSeq}
+              + "&formsSeq=" + formsSeq;
 
     // 연결 작업
     const xhttp = new XMLHttpRequest();
@@ -550,6 +586,29 @@ button span,
     // 태그 삭제
     document.getElementById("forms-" + formsSeq).remove();
 
+    // 이슈 업데이트 일시 수정
+    updateDateInfo();
+
+    // 결과값 받음
+    xhttp.send();
+  }
+
+  /* 이슈 업데이트 일자 변경 */
+  function updateDateInfo(){
+    // url 만들기
+    let url = "/project/updatedateinfo?issueSeq=" + ${idto.issueSeq};
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 콜백 작업 지정
+    xhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        // 태그 업데이트
+        document.getElementById("issue-date-info").innerHTML = this.responseText;
+      }
+    }
     // 결과값 받음
     xhttp.send();
   }
