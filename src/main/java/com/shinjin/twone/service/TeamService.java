@@ -17,12 +17,13 @@ public interface TeamService {
 
   public int memberAdd(HashMap<String, Object> map);
 
-
   public MemDTO checkMember(String email);
 
   public TeamDTO checkOne(HashMap<String, Object> map);
+
   public HashMap<String, Object> selectOne(HashMap<String, Object> map);
 
-
   public int deleteMember(TeamDTO dto);
+
+  public TeamDTO getTeamDTO(TeamDTO teamDTO); // TeamDTO 불러오기
 }

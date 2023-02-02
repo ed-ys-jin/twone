@@ -34,12 +34,24 @@
             <if test="memCompany!='' and memCompany != null">
                 mem_company = #{memCompany}
             </if>
-            <if test="memImage!='' and memImage != null">
-                mem_image = #{memImage}
-            </if>
         WHERE mem_seq = #{memSeq}
     </update>
 
+    <!-- 회원 프로필 이미지 업로드 -->
+    <update id="updateMemImage" parameterType="MemDTO">
+        UPDATE t_mem
+        SET
+            mem_image = #{memImage}
+        WHERE mem_seq = #{memSeq}
+    </update>
+
+    <!-- 회원 프로필 기본 이미지 병경 -->
+    <update id="deleteMemImage" parameterType="int">
+        UPDATE t_mem
+        SET
+            mem_image = null
+        WHERE mem_seq = #{memSeq}
+    </update>
     <!-- 비밀번호 변경 -->
     <update id="changePw" parameterType="MemDto">
         UPDATE t_mem

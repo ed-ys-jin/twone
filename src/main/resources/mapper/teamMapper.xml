@@ -49,7 +49,12 @@
         delete from t_team where project_seq=#{projectSeq} and mem_seq=#{memSeq};
     </delete>
 
-
+    <!-- TeamDTO 불러오기 -->
+    <select id="getTeamDTO" parameterType="TeamDTO" resultType="TeamDTO">
+        SELECT *
+        FROM t_team
+        WHERE project_seq = #{projectSeq} AND mem_seq = #{memSeq}
+    </select>
 
 
 </mapper>

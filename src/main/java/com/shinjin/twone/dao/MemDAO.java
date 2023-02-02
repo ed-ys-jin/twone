@@ -23,4 +23,8 @@ public interface MemDAO {
     public void changeMailCert(Map<String, String> map); // 메일인증 여부 변경
 
     public int timeOut(); // 발급일 하루 지난 사용자의 발급일, 발급일자, 이메일 인증 변경
+
+    public int updateMemImage(MemDTO memDTO); // 이미지 업로드
+    public int deleteMemImage(int memSeq); // 기본 이미지로 변경
+
 }

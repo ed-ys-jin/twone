@@ -2,44 +2,18 @@
          pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="twone" value="${pageContext.request.contextPath }"/>
-<style>
-  .modal {
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    width: 100%;
-    height: 100%;
-
-    display: none;
-
-    background-color: rgba(0, 0, 0, 0.4);
-  }
-
-  .modal.show {
-    display: block;
-  }
-
-  .modal_body {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-
-    width: 540px;
-    height: 200px;
-
-    padding: 40px;
-
-    text-align: center;
-
-    background-color: rgb(255, 255, 255);
-    border-radius: 10px;
-    box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
-
-    transform: translateX(-50%) translateY(-50%);
-  }
-</style>
 <%@ include file="../layouts/header.jsp"%>
+
+<script>
+  function deleteAction(j) {
+    let check = confirm("기본 이미지로 변경 하시겠습니까?");
+
+    if(!check) return;
+
+    location.href='${twone}/image/deleteImg';
+  }
+</script>
+
   <main id="main" class="main">
 
     <h5 class="card-title"></h5>
@@ -72,6 +46,38 @@
                   <img src="../resources/bootstrap/img/no_image.png" alt="Profile" class="rounded-circle">
                 </c:otherwise>
               </c:choose><br>
+
+              <div class="pt-2">
+                <!-- 사진 업로드 -->
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#memImageUpload" title="사진 업로드">
+                  <i class="bi bi-upload"></i>
+                </button>
+
+                <div class="modal fade" id="memImageUpload" tabindex="-1">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">프로필 이미지 변경</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <form method="post" action="${twone}/image/profileImg" enctype="multipart/form-data">
+                        <div class="modal-body">
+                            <input type="file" name="memPic" value="${memDTO.memImage}">
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-primary">저장</button>
+                          <button type="button " class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div><!-- End Vertically centered Modal-->
+
+                <!-- 기본 이미지로 변경 -->
+                <button type="button" class="btn btn-primary btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#memImageDelete" title="사진 삭제" onclick="deleteAction()">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </div>
 
               <!-- Member Name -->
               <h2>${memDTO.memName}</h2><br>
@@ -174,32 +180,6 @@
                   <!-- *** Profile Edit Form *** -->
                   <form method="post" action="${twone}/editprofile">
                     <div class="row mb-3">
-                      <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">프로필 사진</label>
-                      <div class="col-md-8 col-lg-9">
-                        <c:choose>
-                          <c:when test="${!empty memDTO.memImage}">
-                            <img src="${memDTO.memImage}" id="profileImage" alt="Profile">
-                          </c:when>
-                          <c:otherwise>
-                            <img src="../resources/bootstrap/img/no_image.png" id="profileImage" alt="Profile">
-                          </c:otherwise>
-                        </c:choose>
-
-                        <div class="pt-2">
-                          <!-- 사진 업로드 -->
-                          <div id="changeProfileImg" class="btn btn-primary btn-sm btn-open-popup" title="사진 변경">
-                            <i class="bi bi-upload"></i>
-                          </div>
-
-                          <div class="btn btn-danger btn-sm" title="사진 삭제">
-                            <i class="bi bi-trash"></i>
-                          </div>
-                        </div>
-
-                      </div>
-                    </div>
-
-                    <div class="row mb-3">
                       <label for="name" class="col-md-4 col-lg-3 col-form-label">이름</label>
                       <div class="col-md-8 col-lg-9">
                         <input name="memName" type="text" class="form-control" id="name" value="${memDTO.memName}">
@@ -275,42 +255,7 @@
         </div>
       </div>
     </section>
-
-    <!-- 이미지 업로드 모달창 -->
-    <div class="modal">
-      <div class="modal_body">
-        <h3>프로필 이미지 변경</h3>
-        <form method="post" action="${twone}/image/profileImg" enctype="multipart/form-data">
-          <input type="file" name="memPic" value="${memDTO.memImage}">
-          <button type="submit" class="save">저장</button>
-          <button type="reset" class="cancel">초기화</button>
-        </form>
-      </div>
-    </div>
-
   </main><!-- End #main -->
-<script>
-  const body = document.querySelector('body');
-  const modal = document.querySelector('.modal');
-  const btnOpenPopup = document.querySelector('.btn-open-popup');
 
-  btnOpenPopup.addEventListener('click', () => {
-    modal.classList.toggle('show');
-
-    if (modal.classList.contains('show')) {
-      body.style.overflow = 'hidden';
-    }
-  });
-
-  modal.addEventListener('click', (event) => {
-    if (event.target === modal) {
-      modal.classList.toggle('show');
-
-      if (!modal.classList.contains('show')) {
-        body.style.overflow = 'auto';
-      }
-    }
-  });
-</script>
 
 <%@ include file="../layouts/footer.jsp"%>

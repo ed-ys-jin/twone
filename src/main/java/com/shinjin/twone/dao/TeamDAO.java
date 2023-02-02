@@ -25,4 +25,6 @@ public interface TeamDAO {
   public HashMap<String, Object> selectOne(HashMap<String, Object> map);
 
   public int deleteMember(TeamDTO dto);
+
+  public TeamDTO getTeamDTO(TeamDTO teamDTO); // TeamDTO 불러오기
 }

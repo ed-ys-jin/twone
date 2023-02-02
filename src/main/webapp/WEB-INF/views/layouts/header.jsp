@@ -49,7 +49,7 @@
 <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-        <a href="/project" class="logo d-flex align-items-center">
+        <a href="/" class="logo d-flex align-items-center">
             <img src="../resources/bootstrap/img/logo_sjb_withback.png" alt="">
             <span class="d-none d-lg-block">Twone</span>
         </a>
@@ -217,8 +217,9 @@
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                     <c:choose>
+
                         <c:when test="${!empty userimage}">
-                            <img src="/${userimage}" alt="Profile" class="rounded-circle">
+                            <img src="../${userimage}" alt="Profile" class="rounded-circle">
                         </c:when>
                         <c:otherwise>
                             <img src="../resources/bootstrap/img/no_image.png" alt="Profile" class="rounded-circle">

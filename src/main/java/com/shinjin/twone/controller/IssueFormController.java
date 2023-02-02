@@ -23,13 +23,7 @@ public class IssueFormController {
   @Autowired
   LinkedIssueService linkedIssueService;
   @Autowired
-  FormsCheService formsCheService;
-  @Autowired
   FormsDatService formsDatService;
-  @Autowired
-  FormsDroService formsDroService;
-  @Autowired
-  FormsParService formsParService;
   @Autowired
   FormsPerService formsPerService;
   @Autowired
@@ -40,7 +34,7 @@ public class IssueFormController {
   MemService memService;
 
   /*
-   * [이슈폼 추가] 메소드는 IssueController에 작성되어 있음
+   * [이슈폼 생성], [이슈폼 위로 이동], [이슈폼 아래로 이동] 메소드는 IssueController에 작성되어 있음
    * -> 이유 : html 태그 작성하는 메소드를 이슈 관련 메소드와 공유함
    */
 
@@ -78,10 +72,6 @@ public class IssueFormController {
         // 이슈폼 제목(Label) 변경
         formsPriService.updatePriTitle(priDTO);
         break;
-      case "che":
-        break;
-      case "dro":
-        break;
       case "sim":
         // simDTO 만들기
         FormsSimDTO simDTO = new FormsSimDTO();
@@ -90,15 +80,9 @@ public class IssueFormController {
         // 이슈폼 제목(Label) 변경
         formsSimService.updateSimTitle(simDTO);
         break;
-      case "par":
-        // parDTO 만들기
-        FormsParDTO parDTO = new FormsParDTO();
-        parDTO.setParSeq(formsSeq);
-        parDTO.setParTitle(labelValue);
-        // 이슈폼 제목(Label) 변경
-        formsParService.updateParTitle(parDTO);
-        break;
     }
+    // 이슈 업데이트 일자 변경
+    issueService.updateIssueUpdate(issueSeq);
 
     // 문자열 만들기
     String result = "";
@@ -173,10 +157,6 @@ public class IssueFormController {
         }
         result += "</select>";
         break;
-      case "che":
-        break;
-      case "dro":
-        break;
       case "sim":
         // simDTO 만들기
         if(inputValue == null) {
@@ -190,22 +170,31 @@ public class IssueFormController {
         // 문자열 만들기
         result += "<input id=\"" + formsSeq + "-value\" type=\"text\" class=\"form-control\" value=\"" + inputValue + "\" onchange=\"updateValue(this, '" + formsSeq + "')\">";
         break;
-      case "par":
-        // parDTO 만들기
-        if(inputValue == null) {
-          inputValue = "";
-        }
-        FormsParDTO parDTO = new FormsParDTO();
-        parDTO.setParSeq(formsSeq);
-        parDTO.setParValue(inputValue);
-        // 이슈폼 값(Value) 변경
-        formsParService.updateParValue(parDTO);
-        // 문자열 만들기
-        result += "<div id=\"" + formsSeq + "-value\" class=\"quill-editor-default\" value=\"" + inputValue + "\" onchange=\"updateValue(this, '" + formsSeq + "')\"></div>";
-        break;
     }
+    // 이슈 업데이트 일자 변경
+    issueService.updateIssueUpdate(issueSeq);
 
     return result;
+  }
+
+  /*** 이슈폼 삭제 ***/
+  @GetMapping("/project/deleteforms")
+  @ResponseBody
+  public void deleteFormsProc(HttpServletRequest request){
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    String formsSeq = request.getParameter("formsSeq");
+    // 이슈폼 삭제
+    issueFormService.deleteIssueFormByFormsSeq(formsSeq);
+    // 이슈폼 배치순서 재정렬
+    // 배치순서 오름차순 정렬된 이슈폼 리스트 불러오기
+    List<IssueFormDTO> issueFormList = issueFormService.getIssueFormList(issueSeq);
+    int num = 1;
+    for(IssueFormDTO ifdto : issueFormList){
+      ifdto.setIssueFormOrder(num++);
+      issueFormService.updateIssueFormOrder(ifdto);
+    }
+    // 이슈 업데이트 일자 변경
+    issueService.updateIssueUpdate(issueSeq);
   }
 
 }

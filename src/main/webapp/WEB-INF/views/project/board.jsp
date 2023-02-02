@@ -11,9 +11,18 @@
   <!-- Page Title -->
   <div class="pagetitle">
     <h1>
-      <input id="board-update-box" type="text" value="${bdto.boardName}" onkeyup="updateBoardName(this)"
-             style="border: none; background-color: #f6f9ff; font-family: 'Nunito', sans-serif;
-             font-size: 24px; font-weight: 600; color: #012970">
+      <c:choose>
+        <c:when test="${teamAllow == 3}">
+          <input id="board-update-box" type="text" value="${bdto.boardName}"
+                 style="border: none; background-color: #f6f9ff; font-family: 'Nunito', sans-serif;
+                 font-size: 24px; font-weight: 600; color: #012970" readonly>
+        </c:when>
+        <c:otherwise>
+          <input id="board-update-box" type="text" value="${bdto.boardName}" onkeyup="updateBoardName(this)"
+                 style="border: none; background-color: #f6f9ff; font-family: 'Nunito', sans-serif;
+                 font-size: 24px; font-weight: 600; color: #012970">
+        </c:otherwise>
+      </c:choose>
     </h1>
 
     <nav style="--bs-breadcrumb-divider: '>';">
@@ -38,12 +47,13 @@
                 <c:when test="${cdto.colType == 1}">
                   <a class="icon" href="#" data-bs-toggle="dropdown"><img src="../resources/bootstrap/img/checkmark.png" width="20"></a>
                 </c:when>
+                <c:when test="${teamAllow == 3}"></c:when>
                 <c:otherwise>
-                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <li><a class="dropdown-item" href="javascript:addIssue(${cdto.colSeq})">이슈 추가</a></li>
-                      <li><a class="dropdown-item" href="javascript:deleteColumn(${cdto.colSeq})">컬럼 삭제</a></li>
-                    </ul>
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li><a class="dropdown-item" href="javascript:addIssue(${cdto.colSeq})">이슈 추가</a></li>
+                    <li><a class="dropdown-item" href="javascript:deleteColumn(${cdto.colSeq})">컬럼 삭제</a></li>
+                  </ul>
                 </c:otherwise>
               </c:choose>
             </div><!-- End Three Dots Dropdown Menu Icon -->
@@ -51,9 +61,18 @@
             <!-- Column Title -->
             <div class="card-body">
               <h5 class="card-title">
-                  <input id="col-update-box" type="text" value="${cdto.colName}" onkeyup="updateColName(this, ${cdto.colSeq})"
-                         style="border: none; font-family: 'Nunito', sans-serif;
-                         font-size: 18px; font-weight: 500; color: #012970">
+                <c:choose>
+                  <c:when test="${teamAllow  == 3}">
+                    <input id="col-update-box" type="text" value="${cdto.colName}"
+                           style="border: none; font-family: 'Nunito', sans-serif;
+                           font-size: 18px; font-weight: 500; color: #012970" readonly>
+                  </c:when>
+                  <c:otherwise>
+                    <input id="col-update-box" type="text" value="${cdto.colName}" onkeyup="updateColName(this, ${cdto.colSeq})"
+                           style="border: none; font-family: 'Nunito', sans-serif;
+                           font-size: 18px; font-weight: 500; color: #012970">
+                  </c:otherwise>
+                </c:choose>
               </h5>
             </div>
 
@@ -69,13 +88,17 @@
                         <a href="${twone}/project/issue?issueSeq=${idto.issueSeq}" style="color: black">
                           <p>${idto.issueTitle}</p>
                         </a>
-                        <!-- Three Dots Dropdown Menu Icon -->
-                        <div class="filter">
-                          <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                            <li><a class="dropdown-item" href="javascript:deleteIssue(${idto.issueSeq})">이슈 삭제</a></li>
-                          </ul>
-                        </div><!-- End Three Dots Dropdown Menu Icon -->
+                        <c:choose>
+                          <c:when test="${teamAllow != 3}">
+                            <!-- Three Dots Dropdown Menu Icon -->
+                            <div class="filter">
+                              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                <li><a class="dropdown-item" href="javascript:deleteIssue(${idto.issueSeq})">이슈 삭제</a></li>
+                              </ul>
+                            </div><!-- End Three Dots Dropdown Menu Icon -->
+                          </c:when>
+                        </c:choose>
 
                         <hr>
                         <p class="mb-0">${idto.issueCode}</p>
@@ -94,12 +117,17 @@
 
       <div class="col-lg-2" style="min-width: 300px">
 
-        <!-- Column Creation Button -->
-        <div class="col-sm-1">
-          <button type="button" class="btn btn-light" onclick="toggleInput('col-input-box')">
-            <img src="../resources/bootstrap/img/button_plus.png">
-          </button>
-        </div>
+        <c:choose>
+          <c:when test="${teamAllow == 3}"></c:when>
+          <c:otherwise>
+            <!-- Column Creation Button -->
+            <div class="col-sm-1">
+              <button type="button" class="btn btn-light" onclick="toggleInput('col-input-box')">
+                <img src="../resources/bootstrap/img/button_plus.png">
+              </button>
+            </div>
+          </c:otherwise>
+        </c:choose>
 
         <!-- Column Creation Input Box -->
         <div class="col-sm-12" style="margin-top: 12px">
@@ -177,14 +205,13 @@
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 공백이 입력된 경우
       if(colName.trim() == ""){
         alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
         return;
       }
 
-      // URL(+ 파라미터) 만들기
+      // URL 만들기
       let url = "/project/addcolumn?boardSeq=" + ${bdto.boardSeq}
               + "&colName=" + encodeURIComponent(colName);
 
@@ -222,7 +249,6 @@
 
     // 엔터키 입력 시 IF문 실행
     if (window.event.keyCode == 13) {
-
       // 입력값이 공백인 경우
       if(colName.trim() == ""){
         alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
@@ -240,10 +266,8 @@
       // 콜백 작업 지정
       xhttp.onreadystatechange = function (){
         if(this.readyState == 4 && this.status == 200){
-          // 컬럼 리스트 업데이트
-          document.getElementById("column-list-card").innerHTML = this.responseText;
-          // inputBox focus 해제
-          inputBox.blur();
+          document.getElementById("column-list-card").innerHTML = this.responseText; // 컬럼 리스트 업데이트
+          inputBox.blur(); // inputBox focus 해제
         }
       };
       // 결과값 받음
@@ -253,6 +277,10 @@
 
   /* 컬럼 삭제 */
   function deleteColumn(colSeq) {
+
+    if(!confirm("컬럼을 삭제하시겠습니까?")){
+      return;
+    }
 
     // URL(+ 파라미터) 만들기
     let url = "/project/deletecolumn?colSeq=" + colSeq;
@@ -271,7 +299,7 @@
 
   /* 이슈 생성 */
   function addIssue(colSeq){
-    // URL(+ 파라미터) 만들기
+    // URL 만들기
     let url = "/project/addissue?colSeq=" + colSeq;
 
     // 연결 작업
@@ -291,7 +319,12 @@
 
   /* 이슈 삭제 */
   function deleteIssue(issueSeq){
-    // URL(+ 파라미터) 만들기
+
+    if(!confirm("이슈를 삭제하시겠습니까?")){
+      return;
+    }
+
+    // URL 만들기
     let url = "/project/deleteissue?issueSeq=" + issueSeq;
 
     // 연결 작업
@@ -305,5 +338,5 @@
     // 결과값 받음
     xhttp.send();
   }
-
+정
 </script>

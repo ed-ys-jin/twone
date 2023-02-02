@@ -25,6 +25,12 @@ public class IssueServiceImpl implements IssueService {
         return issueDAO.updateIssueDTO(issueDTO);
     }
 
+    /* 이슈 업데이트 일자 변경 */
+    @Override
+    public int updateIssueUpdate(int issueSeq) {
+        return issueDAO.updateIssueUpdate(issueSeq);
+    }
+
     /* IssueDTO 불러오기 */
     @Override
     public IssueDTO getIssueDTO(int issueSeq) {
@@ -47,6 +53,18 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public List<Integer> getIssueSeqListUnderProject(int projectSeq) {
         return issueDAO.getIssueSeqListUnderProject(projectSeq);
+    }
+
+    /* 링크 가능한 이슈 리스트 불러오기 */
+    @Override
+    public List<IssueDTO> getUnlinkedIssueList(IssueDTO issueDTO) {
+        return issueDAO.getUnlinkedIssueList(issueDTO);
+    }
+
+    /* 링크된 이슈 리스트 불러오기 */
+    @Override
+    public List<IssueDTO> getLinkedIssueList(int issueSeq) {
+        return issueDAO.getLinkedIssueList(issueSeq);
     }
 
     /* 이슈 삭제 by issueSeq */

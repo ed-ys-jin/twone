@@ -120,6 +120,7 @@ public class MemServiceImpl implements MemService {
     }
 
     @Override
+
     public int updateMemKey(MemDTO memDTO) {
        return memDAO.updateMemKey(memDTO);
     }
@@ -132,6 +133,16 @@ public class MemServiceImpl implements MemService {
     @Override
     public int timeOut() {
         return memDAO.timeOut();
+    }
+    
+    @Override
+    public int updateMemImage(MemDTO memDTO) {
+        return memDAO.updateMemImage(memDTO);
+    }
+
+    @Override
+    public int deleteMemImage(int memSeq) {
+        return memDAO.deleteMemImage(memSeq);
     }
 
 }

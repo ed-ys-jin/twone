@@ -61,6 +61,7 @@ public class MemDAOImpl implements MemDAO {
         return getTeamMemberForIssueForm(projectSeq);
     }
 
+    
     @Override
     public int updateMemKey(MemDTO memDTO) {
         return updateMemKey(memDTO);
@@ -74,5 +75,15 @@ public class MemDAOImpl implements MemDAO {
     @Override
     public int timeOut() {
         return timeOut();
+    }
+    
+    @Override
+    public int updateMemImage(MemDTO memDTO) {
+        return updateMemImage(memDTO);
+    }
+
+    @Override
+    public int deleteMemImage(int memSeq) {
+        return deleteMemImage(memSeq);
     }
 }
