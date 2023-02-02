@@ -44,6 +44,15 @@
         WHERE board_seq = #{boardSeq}
     </select>
 
+    <!-- Done 컬럼의 colSeq 찾기 -->
+    <select id="getDoneColSeq" parameterType="ColDTO" resultType="int">
+        SELECT col_seq
+        FROM t_col
+        WHERE project_seq = #{projectSeq}
+          AND board_seq = #{boardSeq}
+          AND col_type = 1;
+    </select>
+
     <!-- 일반 컬럼 삭제 by colSeq -->
     <delete id="deleteColumn" parameterType="int">
         DELETE FROM t_col

@@ -138,7 +138,7 @@ public class IssueController {
     }
 
     // IssueDTO 변경
-    issueService.updateIssueDTO(issueDTO);
+    issueService.updateIssueInfo(issueDTO);
 
     // 태그 만들기
     String result = "";

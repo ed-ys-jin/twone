@@ -9,7 +9,8 @@ import java.util.List;
 public interface IssueDAO {
 
     public int addIssue(IssueDTO issueDTO); // 이슈 생성
-    public int updateIssueDTO(IssueDTO issueDTO); // IssueDTO 변경
+    public int updateIssueInfo(IssueDTO issueDTO); // 이슈 기본정보 변경
+    public int moveToOtherCol(IssueDTO issueDTO); // 이슈를 다른 컬럼으로 이동
     public int updateIssueUpdate(int issueSeq); // 이슈 업데이트 일자 변경
     public IssueDTO getIssueDTO(int issueSeq); // IssueDTO 불러오기
     public List<IssueDTO> getIssueListByColSeq(int colSeq); // IssueList 불러오기 by colSeq

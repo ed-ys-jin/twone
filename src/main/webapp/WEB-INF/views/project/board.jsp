@@ -239,5 +239,24 @@
     // 결과값 받음
     xhttp.send();
   }
-정
+
+  /* 이슈 완료 처리 */
+  function moveToDone(issueSeq){
+    // URL(+ 파라미터) 만들기
+    let url = "/project/movetodone?issueSeq=" + issueSeq;
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 콜백 작업 지정
+    xhttp.onreadystatechange = function (){
+      if(this.readyState == 4 && this.status == 200){
+        document.getElementById("column-list-card").innerHTML = this.responseText; // 컬럼 리스트 업데이트
+      }
+    };
+    // 결과값 받음
+    xhttp.send();
+  }
+  정
 </script>

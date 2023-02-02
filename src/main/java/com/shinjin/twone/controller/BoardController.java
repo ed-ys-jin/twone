@@ -241,6 +241,30 @@ public class BoardController {
     return result;
   }
 
+  /*** 이슈 완료 처리 ***/
+  @GetMapping("/project/movetodone")
+  @ResponseBody
+  public String moveToDoneProc(HttpServletRequest request){
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
+    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
+
+    // ColDTO 만들기
+    ColDTO colDTO = new ColDTO();
+    colDTO.setProjectSeq(issueDTO.getProjectSeq());
+    colDTO.setBoardSeq(issueDTO.getBoardSeq());
+    // Done 컬럼의 colSeq 불러오기
+    int doneColSeq = colService.getDoneColSeq(colDTO);
+
+    // 이슈의 부모 컬럼을 Done 컬럼으로 변경
+    issueDTO.setColSeq(doneColSeq);
+    issueService.moveToOtherCol(issueDTO);
+
+    // 컬럼 리스트 문자열 담기
+    String colList = colListToHtmlCode(issueDTO.getBoardSeq());
+
+    return colList;
+  }
+
   /* 보드 리스트 문자열에 담기 */
   public String boardListToHtmlCode(int projectSeq) {
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
@@ -323,6 +347,7 @@ public class BoardController {
           result += "<div class=\"filter\">";
           result += "<a class=\"icon\" href=\"#\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-three-dots\"></i></a>";
           result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
+          result += "<li><a class=\"dropdown-item\" href=\"javascript:moveToDone(" + idto.getIssueSeq() + ")\">완료 처리</a></li>";
           result += "<li><a class=\"dropdown-item\" href=\"javascript:deleteIssue(" + idto.getIssueSeq() + ")\">이슈 삭제</a></li>";
           result += "</ul>";
           result += "</div>";
