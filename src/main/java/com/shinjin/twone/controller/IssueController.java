@@ -49,28 +49,29 @@ public class IssueController {
   public String viewIssue(HttpServletRequest request, HttpSession session) {
 
     /* Attr : issueDTO */
-    int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
-    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
+    int issueSeq = Integer.parseInt(request.getParameter("issueSeq")); // issueSeq
+    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq); // issueDTO
     request.setAttribute("idto", issueDTO);
 
     /* Attr : projectDTO */
-    int projectSeq = issueDTO.getProjectSeq();
-    ProjectDTO pdto = projectService.selectOne(projectSeq);
-    request.setAttribute("pdto", pdto);
+    int projectSeq = issueDTO.getProjectSeq(); // projectSeq
+    ProjectDTO projectDTO = projectService.selectOne(projectSeq); // projectDTO
+    request.setAttribute("pdto", projectDTO);
 
     /* Attr : teamAllow */
-    int memSeq = (int) session.getAttribute("login");
+    int memSeq = (int) session.getAttribute("login"); // memSeq
     TeamDTO teamDTO = new TeamDTO();
     teamDTO.setProjectSeq(projectSeq);
     teamDTO.setMemSeq(memSeq);
-    teamDTO = teamService.getTeamDTO(teamDTO);
-    request.setAttribute("teamAllow", teamDTO.getTeamAllow());
+    teamDTO = teamService.getTeamDTO(teamDTO); // teamDTO
+    int teamAllow = teamDTO.getTeamAllow(); // teamAllow
+    request.setAttribute("teamAllow", teamAllow);
 
     /* Attr : boardList(보드사이드바 출력용) */
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
     request.setAttribute("blist", boardList);
 
-    /* Attr : commentDTO */
+    /* Attr : commentList(댓글) */
     List<CommentDTO> commentlist = commentService.getCommentList(issueSeq);
     MemDTO memDTO;
     for(CommentDTO cmtdto : commentlist){
@@ -80,20 +81,20 @@ public class IssueController {
     }
     request.setAttribute("cmtlist", commentlist);
 
-    /* Attr : 이슈 세부사항 */
-    String issueFormList = issueFormListToHtmlCode(issueSeq, teamDTO.getTeamAllow());
-    request.setAttribute("issueFormList", issueFormList);
-
-    /* Attr : 댓글 */
+    /* Attr : 댓글 문자열 */
     String commentList = commentListToHtmlCode(issueSeq, memSeq);
     request.setAttribute("commentList", commentList);
 
-    /* Attr : 링크 가능한 이슈 리스트 */
-    List<IssueDTO> unlinkedIssueList = issueService.getUnlinkedIssueList(issueDTO);
+    /* Attr : issueFormList(이슈 세부사항) */
+    String issueFormList = issueFormListToHtmlCode(issueSeq, teamDTO.getTeamAllow());
+    request.setAttribute("issueFormList", issueFormList);
+
+    /* Attr : unlinkedIssueList(링크 가능한 이슈 리스트) */
+    String unlinkedIssueList = unlinkedIssueListToHtmlCode(issueSeq);
     request.setAttribute("unlinkedIssueList", unlinkedIssueList);
 
-    /* Attr : 링크된 이슈 리스트 */
-    List<IssueDTO> linkedIssueList = issueService.getLinkedIssueList(issueSeq);
+    /* Attr : linkedIssueList(링크된 이슈 리스트) */
+    String linkedIssueList = linkedIssueListToHtmlCode(session, issueSeq);
     request.setAttribute("linkedIssueList", linkedIssueList);
 
     return "issue/issue";
@@ -148,7 +149,7 @@ public class IssueController {
   /*** 이슈 링크 ***/
   @GetMapping("/project/linkissue")
   @ResponseBody
-  public String linkIssueProc(HttpServletRequest request){
+  public String linkIssueProc(HttpServletRequest request, HttpSession session){
     int issueSeq = Integer.parseInt(request.getParameter("issueSeq"));
     int linkIssueSeq = Integer.parseInt(request.getParameter("linkIssueSeq"));
 
@@ -156,11 +157,10 @@ public class IssueController {
     LinkedIssueDTO linkedIssueDTO = new LinkedIssueDTO();
     linkedIssueDTO.setLinkedMain(issueSeq); // 메인 이슈
     linkedIssueDTO.setIssueSeq(linkIssueSeq); // 링크된 이슈
-    int num = linkedIssueService.addIssueLink(linkedIssueDTO);
-
+    linkedIssueService.addIssueLink(linkedIssueDTO);
 
     // 문자열 만들기
-    String result = linkedIssueListToHtmlCode(issueSeq);
+    String result = linkedIssueListToHtmlCode(session, issueSeq);
 
     return result;
   }
@@ -168,7 +168,7 @@ public class IssueController {
   /*** 이슈 링크 해제 ***/
   @GetMapping("/project/unlinkissue")
   @ResponseBody
-  public void unlinkIssueProces(HttpServletRequest request){
+  public String unlinkIssueProc(HttpServletRequest request){
     int issueSeq1 = Integer.parseInt(request.getParameter("issueSeq"));
     int issueSeq2 = Integer.parseInt(request.getParameter("linkedIssueSeq"));
 
@@ -176,7 +176,15 @@ public class IssueController {
     LinkedIssueDTO linkedIssueDTO = new LinkedIssueDTO();
     linkedIssueDTO.setLinkedMain(issueSeq1);
     linkedIssueDTO.setIssueSeq(issueSeq2);
-    int num = linkedIssueService.deleteIssueLink(linkedIssueDTO);
+    linkedIssueService.deleteIssueLink(linkedIssueDTO);
+
+    /*
+    * 아래 문자열 만들기는 [링크 가능한 이슈] 드롭다운 리스트를 업데이트 하는 메소드이나, 어떤 이유인지 작동이 안됨. 230202
+    */
+    // 문자열 만들기
+    String result = unlinkedIssueListToHtmlCode(issueSeq1);
+
+    return result;
   }
 
   /*** 이슈 삭제 ***/
@@ -477,22 +485,47 @@ public class IssueController {
   }
 
   /* 이슈 링크 문자열 만들기 */
-  public String linkedIssueListToHtmlCode(int issueSeq){
+  public String linkedIssueListToHtmlCode(HttpSession session, int issueSeq){
+    // teamAllow 불러오기
+    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
+    int memSeq = (int) session.getAttribute("login");
+    TeamDTO teamDTO = new TeamDTO();
+    teamDTO.setProjectSeq(issueDTO.getProjectSeq());
+    teamDTO.setMemSeq(memSeq);
+    teamDTO = teamService.getTeamDTO(teamDTO);
+    int teamAllow = teamDTO.getTeamAllow();
+
+    // 문자열 만들기
     List<IssueDTO> linkedIssueList = issueService.getLinkedIssueList(issueSeq);
     String result = "";
     for(IssueDTO idto : linkedIssueList){
       issueSeq = idto.getIssueSeq();
       result += "<li id=\"issue-link-" + issueSeq + "\">";
       result += "<button type=\"button\" class=\"list-group-item list-group-item-action\">";
-      result += "<a href=\"javascript:unlinkIssue(" + issueSeq + ")\">";
-      result += "<i class=\"bi bi-dash-circle\"></i>";
-      result += "</a>&nbsp;&nbsp;";
+      if(teamAllow != 3){
+        result += "<a href=\"javascript:unlinkIssue(" + issueSeq + ")\">";
+        result += "<i class=\"bi bi-dash-circle\"></i>";
+        result += "</a>&nbsp;&nbsp;";
+      }
       result += "<a href=\"/project/issue?issueSeq=" + issueSeq + "\">";
       result += idto.getIssueTitle();
       result += "</a>";
       result += "</button>";
       result += "</li>";
     }
+    return result;
+  }
+
+  /* 링크 가능한 이슈 리스트 문자열 만들기 */
+  public String unlinkedIssueListToHtmlCode(int issueSeq){
+    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
+    List<IssueDTO> unlinkedIssueList = issueService.getUnlinkedIssueList(issueDTO);
+    String result = "";
+    for(IssueDTO idto : unlinkedIssueList){
+      issueSeq = idto.getIssueSeq();
+      result += "<option id=\"issue-link-select-" + issueSeq + "\" value=\"" + issueSeq + "\">" + idto.getIssueTitle() + "</option>";
+    }
+
     return result;
   }
 

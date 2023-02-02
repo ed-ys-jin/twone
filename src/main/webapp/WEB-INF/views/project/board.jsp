@@ -89,8 +89,7 @@
                           <p>${idto.issueTitle}</p>
                         </a>
                         <c:choose>
-                          <c:when test="${teamAllow == 3}"></c:when>
-                          <c:otherwise>
+                          <c:when test="${teamAllow != 3}">
                             <!-- Three Dots Dropdown Menu Icon -->
                             <div class="filter">
                               <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
@@ -98,7 +97,7 @@
                                 <li><a class="dropdown-item" href="javascript:deleteIssue(${idto.issueSeq})">이슈 삭제</a></li>
                               </ul>
                             </div><!-- End Three Dots Dropdown Menu Icon -->
-                          </c:otherwise>
+                          </c:when>
                         </c:choose>
 
                         <hr>

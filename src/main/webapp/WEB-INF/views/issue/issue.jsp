@@ -99,19 +99,21 @@ button span,
 <%--                    </button>--%>
 <%--                    &nbsp;--%>
                     <!-- 이슈 연결 -->
-                    <button type="button" class="btn btn-light" onclick="toggleSelect('issue-link-select-box')">
-                      <img src="../resources/bootstrap/img/attach-link.png" width="20"/>
-                      <span>이슈 연결</span>
-                    </button>
+                    <c:choose>
+                      <c:when test="${teamAllow != 3}">
+                        <button type="button" class="btn btn-light" onclick="toggleSelect('issue-link-select-box')">
+                          <img src="../resources/bootstrap/img/attach-link.png" width="20"/>
+                          <span>이슈 연결</span>
+                        </button>
+                      </c:when>
+                    </c:choose>
                   </div>
                   <div class="custom-font col-sm-7">
                     <!-- Issue Link Dropdown -->
                     <select id="issue-link-select-box" class="form-select" style="display: none" aria-label="default select example" onchange="linkIssue(this)">
                       <option selected>연결할 이슈를 선택하세요.</option>
                       <div id="issue-link-select-list">
-                        <c:forEach var="unlinkdto" items="${unlinkedIssueList}">
-                          <option id="issue-link-select-${unlinkdto.issueSeq}" value="${unlinkdto.issueSeq}">${unlinkdto.issueTitle}</option>
-                        </c:forEach>
+                        ${unlinkedIssueList}
                       </div>
                     </select>
                   </div>
@@ -121,18 +123,7 @@ button span,
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">링크</label>
                   <ol id="issue-link-complete" class="custom-font col-sm-10 list-group" style="padding-top: 0; list-style: none">
-                    <c:forEach var="linkeddto" items="${linkedIssueList}">
-                      <li id="issue-link-${linkeddto.issueSeq}">
-                        <button type="button" class="list-group-item list-group-item-action">
-                          <a href="javascript:unlinkIssue(${linkeddto.issueSeq})">
-                            <i class="bi bi-dash-circle"></i>
-                          </a>&nbsp;&nbsp;
-                          <a href="${twone}/project/issue?issueSeq=${linkeddto.issueSeq}">
-                            ${linkeddto.issueTitle}
-                          </a>
-                        </button>
-                      </li>
-                    </c:forEach>
+                    ${linkedIssueList}
                   </ol>
                 </div><br>
 
@@ -186,15 +177,14 @@ button span,
                 </div><!-- End Card Title -->
 
                 <c:choose>
-                  <c:when test="${teamAllow == 3}"></c:when>
-                  <c:otherwise>
+                  <c:when test="${teamAllow != 3}">
                     <!-- IssueForm Creation Button -->
                     <div class="d-grid gap-2 mt-3">
                       <button class="btn btn-primary btn-light" type="button" onclick="toggleSelect('issue-select-box')">
                         <img src="../resources/bootstrap/img/button_plus.png" width="17">
                       </button>
                     </div>
-                  </c:otherwise>
+                  </c:when>
                 </c:choose>
                 <br>
                 <div class="row mb-3">
@@ -334,6 +324,8 @@ button span,
       if(this.readyState == 4 && this.status == 200){
         updateDateInfo(); // 이슈 업데이트 일시 수정
         document.getElementById("issue-link-" + linkedIssueSeq).remove(); // 태그 삭제
+        document.getElementById("issue-link-select-list").innerHTML = this.responseText; // 태그 업데이트
+        alert("4444");
       }
     }
 
