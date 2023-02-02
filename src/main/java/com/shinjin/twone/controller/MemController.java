@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Controller
@@ -54,15 +57,22 @@ public class MemController {
             commonMethod.setAttribute(model, "/signup", "이미 등록된 이메일 계정입니다.");
             return "/common/alert";
         }
-        System.out.println("1");
         /* 회원 등록 */
         // 회원 등록 성공
         if(memService.signup(memDTO) != -1) {
             // 임의의 key 생성 & 이메일 발송
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시 mm분");
+//            String formatedNow = LocalDate.now().plusDays(1) + "";
+//            formatedNow += " " + LocalTime.now().format(formatter);
+//            System.out.println(formatedNow);
+//
+//            System.out.println( LocalTime.now());
+//            System.out.println( LocalDate.now());
             String key = emailService.sendSimpleMessage(memDTO.getMemEmail());
             memDTO.setMemKey(key);
             memDTO.setMemEmail(memDTO.getMemEmail());
             int keyChek = memService.updateMemKey(memDTO);
+
             commonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "등록하신 이메일로 인증요청 메일이 발송되었습니다. 메일 인증 후 로그인을 진행해 주세요.");
         // 회원 등록 실패
         } else {
