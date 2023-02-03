@@ -1,6 +1,6 @@
 package com.shinjin.twone.controller;
 
-import com.shinjin.twone.common.commonMethod;
+import com.shinjin.twone.common.CommonMethod;
 import com.shinjin.twone.dto.MemDTO;
 import com.shinjin.twone.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +70,7 @@ public class ImageController {
     // 회원정보 수정
     int check = memService.updateMemImage(memDTO);
     if(check == -1){ // 정보 수정 실패
-      commonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
+      CommonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
       return "/common/alert";
     }
 
@@ -88,7 +88,7 @@ public class ImageController {
     int check = memService.deleteMemImage(memSeq);
 
     if(check == -1){ // 정보 수정 실패
-      commonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
+      CommonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
       return "/common/alert";
     }
 

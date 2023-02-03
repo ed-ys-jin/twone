@@ -1,6 +1,6 @@
 package com.shinjin.twone.controller;
 
-import com.shinjin.twone.common.commonMethod;
+import com.shinjin.twone.common.CommonMethod;
 import com.shinjin.twone.dto.MemDTO;
 import com.shinjin.twone.service.EmailService;
 import com.shinjin.twone.service.MemService;
@@ -51,7 +51,7 @@ public class MemController {
         /* 중복 이메일 확인 */
         // 기등록된 이메일이 존재하며, 가입중 상태인 경우 (가입중 : 0, 탈퇴 : 1)
         if(memService.checkDupl(memDTO.getMemEmail()) == 0){
-            commonMethod.setAttribute(model, "/signup", "이미 등록된 이메일 계정입니다.");
+            CommonMethod.setAttribute(model, "/signup", "이미 등록된 이메일 계정입니다.");
             return "/common/alert";
         }
         System.out.println("1");
@@ -63,10 +63,10 @@ public class MemController {
             memDTO.setMemKey(key);
             memDTO.setMemEmail(memDTO.getMemEmail());
             int keyChek = memService.updateMemKey(memDTO);
-            commonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "등록하신 이메일로 인증요청 메일이 발송되었습니다. 메일 인증 후 로그인을 진행해 주세요.");
+            CommonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "등록하신 이메일로 인증요청 메일이 발송되었습니다. 메일 인증 후 로그인을 진행해 주세요.");
         // 회원 등록 실패
         } else {
-            commonMethod.setAttribute(model, "/signup", "회원가입에 실패하였습니다. 관리자에게 문의해 주세요.");
+            CommonMethod.setAttribute(model, "/signup", "회원가입에 실패하였습니다. 관리자에게 문의해 주세요.");
         }
 
         return "/common/alert";
@@ -109,14 +109,14 @@ public class MemController {
         /* 로그인 가능 여부 확인 */
         // 일치하는 ('가입중' 상태의) 이메일 계정이 없음
         if(dto == null){
-            commonMethod.setAttribute(request, "/login", "존재하지 않는 이메일 계정입니다.");
+            CommonMethod.setAttribute(request, "/login", "존재하지 않는 이메일 계정입니다.");
             return "/common/alert";
         // 일치하는 이메일은 존재하나, 비밀번호 다름
         } else if(!dto.getMemPw().equals(memDTO.getMemPw())) {
-            commonMethod.setAttribute(request, "/login", "비밀번호가 일치하지 않습니다.");
+            CommonMethod.setAttribute(request, "/login", "비밀번호가 일치하지 않습니다.");
             return "common/alert";
         } else if (dto.getMemCert() == 0 || dto.getMemCert() == 2){
-            commonMethod.setAttribute(request, "/login", "메일 인증이 진행되지 않았습니다.");
+            CommonMethod.setAttribute(request, "/login", "메일 인증이 진행되지 않았습니다.");
             return "common/alert";
         }
 
@@ -195,11 +195,11 @@ public class MemController {
 
         // 회원탈퇴 성공
         if(memService.withdraw(memDTO) != 0){
-            commonMethod.setAttribute(model, "/login", "회원탈퇴 처리가 완료되었습니다. 그동안 TWONE 서비스를 이용해 주셔서 감사합니다. 더욱더 노력하고 발전하는 TWONE이 되도록 노력하겠습니다.");
+            CommonMethod.setAttribute(model, "/login", "회원탈퇴 처리가 완료되었습니다. 그동안 TWONE 서비스를 이용해 주셔서 감사합니다. 더욱더 노력하고 발전하는 TWONE이 되도록 노력하겠습니다.");
             session.invalidate(); // 세션 해제
         // 회원탈퇴 실패
         } else {
-            commonMethod.setAttribute(model, "/withdraw", "비밀번호 불일치 등의 이유로 회원탈퇴 처리에 실패했습니다. 담당자에게 문의해 주세요.");
+            CommonMethod.setAttribute(model, "/withdraw", "비밀번호 불일치 등의 이유로 회원탈퇴 처리에 실패했습니다. 담당자에게 문의해 주세요.");
         }
 
         return "/common/alert";
@@ -228,7 +228,7 @@ public class MemController {
         int check = memService.updateMemInfo(memDTO);
         /* 회원정보 수정 */
         if(check == -1){ // 정보 수정 실패
-            commonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
+            CommonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
             return "/common/alert";
         }
         /* 변경사항 세션에 업로드 */
@@ -246,7 +246,7 @@ public class MemController {
         /* 현재 비밀번호 일치여부 확인 */
         String currentPw = request.getParameter("currentPw"); // 현재 비밀번호 받기
         if(!memService.getPw(memSeq).equals(currentPw)){ // 현재 비밀번호 불일치
-            commonMethod.setAttribute(request, "/profile", "현재 비밀번호가 일치하지 않습니다.");
+            CommonMethod.setAttribute(request, "/profile", "현재 비밀번호가 일치하지 않습니다.");
             return "common/alert";
         }
 
@@ -255,7 +255,7 @@ public class MemController {
             Map<String, String> validatorResult = memService.validatorHandling(errors); // 에러 내역 불러오기
             String pwError = validatorResult.get("valid_memPw");
             if(pwError != null){
-                commonMethod.setAttribute(request, "/profile", pwError); // 비밀번호 에러 내역만 분류 후 Alert
+                CommonMethod.setAttribute(request, "/profile", pwError); // 비밀번호 에러 내역만 분류 후 Alert
                 return "/common/alert";
             }
         }
@@ -263,9 +263,9 @@ public class MemController {
         /* 비밀번호 변경 */
         memDTO.setMemSeq(memSeq); // 수정할 정보를 담은 memDTO 만들기
         if(memService.changePw(memDTO) != -1) { // 정보 수정 성공
-            commonMethod.setAttribute(request, "/profile", "비밀번호가 변경되었습니다.");
+            CommonMethod.setAttribute(request, "/profile", "비밀번호가 변경되었습니다.");
         } else { // 정보 수정 실패
-            commonMethod.setAttribute(request, "/profile", "비밀번호 변경에 실패하였습니다. 관리자에게 문의해 주세요.");
+            CommonMethod.setAttribute(request, "/profile", "비밀번호 변경에 실패하였습니다. 관리자에게 문의해 주세요.");
         }
 
         return "/common/alert";

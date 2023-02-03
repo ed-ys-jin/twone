@@ -1,5 +1,6 @@
 package com.shinjin.twone.controller;
 
+import com.shinjin.twone.common.CommonMethod;
 import com.shinjin.twone.dto.*;
 import com.shinjin.twone.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +69,10 @@ public class IssueController {
     request.setAttribute("teamAllow", teamAllow);
 
     /* Attr : boardList(보드사이드바 출력용) */
+    // 보드 리스트 문자열에 담기
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
-    request.setAttribute("blist", boardList);
+    String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
+    request.setAttribute("blist", blist);
 
     /* Attr : 댓글 문자열 */
     String commentList = commentListToHtmlCode(issueSeq, memSeq);

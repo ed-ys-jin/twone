@@ -1,5 +1,6 @@
 package com.shinjin.twone.controller;
 
+import com.shinjin.twone.common.CommonMethod;
 import com.shinjin.twone.dto.*;
 import com.shinjin.twone.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,9 @@ public class BoardController {
     teamDTO = teamService.getTeamDTO(teamDTO);
     request.setAttribute("teamAllow", teamDTO.getTeamAllow());
 
-    /* Attr : boardList(보드사이드바 출력용) */
-    String blist = boardListToHtmlCode(projectSeq);
+    /* Attr : boardList (프로젝트 사이드바 출력용) */
+    List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
+    String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
     request.setAttribute("blist", blist);
 
     /* Attr : boardDTO */
@@ -113,7 +115,8 @@ public class BoardController {
     colService.addDoneColumn(colDTO);
 
     // 보드 리스트 문자열에 담기
-    String result = boardListToHtmlCode(projectSeq);
+    List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
+    String result = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
 
     return result;
   }
@@ -136,7 +139,8 @@ public class BoardController {
 
     // 보드 리스트 문자열에 담기
     int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
-    String result = boardListToHtmlCode(projectSeq);
+    List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
+    String result = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
 
     return result;
   }
@@ -263,34 +267,6 @@ public class BoardController {
     String colList = colListToHtmlCode(issueDTO.getBoardSeq());
 
     return colList;
-  }
-
-  /* 보드 리스트 문자열에 담기 */
-  public String boardListToHtmlCode(int projectSeq) {
-    List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
-
-    String result = "";
-    for (BoardDTO bdto : boardList) {
-      result += "<li id=\"" + bdto.getBoardSeq() + "\">";
-      result += "<div class=\"row\">";
-      result += "<div class=\"col-sm-8\">";
-      result += "<a href=\"/project/board?projectSeq=" + projectSeq + "&boardSeq=" + bdto.getBoardSeq() + "\">";
-      result += "<span>" + bdto.getBoardName() + "</span>";
-      result += "</a>";
-      result += "</div>";
-      result += "<div class=\"col-sm-2\">";
-      result += "<div class=\"filter\">";
-      result += "<a class=\"icon\" href=\"#\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-three-dots\"></i></a>";
-      result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
-      result += "<li><a class=\"dropdown-item\" href=\"/project/deleteboard?projectSeq=" + projectSeq + "&boardSeq=" + bdto.getBoardSeq() + "\">보드 삭제</a></li>";
-      result += "</ul>";
-      result += "</div>";
-      result += "</div>";
-      result += "</div>";
-      result += "</li>";
-    }
-
-    return result;
   }
 
   /* 컬럼 리스트 문자열에 담기 */
