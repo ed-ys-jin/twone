@@ -54,15 +54,20 @@ public class MemController {
             CommonMethod.setAttribute(model, "/signup", "이미 등록된 이메일 계정입니다.");
             return "/common/alert";
         }
-        System.out.println("1");
+
+        // 비밀번호 대문자 존재 시, 소문자로 변경
+        memDTO.setMemPw(memDTO.getMemPw().toLowerCase());
+
         /* 회원 등록 */
+        int memSeq = memService.signup(memDTO);
         // 회원 등록 성공
-        if(memService.signup(memDTO) != -1) {
+        if(memSeq != -1) {
             // 임의의 key 생성 & 이메일 발송
             String key = emailService.sendSimpleMessage(memDTO.getMemEmail());
+            System.out.println(key);
             memDTO.setMemKey(key);
-            memDTO.setMemEmail(memDTO.getMemEmail());
-            int keyChek = memService.updateMemKey(memDTO);
+            memDTO.setMemSeq(memSeq);
+            memService.updateMemKey(memDTO);
             CommonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "등록하신 이메일로 인증요청 메일이 발송되었습니다. 메일 인증 후 로그인을 진행해 주세요.");
         // 회원 등록 실패
         } else {
@@ -105,6 +110,9 @@ public class MemController {
     public String loginProc(MemDTO memDTO, HttpServletRequest request, HttpServletResponse response) {
 
         MemDTO dto = memService.login(memDTO); // DTO 불러오기
+
+        // 비밀번호 대문자 존재 시, 소문자로 변경
+        memDTO.setMemPw(memDTO.getMemPw().toLowerCase());
 
         /* 로그인 가능 여부 확인 */
         // 일치하는 ('가입중' 상태의) 이메일 계정이 없음
@@ -190,8 +198,10 @@ public class MemController {
     public String withdrawProc(MemDTO memDTO, Model model, HttpSession session) {
 
         int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
-
         memDTO.setMemSeq(memSeq); // memDTO(memSeq, memPw)
+
+        // 비밀번호 대문자 존재 시, 소문자로 변경
+        memDTO.setMemPw(memDTO.getMemPw().toLowerCase());
 
         // 회원탈퇴 성공
         if(memService.withdraw(memDTO) != 0){

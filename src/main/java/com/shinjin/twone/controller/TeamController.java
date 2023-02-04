@@ -188,7 +188,6 @@ public class TeamController {
       if(check != 0){
         CommonMethod.setAttribute(request,"/project/team?projectSeq=" + pSeq);
         if(request.getServletPath().equals("/project/Withdrawal")){
-          System.out.println("본인탈퇴");
           CommonMethod.setAttribute(request,"/project");
         }
         return "/common/noalert";

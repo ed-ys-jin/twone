@@ -66,7 +66,6 @@ public class ProjectController {
 
         // 자동 팀 생성 (내가 만들었으니 관리자로)
         // 프로젝트 시퀀스 가져온걸 다시 보내기
-//        projectDto.setProjectSeq(projectSeq); // selectOne 으로 대체 [윤석 230118]
         projectDto = projectService.selectOne(projectSeq);
         projectService.insertMasterTeam(projectDto);
 

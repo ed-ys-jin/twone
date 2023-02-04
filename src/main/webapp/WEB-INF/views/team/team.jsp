@@ -28,7 +28,7 @@
         line-height: 1;
         vertical-align: -.125em;
         -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscal;
+        -moz-osx-font-smoothing: grayscale;
         color: #012970;
 
     }

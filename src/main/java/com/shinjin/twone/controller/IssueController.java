@@ -224,6 +224,7 @@ public class IssueController {
     commentDTO.setMemSeq(memSeq);
     commentDTO.setCommentValue(inputValue);
     // 댓글 등록
+    System.out.println("댓글 등록");
     commentService.addComment(commentDTO);
 
     // 댓글 문자열 만들기

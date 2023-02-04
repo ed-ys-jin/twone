@@ -22,8 +22,6 @@ public class EmailServiceImpl implements EmailService{
 
   private MimeMessage createMessage(String to)throws Exception{
     key = createKey();
-    System.out.println("보내는 대상 : "+ to);
-    System.out.println("인증 번호 : "+key);
     MimeMessage  message = emailSender.createMimeMessage();
 
     message.addRecipients(RecipientType.TO, to);//보내는 대상
@@ -83,7 +81,6 @@ public class EmailServiceImpl implements EmailService{
       es.printStackTrace();
       throw new IllegalArgumentException();
     }
-    System.out.println(key + "키다아아아아아앙");
     return key;
   }
 }
