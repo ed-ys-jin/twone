@@ -25,13 +25,13 @@ public class ImageController {
   // 사진 업로드 (본인 피씨(로컬) 저장 경로)
   // private final String savePath = "C:\\Users\\A\\IdeaProjects\\twone\\src\\main\\webapp\\resources\\upload\\"; //성주 - 윈도우
   // private final String savePath = "/Users/sj/Desktop/twone/src/main/webapp/resources/upload"; //성주 - 맥
-  private final String savePath = "/Users/jin/DevRoot/Workspace/Github/Twone/src/main/webapp/resources/upload/"; //윤석
+//  private final String savePath = "/Users/jin/DevRoot/Workspace/Github/Twone/src/main/webapp/resources/upload/"; //윤석
 
   // 리눅스 서버 경로
-  //private final String savePath = "/var/lib/tomcat9/file_repo/";
+  private final String savePath = "/var/lib/tomcat9/file_repo/";
 
-  private final String imgPath = "resources/upload/";
-  //private final String imgPath = "/var/lib/tomcat9/file_repo/";
+//  private final String imgPath = "resources/upload/";
+  private final String imgPath = "/var/lib/tomcat9/file_repo/";
 
   @RequestMapping("/image/profileImg")
   public String changeMemImage(MemDTO memDTO, HttpServletRequest request, HttpSession session){
