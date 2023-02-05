@@ -1,6 +1,6 @@
 package com.shinjin.twone.controller;
 
-import com.shinjin.twone.common.commonMethod;
+import com.shinjin.twone.common.CommonMethod;
 import com.shinjin.twone.dto.BoardDTO;
 import com.shinjin.twone.dto.MemDTO;
 import com.shinjin.twone.dto.ProjectDTO;
@@ -98,9 +98,10 @@ public class TeamController {
     String sdto = dto.toString().replaceAll("=",":") ;
     JSONObject json = (JSONObject)parser.parse(sdto);
 
-    // 보드 리스트 문자열에 담기
+    /* Attr : boardList (프로젝트 사이드바 출력용) */
     List<BoardDTO> boardList = boardService.getBoardList(pSeq);
-    request.setAttribute("blist", boardList);
+    String blist = CommonMethod.boardListToHtmlCode(boardList, pSeq);
+    request.setAttribute("blist", blist);
 
     request.setAttribute("teamList",teamlist);
     request.setAttribute("dto",json);
@@ -126,9 +127,9 @@ public class TeamController {
 
     int check = teamService.changeAllow(dto);
     if(check == -1 ){
-      commonMethod.setAttribute(request,"/project/team?projectSeq="+projectSeq,"변경을 다시 시도해주세요.");
+      CommonMethod.setAttribute(request,"/project/team?projectSeq="+projectSeq,"변경을 다시 시도해주세요.");
     }else{
-      commonMethod.setAttribute(request, "/project/team?projectSeq="+projectSeq);
+      CommonMethod.setAttribute(request, "/project/team?projectSeq="+projectSeq);
     }
       return "/common/alert";
   }
@@ -146,7 +147,7 @@ public class TeamController {
     
     // 사용자가 존재하지 않거나, 이메일 인증이 진행되지 않았거나, 탈퇴계정인 경우
     if (memDto == null || memDto.getMemCert() == 2 ||memDto.getMemCert() == 0 || memDto.getMemDelcheck() == 1) { //사용자가 존재하지 않음
-      commonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자를 다시 확인해주세요.");
+      CommonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자를 다시 확인해주세요.");
       return "/common/alert";
 
     } else { // 사용자 존재
@@ -158,15 +159,15 @@ public class TeamController {
       TeamDTO dto = teamService.checkOne(map);
 
       if (dto != null) { // 중복
-        commonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자가 이미 존재합니다.");
+        CommonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자가 이미 존재합니다.");
         return "/common/alert";
       } else { //중복되지 않는다면 인증 메일 보낸 후 코드테이블에 정보 추가
 
       int checkAdd = teamService.memberAdd(map);
         if (checkAdd != 0) {
-          commonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자를 추가하었습니다.");
+          CommonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자를 추가하었습니다.");
         } else {
-          commonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자를 다시 확인해주세요.");
+          CommonMethod.setAttribute(request, "/project/team?projectSeq=" + projectSeq, "사용자를 다시 확인해주세요.");
         }
         return "/common/alert";
       }
@@ -185,14 +186,13 @@ public class TeamController {
 
       int check = teamService.deleteMember(dto);
       if(check != 0){
-        commonMethod.setAttribute(request,"/project/team?projectSeq=" + pSeq);
+        CommonMethod.setAttribute(request,"/project/team?projectSeq=" + pSeq);
         if(request.getServletPath().equals("/project/Withdrawal")){
-          System.out.println("본인탈퇴");
-          commonMethod.setAttribute(request,"/project");
+          CommonMethod.setAttribute(request,"/project");
         }
         return "/common/noalert";
       }
-      commonMethod.setAttribute(request,"/project/team?projectSeq=" + pSeq, "다시 시도하여주십시오.");
+      CommonMethod.setAttribute(request,"/project/team?projectSeq=" + pSeq, "다시 시도하여주십시오.");
       return "/common/alert";
     }
 

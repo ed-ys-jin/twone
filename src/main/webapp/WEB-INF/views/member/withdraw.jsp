@@ -74,6 +74,10 @@
                       <button class="btn btn-primary w-100" type="submit">회원탈퇴</button>
                     </div>
 
+                    <div class="col-12">
+                      <p class="small mb-0">조금 더 고민해볼게요. <a href="${twone}/">홈으로 돌아가기</a></p>
+                    </div>
+
                   </form>
 
                 </div>

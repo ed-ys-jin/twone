@@ -1,5 +1,6 @@
 package com.shinjin.twone.controller;
 
+import com.shinjin.twone.common.CommonMethod;
 import com.shinjin.twone.dto.*;
 import com.shinjin.twone.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,8 +69,10 @@ public class IssueController {
     request.setAttribute("teamAllow", teamAllow);
 
     /* Attr : boardList(보드사이드바 출력용) */
+    // 보드 리스트 문자열에 담기
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
-    request.setAttribute("blist", boardList);
+    String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
+    request.setAttribute("blist", blist);
 
     /* Attr : 댓글 문자열 */
     String commentList = commentListToHtmlCode(issueSeq, memSeq);
@@ -138,7 +141,7 @@ public class IssueController {
     }
 
     // IssueDTO 변경
-    issueService.updateIssueDTO(issueDTO);
+    issueService.updateIssueInfo(issueDTO);
 
     // 태그 만들기
     String result = "";
@@ -221,6 +224,7 @@ public class IssueController {
     commentDTO.setMemSeq(memSeq);
     commentDTO.setCommentValue(inputValue);
     // 댓글 등록
+    System.out.println("댓글 등록");
     commentService.addComment(commentDTO);
 
     // 댓글 문자열 만들기
@@ -445,6 +449,52 @@ public class IssueController {
     return result;
   }
 
+  /* 링크 가능한 이슈 리스트 문자열 만들기 */
+  public String unlinkedIssueListToHtmlCode(int issueSeq){
+    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
+    List<IssueDTO> unlinkedIssueList = issueService.getUnlinkedIssueList(issueDTO);
+    String result = "";
+    result += "<option selected>연결할 이슈를 선택하세요.</option>";
+    for(IssueDTO idto : unlinkedIssueList){
+      issueSeq = idto.getIssueSeq();
+      result += "<option id=\"issue-link-select-" + issueSeq + "\" value=\"" + issueSeq + "\">" + idto.getIssueTitle() + "</option>";
+    }
+
+    return result;
+  }
+
+  /* 링크된 이슈 리스트 문자열 만들기 */
+  public String linkedIssueListToHtmlCode(HttpSession session, int issueSeq){
+    // teamAllow 불러오기
+    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
+    int memSeq = (int) session.getAttribute("login");
+    TeamDTO teamDTO = new TeamDTO();
+    teamDTO.setProjectSeq(issueDTO.getProjectSeq());
+    teamDTO.setMemSeq(memSeq);
+    teamDTO = teamService.getTeamDTO(teamDTO);
+    int teamAllow = teamDTO.getTeamAllow();
+
+    // 문자열 만들기
+    List<IssueDTO> linkedIssueList = issueService.getLinkedIssueList(issueSeq);
+    String result = "";
+    for(IssueDTO idto : linkedIssueList){
+      issueSeq = idto.getIssueSeq();
+      result += "<li id=\"issue-link-" + issueSeq + "\">";
+      result += "<button type=\"button\" class=\"list-group-item list-group-item-action\">";
+      if(teamAllow != 3){
+        result += "<a href=\"javascript:unlinkIssue(" + issueSeq + ")\">";
+        result += "<i class=\"bi bi-dash-circle\"></i>";
+        result += "</a>&nbsp;&nbsp;";
+      }
+      result += "<a href=\"/project/issue?issueSeq=" + issueSeq + "\">";
+      result += idto.getIssueTitle();
+      result += "</a>";
+      result += "</button>";
+      result += "</li>";
+    }
+    return result;
+  }
+
   /* 댓글 문자열 만들기 */
   public String commentListToHtmlCode(int issueSeq, int memSeq){
 
@@ -492,52 +542,6 @@ public class IssueController {
       result += "<h5 class=\"card-title\"></h5>";
       result += "</div>";
       result += "</div>";
-    }
-
-    return result;
-  }
-
-  /* 링크된 이슈 리스트 문자열 만들기 */
-  public String linkedIssueListToHtmlCode(HttpSession session, int issueSeq){
-    // teamAllow 불러오기
-    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
-    int memSeq = (int) session.getAttribute("login");
-    TeamDTO teamDTO = new TeamDTO();
-    teamDTO.setProjectSeq(issueDTO.getProjectSeq());
-    teamDTO.setMemSeq(memSeq);
-    teamDTO = teamService.getTeamDTO(teamDTO);
-    int teamAllow = teamDTO.getTeamAllow();
-
-    // 문자열 만들기
-    List<IssueDTO> linkedIssueList = issueService.getLinkedIssueList(issueSeq);
-    String result = "";
-    for(IssueDTO idto : linkedIssueList){
-      issueSeq = idto.getIssueSeq();
-      result += "<li id=\"issue-link-" + issueSeq + "\">";
-      result += "<button type=\"button\" class=\"list-group-item list-group-item-action\">";
-      if(teamAllow != 3){
-        result += "<a href=\"javascript:unlinkIssue(" + issueSeq + ")\">";
-        result += "<i class=\"bi bi-dash-circle\"></i>";
-        result += "</a>&nbsp;&nbsp;";
-      }
-      result += "<a href=\"/project/issue?issueSeq=" + issueSeq + "\">";
-      result += idto.getIssueTitle();
-      result += "</a>";
-      result += "</button>";
-      result += "</li>";
-    }
-    return result;
-  }
-
-  /* 링크 가능한 이슈 리스트 문자열 만들기 */
-  public String unlinkedIssueListToHtmlCode(int issueSeq){
-    IssueDTO issueDTO = issueService.getIssueDTO(issueSeq);
-    List<IssueDTO> unlinkedIssueList = issueService.getUnlinkedIssueList(issueDTO);
-    String result = "";
-    result += "<option selected>연결할 이슈를 선택하세요.</option>";
-    for(IssueDTO idto : unlinkedIssueList){
-      issueSeq = idto.getIssueSeq();
-      result += "<option id=\"issue-link-select-" + issueSeq + "\" value=\"" + issueSeq + "\">" + idto.getIssueTitle() + "</option>";
     }
 
     return result;

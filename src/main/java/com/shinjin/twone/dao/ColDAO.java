@@ -19,6 +19,7 @@ public interface ColDAO {
   public ColDTO getColDTO(int colSeq); // ColDTO 불러오기
 
   public List<ColDTO> getColList(int boardSeq); // 컬럼 리스트 불러오기
+  public int getDoneColSeq(ColDTO colDTO); // Done 컬럼의 colSeq 찾기
 
   public int deleteColumn(int colSeq); // 컬럼 삭제 by colSeq
 

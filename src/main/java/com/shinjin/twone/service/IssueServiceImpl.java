@@ -19,10 +19,16 @@ public class IssueServiceImpl implements IssueService {
         return issueDAO.addIssue(issueDTO);
     }
 
-    /* IssueDTO 변경 */
+    /* 이슈 기본정보 변경 */
     @Override
-    public int updateIssueDTO(IssueDTO issueDTO) {
-        return issueDAO.updateIssueDTO(issueDTO);
+    public int updateIssueInfo(IssueDTO issueDTO) {
+        return issueDAO.updateIssueInfo(issueDTO);
+    }
+
+    /* 이슈를 다른 컬럼으로 이동 */
+    @Override
+    public int moveToOtherCol(IssueDTO issueDTO) {
+        return issueDAO.moveToOtherCol(issueDTO);
     }
 
     /* 이슈 업데이트 일자 변경 */

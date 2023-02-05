@@ -33,109 +33,10 @@
     </nav>
   </div><!-- End Page Title -->
 
+  <!-- 컬럼/이슈 리스트 -->
   <section class="section dashboard">
     <div class="row" id="column-list-card">
-
-      <!-- Column -->
-      <c:forEach var="cdto" items="${clist}">
-        <div id="col-${cdto.colSeq}" class="col-lg-2 col-md-6" style="min-width: 300px">
-          <div class="card info-card sales-card">
-
-            <!-- Three Dots Dropdown Menu Icon -->
-            <div class="filter">
-              <c:choose>
-                <c:when test="${cdto.colType == 1}">
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><img src="../resources/bootstrap/img/checkmark.png" width="20"></a>
-                </c:when>
-                <c:when test="${teamAllow == 3}"></c:when>
-                <c:otherwise>
-                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <li><a class="dropdown-item" href="javascript:addIssue(${cdto.colSeq})">이슈 추가</a></li>
-                    <li><a class="dropdown-item" href="javascript:deleteColumn(${cdto.colSeq})">컬럼 삭제</a></li>
-                  </ul>
-                </c:otherwise>
-              </c:choose>
-            </div><!-- End Three Dots Dropdown Menu Icon -->
-
-            <!-- Column Title -->
-            <div class="card-body">
-              <h5 class="card-title">
-                <c:choose>
-                  <c:when test="${teamAllow  == 3}">
-                    <input id="col-update-box" type="text" value="${cdto.colName}"
-                           style="border: none; font-family: 'Nunito', sans-serif;
-                           font-size: 18px; font-weight: 500; color: #012970" readonly>
-                  </c:when>
-                  <c:otherwise>
-                    <input id="col-update-box" type="text" value="${cdto.colName}" onkeyup="updateColName(this, ${cdto.colSeq})"
-                           style="border: none; font-family: 'Nunito', sans-serif;
-                           font-size: 18px; font-weight: 500; color: #012970">
-                  </c:otherwise>
-                </c:choose>
-              </h5>
-            </div>
-
-            <!-- Issue Card -->
-            <div id="issue-list-card">
-              <c:choose>
-                <c:when test="${imap.containsKey(cdto.colSeq)}">
-
-                  <c:forEach var="idto" items="${imap.get(cdto.colSeq)}">
-                    <div id="issue-${idto.issueSeq}" class="card-body" style="font-size: 14px">
-
-                      <div class="alert alert-secondary fade show" role="alert">
-                        <a href="${twone}/project/issue?issueSeq=${idto.issueSeq}" style="color: black">
-                          <p>${idto.issueTitle}</p>
-                        </a>
-                        <c:choose>
-                          <c:when test="${teamAllow != 3}">
-                            <!-- Three Dots Dropdown Menu Icon -->
-                            <div class="filter">
-                              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                <li><a class="dropdown-item" href="javascript:deleteIssue(${idto.issueSeq})">이슈 삭제</a></li>
-                              </ul>
-                            </div><!-- End Three Dots Dropdown Menu Icon -->
-                          </c:when>
-                        </c:choose>
-
-                        <hr>
-                        <p class="mb-0">${idto.issueCode}</p>
-                      </div>
-
-                    </div>
-                  </c:forEach>
-
-                </c:when>
-              </c:choose>
-            </div>
-          </div>
-        </div>
-
-      </c:forEach><!-- End Column -->
-
-      <div class="col-lg-2" style="min-width: 300px">
-
-        <c:choose>
-          <c:when test="${teamAllow == 3}"></c:when>
-          <c:otherwise>
-            <!-- Column Creation Button -->
-            <div class="col-sm-1">
-              <button type="button" class="btn btn-light" onclick="toggleInput('col-input-box')">
-                <img src="../resources/bootstrap/img/button_plus.png">
-              </button>
-            </div>
-          </c:otherwise>
-        </c:choose>
-
-        <!-- Column Creation Input Box -->
-        <div class="col-sm-12" style="margin-top: 12px">
-          <input type="text" class="form-control" id="col-input-box" style="display: none" placeholder="컬럼 제목 입력 후 엔터 (최대 30자)" onkeyup="addColumn(this)">
-        </div>
-
-      </div>
-
+      ${clist}
     </div>
   </section>
 
@@ -338,5 +239,24 @@
     // 결과값 받음
     xhttp.send();
   }
-정
+
+  /* 이슈 완료 처리 */
+  function moveToDone(issueSeq){
+    // URL(+ 파라미터) 만들기
+    let url = "/project/movetodone?issueSeq=" + issueSeq;
+
+    // 연결 작업
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("GET", url, true);
+
+    // 콜백 작업 지정
+    xhttp.onreadystatechange = function (){
+      if(this.readyState == 4 && this.status == 200){
+        document.getElementById("column-list-card").innerHTML = this.responseText; // 컬럼 리스트 업데이트
+      }
+    };
+    // 결과값 받음
+    xhttp.send();
+  }
+  정
 </script>

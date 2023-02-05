@@ -21,39 +21,16 @@
     <li class="nav-heading">보드</li>
 
     <li class="nav-item">
+
       <!-- Board Drop Down Menu -->
       <a class="nav-link ${navType == 'board'? '':'collapsed'}" data-bs-target="#components-nav"
          data-bs-toggle="collapse">
         <i class="bi bi-menu-button-wide"></i><span>보드</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
+
+      <!-- 보드 리스트 -->
       <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
-        <!-- Board List -->
-        <c:forEach var="bdto" items="${blist}">
-          <li id="${bdto.boardSeq}">
-            <div class="row">
-              <div class="col-sm-8">
-                <a href="${twone}/project/board?projectSeq=${pdto.projectSeq}&boardSeq=${bdto.boardSeq}">
-                  <div><span>${bdto.boardName}</span></div>
-                </a>
-              </div>
-              <div class="col-sm-2">
-                <c:choose>
-                  <c:when test="${teamAllow == 3}"></c:when>
-                  <c:otherwise>
-                    <!-- Three Dots Dropdown Menu Icon -->
-                    <div class="filter">
-                      <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                      <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                        <li><a class="dropdown-item" href="javascript:deleteBoard(${bdto.boardSeq})">보드 삭제</a></li>
-                      </ul>
-                    </div>
-                    <!-- End Three Dots Dropdown Menu Icon -->
-                  </c:otherwise>
-                </c:choose>
-              </div>
-            </div>
-          </li>
-        </c:forEach>
+        ${blist}
       </ul>
       <c:choose>
         <c:when test="${teamAllow == 3}"></c:when>
@@ -67,8 +44,9 @@
         </c:otherwise>
       </c:choose>
       <br>
+
+      <!-- Board Creation Input Box -->
       <div class="col-sm-12">
-        <!-- Board Creation Input Box -->
         <input type="text" class="form-control" id="board-input-box" style="display: none"
                placeholder="보드 이름 입력 후 엔터 (최대 30자)" onkeyup="addBoard(this)">
       </div>
