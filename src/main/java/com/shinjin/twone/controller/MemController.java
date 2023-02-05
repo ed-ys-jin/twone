@@ -67,7 +67,6 @@ public class MemController {
         if(memSeq != -1) {
             // 임의의 key 생성 & 이메일 발송
             String key = emailService.sendSimpleMessage(memDTO.getMemEmail());
-            System.out.println(key);
             memDTO.setMemKey(key);
             memDTO.setMemSeq(memSeq);
             memService.updateMemKey(memDTO);
