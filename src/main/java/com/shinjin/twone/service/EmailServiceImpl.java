@@ -30,8 +30,6 @@ public class EmailServiceImpl implements EmailService{
 
     key = createKey();
 
-    System.out.println("보내는 대상 : "+ to);
-    System.out.println("인증 번호 : "+key);
     MimeMessage  message = emailSender.createMimeMessage();
 
 

@@ -57,6 +57,12 @@ public class ColServiceImpl implements ColService {
         return colDAO.getColList(boardSeq);
     }
 
+    /* Done 컬럼의 colSeq 찾기 */
+    @Override
+    public int getDoneColSeq(ColDTO colDTO) {
+        return colDAO.getDoneColSeq(colDTO);
+    }
+
     /* ColDTO 불러오기 */
     @Override
     public ColDTO getColDTO(int colSeq) {

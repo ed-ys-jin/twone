@@ -12,13 +12,20 @@
           , CONCAT(#{issueCode}, #{issueSeq}), #{issueTitle}, null, NOW(), NOW(), null)
     </insert>
 
-    <!-- IssueDTO 변경 -->
-    <update id="updateIssueDTO" parameterType="IssueDTO">
+    <!-- 이슈 기본정보 변경 -->
+    <update id="updateIssueInfo" parameterType="IssueDTO">
         UPDATE t_issue
         SET
             issue_title = #{issueTitle},
             issue_summary = #{issueSummary},
             issue_update = NOW()
+        WHERE issue_seq = #{issueSeq}
+    </update>
+
+    <!-- 이슈를 다른 컬럼으로 이동 -->
+    <update id="moveToOtherCol" parameterType="IssueDTO">
+        UPDATE t_issue
+        SET col_seq = #{colSeq}
         WHERE issue_seq = #{issueSeq}
     </update>
 

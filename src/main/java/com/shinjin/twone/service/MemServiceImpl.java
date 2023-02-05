@@ -47,10 +47,12 @@ public class MemServiceImpl implements MemService {
     public int signup(MemDTO memDTO) {
         int result = -1;
         try {
-            result = memDAO.signup(memDTO);
+            memDAO.signup(memDTO);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // selectkey 를 활용하여 인서트 한 mem_seq 바로 가져오기
+        result = memDTO.getMemSeq();
         return result;
     }
 

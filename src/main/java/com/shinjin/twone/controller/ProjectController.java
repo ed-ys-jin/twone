@@ -1,6 +1,6 @@
 package com.shinjin.twone.controller;
 
-import com.shinjin.twone.common.commonMethod;
+import com.shinjin.twone.common.CommonMethod;
 import com.shinjin.twone.dto.*;
 import com.shinjin.twone.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,7 +66,6 @@ public class ProjectController {
 
         // 자동 팀 생성 (내가 만들었으니 관리자로)
         // 프로젝트 시퀀스 가져온걸 다시 보내기
-//        projectDto.setProjectSeq(projectSeq); // selectOne 으로 대체 [윤석 230118]
         projectDto = projectService.selectOne(projectSeq);
         projectService.insertMasterTeam(projectDto);
 
@@ -106,6 +104,11 @@ public class ProjectController {
         ProjectDTO pdto = projectService.selectOne(projectSeq);
         model.addAttribute("pdto", pdto);
 
+        /* Attr : boardList (프로젝트 사이드바 출력용) */
+        List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
+        String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
+        request.setAttribute("blist", blist);
+
         // 프로젝트 세팅 권한
         Map<String, Integer> map = new HashMap<String, Integer>();
         map.put("memSeq", memSeq);
@@ -119,7 +122,7 @@ public class ProjectController {
             return "project/setting";
         }else{
             String msg = "프로젝트 설정 권한이 없습니다. 관리자에게 문의 하세요";
-            commonMethod.setAttribute(model, "/project/board?projectSeq=" + projectSeq, msg);
+            CommonMethod.setAttribute(model, "/project/board?projectSeq=" + projectSeq, msg);
             return "common/alert";
         }
 
@@ -138,6 +141,11 @@ public class ProjectController {
         int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
 
         ProjectDTO pdto = projectService.selectOne(projectSeq);
+
+        /* Attr : boardList (프로젝트 사이드바 출력용) */
+        List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
+        String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
+        request.setAttribute("blist", blist);
 
         request.setAttribute("navType", "info");
         request.setAttribute("pdto", pdto);

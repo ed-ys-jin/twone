@@ -113,6 +113,10 @@
                   <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">비밀번호 변경</button>
                 </li>
 
+                <li class="nav-item">
+                  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-withdraw">회원 탈퇴</button>
+                </li>
+
               </ul><!-- End Bordered Tabs -->
 
               <div class="tab-content pt-2">
@@ -244,6 +248,17 @@
                       <button type="submit" class="btn btn-primary">비밀번호 변경</button>
                     </div>
                   </form><!-- End Change Password Form -->
+
+                </div>
+
+                <div class="tab-pane fade pt-3" id="profile-withdraw">
+                  <h5 class="card-title"></h5>
+
+                  <div class="text-center">
+                    <a href="${twone}/withdraw">
+                      <button type="button" class="btn btn-primary">회원 탈퇴</button>
+                    </a>
+                  </div><br><br>
 
                 </div>
 
