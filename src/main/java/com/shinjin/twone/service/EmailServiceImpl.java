@@ -1,6 +1,9 @@
 package com.shinjin.twone.service;
 
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 import javax.mail.Message.RecipientType;
@@ -21,8 +24,14 @@ public class EmailServiceImpl implements EmailService{
   public String key = "";
 
   private MimeMessage createMessage(String to)throws Exception{
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+    String formatedNow = LocalDate.now().plusDays(1) + "";
+    formatedNow += " " + LocalTime.now().format(formatter);
+
     key = createKey();
+
     MimeMessage  message = emailSender.createMimeMessage();
+
 
     message.addRecipients(RecipientType.TO, to);//보내는 대상
     message.setSubject("TWONE 이메일 인증");//제목
@@ -33,11 +42,13 @@ public class EmailServiceImpl implements EmailService{
     msgg+= "<br>";
     msgg+= "<p>아래 링크를 클릭하시면 이메일 인증이 완료됩니다.<p>";
     msgg+= "<br>";
+    msgg+= "<p>인증링크는 24시간동안 유효합니다. (인증 만료 일시 : "+formatedNow +")<p>";
+    msgg+= "<br>";
     msgg+= "<p>감사합니다.<p>";
     msgg+= "<br>";
     msgg+= "<a href='http://localhost:8080/signUpConfirm?email=" + to;
     msgg+= "&key=" + key;
-    msgg+= "'target='blank'>이메일 인증 확인</a>";
+    msgg+= "'target='blank'>이메일 인증 하러가기</a>";
     message.setText(msgg, "utf-8", "html");//내용
     message.setFrom(new InternetAddress("twone.shinjinbong@gmail.com","twone"));//보내는 사람
 

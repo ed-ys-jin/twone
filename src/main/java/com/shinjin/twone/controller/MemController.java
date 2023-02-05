@@ -15,6 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Controller
@@ -69,6 +72,7 @@ public class MemController {
             memDTO.setMemSeq(memSeq);
             memService.updateMemKey(memDTO);
             CommonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "등록하신 이메일로 인증요청 메일이 발송되었습니다. 메일 인증 후 로그인을 진행해 주세요.");
+
         // 회원 등록 실패
         } else {
             CommonMethod.setAttribute(model, "/signup", "회원가입에 실패하였습니다. 관리자에게 문의해 주세요.");
