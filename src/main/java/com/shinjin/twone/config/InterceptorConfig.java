@@ -15,7 +15,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor()) // 인터셉터 등록
                 .addPathPatterns("/**") // 인터셉터를 적용할 url 패턴
 
-                .excludePathPatterns("/", "/index", "/login", "/signup", "/resources/**" , "/signUpConfirm"); // 인터셉터에서 제외할 패턴 지정
+                .excludePathPatterns("/", "/twone", "/twone-0.0.1-SNAPSHOT", "/index", "/login", "/signup", "/resources/**" , "/signUpConfirm"); // 인터셉터에서 제외할 패턴 지정
 
     }
 
