@@ -2,7 +2,10 @@ package com.shinjin.twone;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.WebApplicationInitializer;
 
 //* 스케줄러 특징
 //* 메서드의 리턴값은 void여야 한다. (그러나 리턴값이 있더라도 동작합니다.)
@@ -15,7 +18,12 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class TwoneApplication {
+public class TwoneApplication extends SpringBootServletInitializer implements WebApplicationInitializer {
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+        return builder.sources(TwoneApplication.class);
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(TwoneApplication.class, args);
