@@ -2,9 +2,9 @@
 ### *Two Heads are Better Than One*
 ---
 
-0. Twone 홈페이지 : http://www.twoneproject.com
+**1. Twone 홈페이지 : http://www.twoneproject.com
 
-**1. 프로젝트 팀명: 신진봉(SJB)**
+**2. 프로젝트 팀명: 신진봉(SJB)**
 	
 - Leader : 신성주 (hans52410537@gmail.com)
     
@@ -13,7 +13,7 @@
 - Member : 봉지원 (jeewon1202@gmail.com)
 
 
-**2. 프로젝트 목표 및 요구사항**
+**3. 프로젝트 목표 및 요구사항**
 
 ZIRA, JANDI 등 과 같은 협업툴 구현해보기
 
@@ -21,12 +21,12 @@ ZIRA, JANDI 등 과 같은 협업툴 구현해보기
 - AWS(EC2, RDS)기반의 협업툴 시스템을 구축
 
 
-**3. 개발 일정**
+**4. 개발 일정**
 
 [개발 캘린더]
 
 
-**4. 주요 개발자원 (S/W)**
+**5. 주요 개발자원 (S/W)**
 <table border="1">
 		<tr>
 			<th>구 분</th>
