@@ -34,8 +34,10 @@
             <properties>
                 <spring.profiles.active>operation</spring.profiles.active>
 
-<!--            외부 tomcat에 war로 배포할때는 내장 톰캣을 사용하지 않기 위해-->
-<!--            변수를 잡아서 provovided로 설정한다.-->
+                <!--
+                외부 tomcat에 war로 배포할때는 내장 톰캣을 사용하지 않기 위해
+                변수를 잡아서 provovided로 설정한다.
+                -->
                 <embedded.tomcat.scope>provided</embedded.tomcat.scope>
             </properties>
         </profile>
@@ -139,12 +141,25 @@
             <artifactId>jstl</artifactId>
         </dependency>
 
-<!--    내장 톰캣의 scope는 메이븐 빌드시 설정되는 변수값에 의해 결정되도록 한다.-->
-<!--    scope이 compile이면 빌드시 무조건 포함되고 provided 외부 servlet 라이브러리와 함께 동작한다는 의미이다.-->
+        <!--
+        내장 톰캣의 scope는 메이븐 빌드시 설정되는 변수값에 의해 결정되도록 한다.
+        scope이 compile이면 빌드시 무조건 포함되고 provided 외부 servlet 라이브러리와 함께 동작한다는 의미이다.
+        -->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-jasper</artifactId>
             <scope>${embedded.tomcat.scope}</scope>
+        </dependency>
+
+        <!--
+        war 파일 배포 시 필요한 dependency
+        이는 컴파일 단계에서만 tomcat 라이브러리를 이용(scope를 provided로 지정) 하고,
+        배포 이후에는 내장 tomcat이 아닌 이미 존재하는 tomcat 서버를 이용하기 위함이다.
+        -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!--
