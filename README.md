@@ -2,7 +2,7 @@
 ### *Two Heads are Better Than One*
 ---
 
-**1. Twone 홈페이지 : http://www.twoneproject.com
+**1. Twone 홈페이지 : http://www.twoneproject.com**
 
 **2. 프로젝트 팀명: 신진봉(SJB)**
 	
