@@ -35,7 +35,8 @@ public class EmailServiceImpl implements EmailService{
     msgg+= "<br>";
     msgg+= "<p>감사합니다.<p>";
     msgg+= "<br>";
-    msgg+= "<a href='http://localhost:8080/signUpConfirm?email=" + to;
+//    msgg+= "<a href='http://localhost:8080/signUpConfirm?email=" + to;
+    msgg+= "<a href='http://www.twoneproject.com/signUpConfirm?email=" + to;
     msgg+= "&key=" + key;
     msgg+= "'target='blank'>이메일 인증 확인</a>";
     message.setText(msgg, "utf-8", "html");//내용

@@ -8,7 +8,7 @@
   <title>Twone Project</title>
   <!-- Favicons -->
   <link href="../resources/bootstrap/img/logo_sjb_withback.png" rel="icon">
-  <link href="../resources/bootstrap/img/apple-touch-icon.png" rel="apple-touch-icon">
+<%--  <link href="../resources/bootstrap/img/apple-touch-icon.png" rel="apple-touch-icon">--%>
   <!-- Icon -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
 </head>
@@ -21,7 +21,8 @@
     <p id="dynamic" class="lg-text"></p><br>
     <p class="sm-text">TWONE Project &nbsp; | &nbsp; Team SJB</p>
     <br><br>
-    <p>본 서비스는 크롬(PC) 환경에 최적화되어 있습니다.</p>
+    <p>본 서비스는 크롬(PC) 환경에 최적화되어 있습니다.<br><br>
+    위 로고를 클릭하시면 로그인 페이지로 이동합니다.</p>
   </div>
 
 </body>

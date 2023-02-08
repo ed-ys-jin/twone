@@ -32,7 +32,7 @@ public class MemServiceImpl implements MemService {
 
     /* 중복 이메일 확인 */
     @Override
-    public int checkDupl(String email) {
+    public Integer checkDupl(String email) {
         int result = -1;
         try {
             result = memDAO.checkDupl(email);
