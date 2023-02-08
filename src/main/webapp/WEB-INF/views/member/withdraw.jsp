@@ -15,8 +15,11 @@
   <meta content="" name="keywords">
 
   <!-- Favicons -->
-  <link href="../resources/bootstrap/img/logo_sjb_withback.png" rel="icon">
-  <link href="../resources/bootstrap/img/apple-touch-icon.png" rel="apple-touch-icon">
+  <link rel="icon" type="image/png" sizes="32x32" href="../resources/bootstrap/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="../resources/bootstrap/img/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="../resources/bootstrap/img/favicon-16x16.png">
+<%--  <link href="../resources/bootstrap/img/logo_sjb_withback.png" rel="icon">--%>
+<%--  <link href="../resources/bootstrap/img/apple-touch-icon.png" rel="apple-touch-icon">--%>
 
   <!-- Google Fonts -->
   <link href="https://fonts.gstatic.com" rel="preconnect">
