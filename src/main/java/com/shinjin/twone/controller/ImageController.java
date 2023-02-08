@@ -30,8 +30,8 @@ public class ImageController {
   // 리눅스 서버 경로
   private final String savePath = "/var/lib/tomcat9/file_repo/";
 
-//  private final String imgPath = "resources/upload/";
-  private final String imgPath = "/var/lib/tomcat9/file_repo/";
+  private final String imgPath = "resources/upload/";
+//  private final String imgPath = "/var/lib/tomcat9/file_repo/";
 
   @RequestMapping("/image/profileImg")
   public String changeMemImage(MemDTO memDTO, HttpServletRequest request, HttpSession session){
