@@ -80,7 +80,6 @@ public class MemController {
         return "/common/alert";
     }
 
-
     /*** 로그인 ***/
     @RequestMapping("/login")
     public String loginView(HttpServletRequest request) {
@@ -179,7 +178,6 @@ public class MemController {
 
         return "redirect:/project";
     }
-
 
     /*** 로그아웃 ***/
     @RequestMapping("/logout")
@@ -286,8 +284,11 @@ public class MemController {
 
     /*메일 링크 인증시 인증 여부 변경*/
     @RequestMapping ("/signUpConfirm")
-    public void changeMailCert(@RequestParam Map<String,String> map ){
+    public String changeMailCert(@RequestParam Map<String,String> map, HttpServletRequest request){
+        String email = request.getParameter("email");
         memService.changeMailCert(map);
+        CommonMethod.setAttribute(request, "/login?email=" + email, "Twone의 멤버가 되신 것을 환영합니다. 꾸준히 발전하는 Twone이 되겠습니다!");
+        return "/common/alert";
     }
 
 }

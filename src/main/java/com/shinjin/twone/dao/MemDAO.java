@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Mapper
 public interface MemDAO {
-    public int checkDupl(String email); // 중복 이메일 확인
+    public Integer checkDupl(String email); // 중복 이메일 확인
     public int signup(MemDTO memDTO); // 회원 등록
     public MemDTO login(MemDTO memDTO); // 로그인
     public int withdraw(MemDTO memDTO); // 회원탈퇴
