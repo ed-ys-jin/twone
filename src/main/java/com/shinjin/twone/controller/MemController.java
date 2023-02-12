@@ -40,9 +40,7 @@ public class MemController {
     }
 
     @PostMapping("/signup")
-    public String signupProc(@Valid MemDTO memDTO, Errors errors, Model model)throws Exception {
-
-        System.out.println("signup memPw : " + memDTO.getMemPw());
+    public String signupProc(@Valid MemDTO memDTO, Errors errors, Model model) throws Exception {
 
         /* 유효성 검사 */
         if(errors.hasErrors()){ // 유효성 검사 실패
@@ -85,6 +83,21 @@ public class MemController {
             CommonMethod.setAttribute(model, "/signup", "회원가입에 실패하였습니다. 관리자에게 문의해 주세요.");
         }
 
+        return "/common/alert";
+    }
+
+    /* 메일 링크 인증시 인증 여부 변경 */
+    @RequestMapping ("/signUpConfirm")
+    public String changeMailCert(@RequestParam Map<String,String> map, HttpServletRequest request){
+        String email = request.getParameter("email");
+
+        // 이메일 인증 실패
+        if(memService.changeMailCert(map) == -1){
+            CommonMethod.setAttribute(request, "/signup", "이메일 인증에 실패했습니다. 관리자에게 문의해 주세요.");
+        }
+
+        // 이메일 인증 성공
+        CommonMethod.setAttribute(request, "/login?email=" + email, "Twone의 멤버가 되신 것을 환영합니다. 꾸준히 발전하는 Twone이 되겠습니다!");
         return "/common/alert";
     }
 
@@ -197,7 +210,6 @@ public class MemController {
         return "redirect:/login";
     }
 
-
     /*** 회원탈퇴 ***/
     @RequestMapping("withdraw")
     public String withdrawView(){
@@ -210,13 +222,13 @@ public class MemController {
         // 비밀번호 대문자 존재 시, 소문자로 변경
         memPw = memPw.toLowerCase();
 
-        // memDTO 불러오기
-        int memSeq = (int) session.getAttribute("login");
-        MemDTO memDTO = memService.getDto(memSeq);
+            // memDTO 불러오기
+            int memSeq = (int) session.getAttribute("login");
+            MemDTO memDTO = memService.getDto(memSeq);
 
-        // 회원탈퇴 성공
-        if(pwEncoder.matches(memPw, memDTO.getMemPw())){
-            memService.withdraw(memSeq);
+            // 회원탈퇴 성공
+            if(pwEncoder.matches(memPw, memDTO.getMemPw())){
+                memService.withdraw(memSeq);
             CommonMethod.setAttribute(model, "/login", "회원탈퇴 처리가 완료되었습니다. 그동안 TWONE 서비스를 이용해 주셔서 감사합니다. 더욱더 노력하고 발전하는 TWONE이 되도록 노력하겠습니다.");
             session.invalidate(); // 세션 해제
         // 회원탈퇴 실패
@@ -297,12 +309,80 @@ public class MemController {
         return "/common/alert";
     }
 
-    /*메일 링크 인증시 인증 여부 변경*/
-    @RequestMapping ("/signUpConfirm")
-    public String changeMailCert(@RequestParam Map<String,String> map, HttpServletRequest request){
+    /*** 비밀번호 재설정 ***/
+    /* 비밀번호 찾기 이동 */
+    @RequestMapping("/lostpassword")
+    public String lostPasswordView(){
+        return "/member/lostPassword";
+    }
+
+    /* 비밀번호 재설정 이메일 발송 */
+    @PostMapping("/sendemailforresetpassword")
+    public String sendEmailForResetPassword(MemDTO memDTO, Model model) throws Exception {
+
+        // 사용자 계정 존재 여부 확인
+        if(!(memService.checkDupl(memDTO.getMemEmail()) == 0)){
+            CommonMethod.setAttribute(model, "/lostpassword", "입력하신 이메일 또는 이름과 일치하는 계정이 존재하지 않습니다. 관리자에게 문의해 주세요.");
+            return "/common/alert";
+        }
+
+        // 임의의 key 생성 & 이메일 발송
+        String key = emailService.sendEmailToLostPwMember(memDTO.getMemEmail());
+        memDTO.setMemKey(key);
+        memService.updateMemKeyForLostPwMember(memDTO);
+        CommonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "입력하신 이메일로 본인 확인 메일이 발송되었습니다. 메일 인증 후 비밀번호 재설정을 진행해 주세요.");
+
+        return "/common/alert";
+    }
+
+    /* 메일 링크 인증 시 비밀번호 재설정 페이지 이동 */
+    @RequestMapping ("/certresetpassword")
+    public String certResetPassword(@RequestParam Map<String,String> map, HttpServletRequest request) {
         String email = request.getParameter("email");
-        memService.changeMailCert(map);
-        CommonMethod.setAttribute(request, "/login?email=" + email, "Twone의 멤버가 되신 것을 환영합니다. 꾸준히 발전하는 Twone이 되겠습니다!");
+
+        int memSeq = memService.checkMemKey(map);
+        if(memSeq == -1){
+            CommonMethod.setAttribute(request, "/lostpassword", "이메일 인증에 실패했습니다. 관리자에게 문의해 주세요.");
+        }
+        return "redirect:/resetpassword?memSeq=" + memSeq;
+    }
+
+    /* 비밀번호 재설정 페이지 이동 */
+    @RequestMapping("/resetpassword")
+    public String resetPasswordView(HttpServletRequest request){
+
+        // 비밀번호 재설정 페이지로 memSeq 전달
+        int memSeq = Integer.parseInt(request.getParameter("memSeq"));
+        request.setAttribute("memSeq", memSeq);
+
+        return "/member/resetPassword";
+    }
+
+    /* 비밀번호 재설정 */
+    @PostMapping("/resetpassword")
+    public String resetPasswordProc(@Valid MemDTO memDTO, Errors errors, Model model){
+
+        /* 유효성 검사 */
+        if(errors.hasFieldErrors("memPw")){ // 유효성 검사 실패
+            Map<String, String> validatorResult = memService.validatorHandling(errors);
+            for(String key : validatorResult.keySet()){
+                model.addAttribute(key, validatorResult.get(key));
+            }
+            model.addAttribute("memSeq", memDTO.getMemSeq());
+            return "/member/resetPassword";
+        }
+
+        // 비밀번호 대문자 존재 시, 소문자로 변경
+        memDTO.setMemPw(memDTO.getMemPw().toLowerCase());
+        // 비밀번호 암호화
+        memDTO.setMemPw(pwEncoder.encode(memDTO.getMemPw()));
+
+        if(memService.changePw(memDTO) == -1){
+            CommonMethod.setAttribute(model, "/resetpassword", "비밀번호 재설정에 실패했습니다. 관리자에게 문의해 주세요.");
+        }
+
+        CommonMethod.setAttribute(model, "/login", "비밀번호가 재설정 되었습니다. 로그인 페이지로 이동합니다.");
+
         return "/common/alert";
     }
 

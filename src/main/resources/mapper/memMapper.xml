@@ -52,19 +52,37 @@
     <!-- 비밀번호 변경 -->
     <update id="changePw" parameterType="MemDto">
         UPDATE t_mem
-        SET mem_pw = #{memPw}
+        SET mem_pw = #{memPw}, mem_key = null, mem_key_date = null
         WHERE mem_seq = #{memSeq}
     </update>
 
     <!-- 사용자 메일인증 키값 저장-->
     <update id="updateMemKey" parameterType="MemDTO">
-        UPDATE t_mem SET mem_key= #{memKey} , mem_key_date = NOW() WHERE mem_seq= #{memSeq}
+        UPDATE t_mem
+        SET mem_key= #{memKey} , mem_key_date = NOW()
+        WHERE mem_seq= #{memSeq}
+    </update>
+
+    <!-- 사용자 메일인증 키값 저장 for 비밀번호 분실 멤버 -->
+    <update id="updateMemKeyForLostPwMember" parameterType="MemDTO">
+        UPDATE t_mem
+        SET mem_key= #{memKey} , mem_key_date = NOW()
+        WHERE mem_email= #{memEmail} AND mem_name = #{memName}
     </update>
 
     <!-- 메일 인증 여부 변경   -->
     <update id="changeMailCert" parameterType="Map">
-        UPDATE t_mem SET mem_cert = 1 , mem_key = null, mem_key_date = null WHERE mem_email= #{email} and mem_key= #{key}
+        UPDATE t_mem
+        SET mem_cert = 1 , mem_key = null, mem_key_date = null
+        WHERE mem_email= #{email} and mem_key= #{key}
     </update>
+
+    <!-- 이메일 인증 - 비밀번호 재설정 -->
+    <select id="checkMemKey" parameterType="Map" resultType="int">
+        SELECT mem_seq
+        FROM t_mem
+        WHERE mem_email= #{email} AND mem_key= #{key}
+    </select>
 
     <!-- 발급일 하루 지난 사용자의 발급일, 발급일자, 이메일 인증 변경-->
     <update id="timeOut">

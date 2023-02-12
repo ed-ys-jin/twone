@@ -127,9 +127,33 @@ public class MemServiceImpl implements MemService {
        return memDAO.updateMemKey(memDTO);
     }
 
+    /* 사용자 메일인증 키값 저장 for 비밀번호 분실 멤버 */
     @Override
-    public void changeMailCert(Map<String, String> map) {
-        memDAO.changeMailCert(map);
+    public int updateMemKeyForLostPwMember(MemDTO memDTO) {
+        return memDAO.updateMemKeyForLostPwMember(memDTO);
+    }
+
+    @Override
+    public int changeMailCert(Map<String, String> map) {
+        int result = -1;
+        try {
+            result = memDAO.changeMailCert(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /* 이메일 인증 - 비밀번호 재설정 */
+    @Override
+    public int checkMemKey(Map<String, String> map) {
+        int result = -1;
+        try {
+            result = memDAO.checkMemKey(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
