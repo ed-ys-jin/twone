@@ -65,36 +65,19 @@
                         </a>
                     </div><!-- End Logo -->
 
-                  <!--
-                  modelAttribute="memDto"
-                    : 회원가입 실패시, 할당된 dto를 form의 modelAttribute 애트리뷰트로 할당해줍니다.
-                  -->
-                  <form class="row g-3" method="post" action="${twone}/signup" novalidate>
+                  <form class="row g-3" method="post" action="${twone}/sendemailforresetpassword" novalidate>
 
                     <div class="col-12">
                       <label for="email" class="form-label">이메일</label>
-                      <input type="email" name="memEmail" class="form-control" value="${memDto.memEmail}" id="email">
-                      <div style="color: #cc0000"><span>${valid_memEmail}</span></div>
+                      <input type="email" name="memEmail" class="form-control" id="email">
                     </div>
 
                     <div class="col-12">
-                      <label for="name" class="form-label">이름</label>
-                      <input type="text" name="memName" class="form-control" value="${memDto.memName}" id="name">
-                      <div style="color: #cc0000"><span>${valid_memName}</span></div>
+                      <button class="btn btn-primary w-100" type="submit">비밀번호 재설정</button>
                     </div>
 
                     <div class="col-12">
-                      <label for="password" class="form-label">비밀번호</label>
-                      <input type="password" name="memPw" class="form-control" placeholder="8~16자 영문 소문자, 숫자, 특수문자" id="password">
-                      <div style="color: #cc0000"><span>${valid_memPw}</span></div>
-                    </div>
-
-                    <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">회원 가입</button>
-                    </div>
-
-                    <div class="col-12">
-                      <p class="small mb-0">이미 가입한 계정이 있습니다. <a href="${twone}/login">로그인</a></p>
+                      <p class="small mb-0">비밀번호가 기억나셨나요? <a href="${twone}/login">로그인</a></p>
                     </div>
 
                   </form>

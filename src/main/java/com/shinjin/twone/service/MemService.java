@@ -18,7 +18,9 @@ public interface MemService {
     public int changePw(MemDTO memDTO); // 비밀번호 변경
     public List<MemDTO> getTeamMemberForIssueForm(int projectSeq); // 팀 멤버 불러오기 for 이슈폼
     public int updateMemKey(MemDTO memDTO); // 키값 업로드
-    public void changeMailCert(Map<String, String> map); // 이메일 인증여부 변경
+    public int updateMemKeyForLostPwMember(MemDTO memDTO); // 사용자 메일인증 키값 저장 for 비밀번호 분실 멤버
+    public int changeMailCert(Map<String, String> map); // 이메일 인증여부 변경
+    public int checkMemKey(Map<String, String> map); // 이메일 인증 - 비밀번호 재설정
     public int timeOut(); // 발급일 하루 지난 사용자의 발급일, 발급일자, 이메일 인증 변경
     public int updateMemImage(MemDTO memDTO); // 이미지 업로드
     public int deleteMemImage(int memSeq); // 기본 이미지로 변경
