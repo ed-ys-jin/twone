@@ -70,10 +70,10 @@ public class MemServiceImpl implements MemService {
 
     /* 회원탈퇴 */
     @Override
-    public int withdraw(MemDTO memDTO) {
+    public int withdraw(int memSeq) {
         int result = 0;
         try {
-            result = memDAO.withdraw(memDTO);
+            result = memDAO.withdraw(memSeq);
         } catch (Exception e) {
             e.printStackTrace();
         }

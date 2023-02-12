@@ -85,7 +85,7 @@
 
                     <div class="col-12">
                       <label for="password" class="form-label">비밀번호</label>
-                      <input type="password" name="memPw" class="form-control" placeholder="8~16자 영문 대/소문자, 숫자, 특수문자" id="password">
+                      <input type="password" name="memPw" class="form-control" placeholder="8~16자 영문 소문자, 숫자, 특수문자" id="password">
                         <div style="color: #cc0000"><span>${valid_memPw}</span></div>
                     </div>
 

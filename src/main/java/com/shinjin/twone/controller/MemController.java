@@ -5,6 +5,7 @@ import com.shinjin.twone.dto.MemDTO;
 import com.shinjin.twone.service.EmailService;
 import com.shinjin.twone.service.MemService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -27,7 +28,10 @@ public class MemController {
     private MemService memService;
 
     @Autowired
-    EmailService emailService;
+    private EmailService emailService;
+
+    @Autowired
+    private PasswordEncoder pwEncoder;
 
     /*** 회원가입 ***/
     @RequestMapping("/signup")
@@ -37,6 +41,8 @@ public class MemController {
 
     @PostMapping("/signup")
     public String signupProc(@Valid MemDTO memDTO, Errors errors, Model model)throws Exception {
+
+        System.out.println("signup memPw : " + memDTO.getMemPw());
 
         /* 유효성 검사 */
         if(errors.hasErrors()){ // 유효성 검사 실패
@@ -60,6 +66,8 @@ public class MemController {
 
         // 비밀번호 대문자 존재 시, 소문자로 변경
         memDTO.setMemPw(memDTO.getMemPw().toLowerCase());
+        // 비밀번호 암호화
+        memDTO.setMemPw(pwEncoder.encode(memDTO.getMemPw()));
 
         /* 회원 등록 */
         int memSeq = memService.signup(memDTO);
@@ -111,10 +119,11 @@ public class MemController {
     @PostMapping("/login")
     public String loginProc(MemDTO memDTO, HttpServletRequest request, HttpServletResponse response) {
 
-        MemDTO dto = memService.login(memDTO); // DTO 불러오기
-
         // 비밀번호 대문자 존재 시, 소문자로 변경
         memDTO.setMemPw(memDTO.getMemPw().toLowerCase());
+
+        // DTO 불러오기
+        MemDTO dto = memService.login(memDTO);
 
         /* 로그인 가능 여부 확인 */
         // 일치하는 ('가입중' 상태의) 이메일 계정이 없음
@@ -122,7 +131,7 @@ public class MemController {
             CommonMethod.setAttribute(request, "/login", "존재하지 않는 이메일 계정입니다.");
             return "/common/alert";
         // 일치하는 이메일은 존재하나, 비밀번호 다름
-        } else if(!dto.getMemPw().equals(memDTO.getMemPw())) {
+        } else if(!pwEncoder.matches(memDTO.getMemPw(), dto.getMemPw())) {
             CommonMethod.setAttribute(request, "/login", "비밀번호가 일치하지 않습니다.");
             return "common/alert";
         } else if (dto.getMemCert() == 0 || dto.getMemCert() == 2){
@@ -196,16 +205,18 @@ public class MemController {
     }
 
     @PostMapping("/withdraw")
-    public String withdrawProc(MemDTO memDTO, Model model, HttpSession session) {
-
-        int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
-        memDTO.setMemSeq(memSeq); // memDTO(memSeq, memPw)
+    public String withdrawProc(String memPw, Model model, HttpSession session) {
 
         // 비밀번호 대문자 존재 시, 소문자로 변경
-        memDTO.setMemPw(memDTO.getMemPw().toLowerCase());
+        memPw = memPw.toLowerCase();
+
+        // memDTO 불러오기
+        int memSeq = (int) session.getAttribute("login");
+        MemDTO memDTO = memService.getDto(memSeq);
 
         // 회원탈퇴 성공
-        if(memService.withdraw(memDTO) != 0){
+        if(pwEncoder.matches(memPw, memDTO.getMemPw())){
+            memService.withdraw(memSeq);
             CommonMethod.setAttribute(model, "/login", "회원탈퇴 처리가 완료되었습니다. 그동안 TWONE 서비스를 이용해 주셔서 감사합니다. 더욱더 노력하고 발전하는 TWONE이 되도록 노력하겠습니다.");
             session.invalidate(); // 세션 해제
         // 회원탈퇴 실패
@@ -252,11 +263,12 @@ public class MemController {
     @PostMapping("/changepassword")
     public String chengPasswordProc(@Valid MemDTO memDTO, Errors errors, HttpServletRequest request, HttpSession session) {
 
-        int memSeq = (int) session.getAttribute("login"); // 세션 정보 불러오기
+        // 세션 정보 불러오기
+        int memSeq = (int) session.getAttribute("login");
 
         /* 현재 비밀번호 일치여부 확인 */
         String currentPw = request.getParameter("currentPw"); // 현재 비밀번호 받기
-        if(!memService.getPw(memSeq).equals(currentPw)){ // 현재 비밀번호 불일치
+        if(!pwEncoder.matches(currentPw, memService.getPw(memSeq))){ // 현재 비밀번호 불일치
             CommonMethod.setAttribute(request, "/profile", "현재 비밀번호가 일치하지 않습니다.");
             return "common/alert";
         }
@@ -272,7 +284,10 @@ public class MemController {
         }
 
         /* 비밀번호 변경 */
-        memDTO.setMemSeq(memSeq); // 수정할 정보를 담은 memDTO 만들기
+        // 수정할 정보를 담은 memDTO 만들기
+        memDTO.setMemSeq(memSeq);
+        // 비밀번호 암호화
+        memDTO.setMemPw(pwEncoder.encode(memDTO.getMemPw()));
         if(memService.changePw(memDTO) != -1) { // 정보 수정 성공
             CommonMethod.setAttribute(request, "/profile", "비밀번호가 변경되었습니다.");
         } else { // 정보 수정 실패
