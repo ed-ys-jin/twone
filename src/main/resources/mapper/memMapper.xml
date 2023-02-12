@@ -15,10 +15,10 @@
     </insert>
 
     <!-- 회원탈퇴 -->
-    <update id="withdraw" parameterType="MemDTO">
+    <update id="withdraw" parameterType="int">
         UPDATE t_mem
         SET mem_delCheck = 1
-        WHERE mem_seq = #{memSeq} and mem_pw = #{memPw}
+        WHERE mem_seq = #{memSeq}
     </update>
 
     <!-- 회원정보 수정 -->
