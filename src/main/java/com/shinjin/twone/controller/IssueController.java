@@ -517,7 +517,7 @@ public class IssueController {
       result += "<div id=\"comment-" + commentSeq + "\" class=\"row col-sm-10\">";
       result += "<div class=\"col-sm-2\">";
       if(cmtdto.getMemImage() != null){
-        result += "<img src=\"../" + cmtdto.getMemImage() + "\" class=\"rounded-circle\" alt=\"Profile\" width=\"50\">";
+        result += "<img src=\"" + cmtdto.getMemImage() + "\" class=\"rounded-circle\" alt=\"Profile\" width=\"50\">";
       } else {
         result += "<img src=\"../resources/bootstrap/img/profile-img.jpg\" class=\"rounded-circle\" alt=\"Profile\" width=\"50\">";
       }

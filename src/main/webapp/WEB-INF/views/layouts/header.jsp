@@ -234,7 +234,7 @@
                     <c:choose>
 
                         <c:when test="${!empty userimage}">
-                            <img src="../${userimage}" alt="Profile" class="rounded-circle">
+                            <img src="${userimage}" alt="Profile" class="rounded-circle">
                         </c:when>
                         <c:otherwise>
                             <img src="../resources/bootstrap/img/no_image.png" alt="Profile" class="rounded-circle">

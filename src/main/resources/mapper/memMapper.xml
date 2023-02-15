@@ -45,8 +45,7 @@
     <!-- 회원 프로필 기본 이미지 병경 -->
     <update id="deleteMemImage" parameterType="int">
         UPDATE t_mem
-        SET
-            mem_image = null
+        SET mem_image = null
         WHERE mem_seq = #{memSeq}
     </update>
     <!-- 비밀번호 변경 -->
