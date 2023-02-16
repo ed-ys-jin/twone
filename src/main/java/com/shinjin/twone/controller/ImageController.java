@@ -44,7 +44,8 @@ public class ImageController {
     String memImage = null;
 
 //    아래 코드는 로컬 또는 스프링 프로젝트 환경에서 파일 업로드 시 사용했으나,
-//    스프링부트 프로젝트 환경에서 동작하지 않아 AWS S3 버킷에 이미지 파일을 저장하는 방식으로 변경함. 23/02/16 윤석
+//    스프링부트 프로젝트 환경에서 EC2 서버 내 경로 설정 오류 원인을 찾을 수 없어서,
+//    AWS S3 버킷에 이미지 파일을 저장하는 방식으로 변경함. 23/02/16 윤석
 //
 //    if(!memPic.isEmpty() || memPic==null) {
 //      memImage = memPic.getOriginalFilename();
@@ -73,12 +74,16 @@ public class ImageController {
 
     // AWS S3 버킷에 이미지 업로드 후 URL 받기
     memImage = s3Service.uploadImage(memPic);
+
+    // AWS S3 버킷 내 기존 memImage 파일 삭제
+    MemDTO prevMemDTO = memService.getDto(memSeq);
+    s3Service.deleteImage(prevMemDTO.getMemImage());
+
     // 이미지 URL memImage에 저장
     memDTO.setMemImage(memImage);
 
     // 회원정보 수정
-    int check = memService.updateMemImage(memDTO);
-    if(check == -1){ // 정보 수정 실패
+    if(memService.updateMemImage(memDTO) == -1){ // 정보 수정 실패
       CommonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
       return "/common/alert";
     }
@@ -101,9 +106,7 @@ public class ImageController {
     s3Service.deleteImage(memDTO.getMemImage());
 
     // memImage 값 null로 변경
-    int check = memService.deleteMemImage(memSeq);
-
-    if(check == -1){ // 정보 수정 실패
+    if(memService.deleteMemImage(memSeq) == -1){ // 정보 수정 실패
       CommonMethod.setAttribute(request, "/profile", "정보 수정에 실패하였습니다. 관리자에게 문의해 주세요.");
       return "/common/alert";
     }
