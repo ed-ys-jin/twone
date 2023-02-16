@@ -74,7 +74,7 @@
         <td>Maven</td>
     </tr>
     <tr align="center">
-        <td>db</td>
+        <td>DB</td>
         <td>Mybatis-3.5.3</td>
     </tr>
     <tr align="center">
