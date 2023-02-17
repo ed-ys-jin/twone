@@ -1,6 +1,5 @@
 # Twone(2 > 1) Project
 ---
----
 ### *"Two Heads are Better Than One"*
 
 **1. Twone 홈페이지 : http://www.twoneproject.com**
