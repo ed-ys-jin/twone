@@ -66,7 +66,7 @@
     <update id="updateMemKeyForLostPwMember" parameterType="MemDTO">
         UPDATE t_mem
         SET mem_key= #{memKey} , mem_key_date = NOW()
-        WHERE mem_email= #{memEmail} AND mem_name = #{memName}
+        WHERE mem_email= #{memEmail}
     </update>
 
     <!-- 메일 인증 여부 변경   -->

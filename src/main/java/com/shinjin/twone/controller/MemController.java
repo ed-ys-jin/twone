@@ -33,6 +33,23 @@ public class MemController {
     @Autowired
     private PasswordEncoder pwEncoder;
 
+    /*** 로그인 없이 둘러보기 ***/
+    @RequestMapping("/accesswithoutlogin")
+    public String accessWithoutLogin(HttpServletRequest request) {
+
+        // 게스트용 memDTO 불러오기
+        MemDTO dto = memService.getDto(1);
+
+        /* 로그인 성공 & 세션 업로드 */
+        request.getSession().setAttribute("login", dto.getMemSeq()); // member seq
+        request.getSession().setAttribute("username", dto.getMemName()); // member name
+        request.getSession().setAttribute("userposition", dto.getMemPosition()); // member position
+        request.getSession().setAttribute("userimage", dto.getMemImage()); // member image
+
+
+        return "redirect:/project";
+    }
+
     /*** 회원가입 ***/
     @RequestMapping("/signup")
     public String signupView(){
@@ -338,7 +355,6 @@ public class MemController {
     /* 메일 링크 인증 시 비밀번호 재설정 페이지 이동 */
     @RequestMapping ("/certresetpassword")
     public String certResetPassword(@RequestParam Map<String,String> map, HttpServletRequest request) {
-        String email = request.getParameter("email");
 
         int memSeq = memService.checkMemKey(map);
         if(memSeq == -1){
