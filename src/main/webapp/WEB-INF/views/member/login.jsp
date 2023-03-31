@@ -57,6 +57,10 @@
                     </div>
 
                     <div class="col-12">
+                      <button class="btn btn-primary w-100" type="button" onclick="location.href='${twone}/accesswithoutlogin'">로그인 없이 둘러보기</button>
+                    </div>
+
+                    <div class="col-12">
                       <p class="small mb-0">Twone이 처음이신가요? <a href="${twone}/signup">회원가입</a></p>
                       <p class="small mb-0">비밀번호를 잊으셨나요? <a href="${twone}/lostpassword">비밀번호 재설정</a></p>
                     </div>

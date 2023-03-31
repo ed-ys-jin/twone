@@ -22,7 +22,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/", "/twone", "/twone-0.0.1-SNAPSHOT", "/index"
                         , "/login", "/signup"
                         , "/lostpassword", "/sendemailforresetpassword", "/certresetpassword", "/resetpassword"
-                        , "/resources/**" , "/signUpConfirm");
+                        , "/resources/**" , "/signUpConfirm", "/accesswithoutlogin");
 
     }
 
