@@ -10,7 +10,7 @@
         INSERT INTO t_mem
         VALUES
             (#{memSeq}, #{memEmail}, #{memName}, #{memPw}
-            , (SELECT DATE_ADD(NOW(), INTERVAL 6 MONTH)), 0, 0
+            , (SELECT DATE(DATE_ADD(NOW(), INTERVAL 6 MONTH))), 0, 0
             , null, null, null, null, null, null)
     </insert>
 
