@@ -77,7 +77,10 @@ public class ImageController {
 
     // AWS S3 버킷 내 기존 memImage 파일 삭제
     MemDTO prevMemDTO = memService.getDto(memSeq);
-    s3Service.deleteImage(prevMemDTO.getMemImage());
+
+    if(prevMemDTO.getMemImage() != null) {
+      s3Service.deleteImage(prevMemDTO.getMemImage());
+    }
 
     // 이미지 URL memImage에 저장
     memDTO.setMemImage(memImage);

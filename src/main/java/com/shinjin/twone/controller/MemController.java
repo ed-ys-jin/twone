@@ -46,7 +46,6 @@ public class MemController {
         request.getSession().setAttribute("userposition", dto.getMemPosition()); // member position
         request.getSession().setAttribute("userimage", dto.getMemImage()); // member image
 
-
         return "redirect:/project";
     }
 
@@ -73,7 +72,7 @@ public class MemController {
         }
 
         /* 중복 이메일 확인 */
-        // 기등록된 이메일이 존재하며, 가입중 상태인 경우 (가입중 : 0, 탈퇴 : 1)
+        // 기등록된 이메일이 존재하며, 가입중 상태인 경우 (가입중 : 0, 탈퇴 : 1, 미가입 : -1)
         if(memService.checkDupl(memDTO.getMemEmail()) == 0){
             CommonMethod.setAttribute(model, "/signup", "이미 등록된 이메일 계정입니다.");
             return "/common/alert";
@@ -94,7 +93,6 @@ public class MemController {
             memDTO.setMemSeq(memSeq);
             memService.updateMemKey(memDTO);
             CommonMethod.setAttribute(model, "/login?email=" + memDTO.getMemEmail(), "등록하신 이메일로 인증요청 메일이 발송되었습니다. 메일 인증 후 로그인을 진행해 주세요.");
-
         // 회원 등록 실패
         } else {
             CommonMethod.setAttribute(model, "/signup", "회원가입에 실패하였습니다. 관리자에게 문의해 주세요.");
@@ -269,6 +267,7 @@ public class MemController {
         return "/member/profile";
     }
 
+    /* 정보 수정 */
     @RequestMapping("/editprofile")
     public String editProfileProc(MemDTO memDTO, HttpServletRequest request, HttpSession session) {
 
@@ -289,6 +288,7 @@ public class MemController {
         return "redirect:/profile";
     }
 
+    /* 비밀번호 변경 */
     @PostMapping("/changepassword")
     public String chengPasswordProc(@Valid MemDTO memDTO, Errors errors, HttpServletRequest request, HttpSession session) {
 
