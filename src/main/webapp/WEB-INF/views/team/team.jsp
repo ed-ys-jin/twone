@@ -258,7 +258,7 @@
             if (member.mem_image == null) {
                 tag += '../resources/bootstrap/img/no_image.png">';
             } else {
-                tag += '/' + member.mem_image + '\">';
+                tag += member.mem_image + '\">';
             }
             tag += '</div> <div class="name">' + member.mem_name + '</div><div class="position">';
             if (!member.mem_position =="") {
