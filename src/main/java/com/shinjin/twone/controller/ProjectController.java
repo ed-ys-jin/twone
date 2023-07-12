@@ -33,6 +33,8 @@ public class ProjectController {
     @Autowired
     LabelService labelService;
 
+
+    /*** 프로젝트 리스트 출력 ***/
     @RequestMapping("/project")
     public String viewProjectList(HttpServletRequest request, Model model){
         int memSeq = (int) request.getSession().getAttribute("login");
@@ -45,6 +47,7 @@ public class ProjectController {
         return "project/project";
     }
 
+    /*** 프로젝트 생성 페이지 이동 ***/
     @RequestMapping("/project/createForm")
     public String createProjectForm(HttpServletRequest request, Model model) {
         int mem_seq = (int) request.getSession().getAttribute("login");
@@ -54,6 +57,7 @@ public class ProjectController {
         return "project/createForm";
     }
 
+    /*** 프로젝트 생성 ***/
     @RequestMapping("/project/create")
     public String createProject(HttpServletRequest request, ProjectDTO projectDto, Model model) {
         int memSeq = (int) request.getSession().getAttribute("login");
@@ -78,8 +82,8 @@ public class ProjectController {
         ColDTO colDTO = new ColDTO();
         colDTO.setProjectSeq(projectSeq);
         colDTO.setBoardSeq(boardSeq);
-        int colSeq = colService.createSampleColumn(colDTO); // 일반 컬럼
         colService.addDoneColumn(colDTO); // Done 컬럼
+        int colSeq = colService.createSampleColumn(colDTO); // 일반 컬럼
 
         // 샘플 이슈 생성
         IssueDTO issueDTO = new IssueDTO();
@@ -94,6 +98,7 @@ public class ProjectController {
         return "redirect:/project";
     }
 
+    /*** 프로젝트 설정 ***/
     @RequestMapping("/project/setting")
     public String projectSetting(HttpServletRequest request, Model model){
         int memSeq = (int) request.getSession().getAttribute("login");

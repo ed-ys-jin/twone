@@ -151,7 +151,7 @@ button span,
                 <div class="row mb-3">
                   <label class="col-sm-2 col-form-label">활동</label>
                   <div class="custom-font col-sm-10">
-                    <input id="comment-value" type="text" class="form-control" placeholder="댓글 추가..." onkeyup="addComment(this)">
+                    <input id="comment-value" type="text" class="form-control" placeholder="댓글 작성 후 엔터키를 눌러 등록하세요." onkeyup="addComment(this)">
                   </div>
                 </div><br>
 
@@ -249,8 +249,8 @@ button span,
       return;
     }
 
-    // 엔터키 입력 시 IF문 실행
-    if (window.event.keyCode == 13) {
+    // focus 해제 시 실행
+    valueElement.onblur = function (e) {
       // 이슈 제목의 입력값이 공백인 경우
       if(type == "title"){
         if(inputValue.trim() == ""){
@@ -380,8 +380,8 @@ button span,
       return;
     }
 
-    // 엔터키 입력 시 IF문 실행
-    if (window.event.keyCode == 13) {
+    // focus 해제 시 실행
+    valueElement.onblur = function (e) {
       // 이슈 제목의 입력값이 공백인 경우
       if (labelValue.trim() == "") {
         alert("구성요소 이름을 최소 1글자 이상 입력해 주세요.");

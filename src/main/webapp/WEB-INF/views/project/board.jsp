@@ -59,11 +59,10 @@
       return;
     }
 
-    // 엔터키 입력 시 IF문 실행
-    if (window.event.keyCode == 13) {
-
-      // 입력값이 공백인 경우
-      if(boardName.trim() == ""){
+    // focus 해제 시 실행
+    inputBox.onblur = function (e) {
+      // 입력값이 공백인 경우 Alert
+      if(boardName.trim().length == 0){
         alert("보드명을 최소 1글자 이상 입력해 주세요.");
         return;
       }
@@ -148,8 +147,8 @@
       return;
     }
 
-    // 엔터키 입력 시 IF문 실행
-    if (window.event.keyCode == 13) {
+    // focus 해제 시 실행
+    inputBox.onblur = function (e) {
       // 입력값이 공백인 경우
       if(colName.trim() == ""){
         alert("컬럼명을 최소 1글자 이상 입력해 주세요.");
