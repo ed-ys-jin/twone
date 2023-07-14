@@ -17,6 +17,8 @@ import java.util.Map;
 public class ProjectController {
 
     @Autowired
+    TeamService teamService;
+    @Autowired
     ProjectService projectService;
     @Autowired
     MemService memService;
@@ -109,17 +111,17 @@ public class ProjectController {
         ProjectDTO pdto = projectService.selectOne(projectSeq);
         model.addAttribute("pdto", pdto);
 
-        /* Attr : boardList (프로젝트 사이드바 출력용) */
-        List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
-        String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
-        request.setAttribute("blist", blist);
-
         // 프로젝트 세팅 권한
         Map<String, Integer> map = new HashMap<String, Integer>();
         map.put("memSeq", memSeq);
         map.put("projectSeq", projectSeq);
         int check = projectService.checkSetting(map);
         model.addAttribute("check", check);
+
+        /* Attr : boardList (프로젝트 사이드바 출력용) */
+        List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
+        String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq, check);
+        request.setAttribute("blist", blist);
 
         // 리더도 관리자 이기 때문에
         if(check == 1 || check == 0) {
@@ -147,9 +149,16 @@ public class ProjectController {
 
         ProjectDTO pdto = projectService.selectOne(projectSeq);
 
+        // teamAllow 불러오기
+        int memSeq = (int) request.getSession().getAttribute("login");
+        TeamDTO teamDTO = new TeamDTO();
+        teamDTO.setProjectSeq(projectSeq);
+        teamDTO.setMemSeq(memSeq);
+        teamDTO = teamService.getTeamDTO(teamDTO);
+
         /* Attr : boardList (프로젝트 사이드바 출력용) */
         List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
-        String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
+        String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq, teamDTO.getTeamAllow());
         request.setAttribute("blist", blist);
 
         request.setAttribute("navType", "info");

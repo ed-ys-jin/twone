@@ -53,9 +53,10 @@ public class BoardController {
     teamDTO = teamService.getTeamDTO(teamDTO);
     request.setAttribute("teamAllow", teamDTO.getTeamAllow());
 
+
     /* Attr : boardList (프로젝트 사이드바 출력용) */
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
-    String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
+    String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq, teamDTO.getTeamAllow());
     request.setAttribute("blist", blist);
 
     /* Attr : boardDTO */
@@ -105,6 +106,13 @@ public class BoardController {
     boardDTO.setProjectSeq(projectSeq);
     boardDTO.setBoardName(boardName);
 
+    // teamAllow 불러오기
+    int memSeq = (int) request.getSession().getAttribute("login");
+    TeamDTO teamDTO = new TeamDTO();
+    teamDTO.setProjectSeq(projectSeq);
+    teamDTO.setMemSeq(memSeq);
+    teamDTO = teamService.getTeamDTO(teamDTO);
+
     // 보드 생성
     int boardSeq = boardService.addBoard(boardDTO);
 
@@ -116,7 +124,7 @@ public class BoardController {
 
     // 보드 리스트 문자열에 담기
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
-    String result = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
+    String result = CommonMethod.boardListToHtmlCode(boardList, projectSeq, teamDTO.getTeamAllow());
 
     return result;
   }
@@ -134,13 +142,20 @@ public class BoardController {
     BoardDTO boardDTO = boardService.getBoardDTO(boardSeq);
     boardDTO.setBoardName(boardName);
 
+    // teamAllow 불러오기
+    int memSeq = (int) request.getSession().getAttribute("login");
+    TeamDTO teamDTO = new TeamDTO();
+    teamDTO.setProjectSeq(boardDTO.getProjectSeq());
+    teamDTO.setMemSeq(memSeq);
+    teamDTO = teamService.getTeamDTO(teamDTO);
+
     // 보드명 변경
     boardService.updateBoardName(boardDTO);
 
     // 보드 리스트 문자열에 담기
     int projectSeq = Integer.parseInt(request.getParameter("projectSeq"));
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
-    String result = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
+    String result = CommonMethod.boardListToHtmlCode(boardList, projectSeq, teamDTO.getTeamAllow());
 
     return result;
   }

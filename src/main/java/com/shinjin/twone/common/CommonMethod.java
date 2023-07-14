@@ -42,10 +42,11 @@ public class CommonMethod {
     * 보드 리스트 문자열에 담기
     * : 프로젝트 사이드바에 출력되는 html 코드이기에 board, issue 페이지 등에서 공통 사용되므로 CommonMethod에 작성함
     */
-    public static String boardListToHtmlCode(List<BoardDTO> boardList, int projectSeq) {
+    public static String boardListToHtmlCode(List<BoardDTO> boardList, int projectSeq, int teamAllow) {
 
         String result = "";
         for (BoardDTO bdto : boardList) {
+            // 보드 리스트
             result += "<li id=\"" + bdto.getBoardSeq() + "\">";
             result += "<div class=\"row\">";
             result += "<div class=\"col-sm-8\">";
@@ -61,6 +62,20 @@ public class CommonMethod {
             result += "</ul>";
             result += "</div>";
             result += "</div>";
+            result += "</div>";
+            result += "</li>";
+        }
+
+        // 보드 추가 버튼, 보드명 입력창
+        // 접근 권한이 관리자(1), 구성원(2)인 경우에만 출력
+        if(teamAllow == 1 || teamAllow == 2){
+            result += "<li>";
+            result += "<div class=\"row addboard\">";
+            result += "<button class=\"btn btn-primary btn-light\" type=\"button\" onclick=\"toggleInput('board-input-box')\">";
+            result += "<img src=\"../resources/bootstrap/img/button_plus.png\" width=\"17\">";
+            result += "</button>";
+            result += "<br>";
+            result += "<input type=\"text\" class=\"form-control\" id=\"board-input-box\" style=\"display: none\" placeholder=\"보드명 입력 후 엔터\" onkeyup=\"addBoard(this)\">";
             result += "</div>";
             result += "</li>";
         }

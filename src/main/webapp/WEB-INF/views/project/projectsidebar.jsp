@@ -2,6 +2,22 @@
          pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<style>
+
+.addboard
+{
+    margin-left: 40px;
+    margin-right: 20px;
+}
+
+.addboard button
+{
+    margin-bottom: 10px;
+    padding: 0;
+}
+
+</style>
+
 <!-- ======= Sidebar ======= -->
 <aside id="sidebar" class="sidebar">
 
@@ -32,24 +48,7 @@
       <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
         ${blist}
       </ul>
-      <c:choose>
-        <c:when test="${teamAllow == 3}"></c:when>
-        <c:otherwise>
-          <!-- Board Creation Button -->
-          <div class="d-grid gap-2 mt-3">
-            <button class="btn btn-primary btn-light" type="button" onclick="toggleInput('board-input-box')">
-              <img src="../resources/bootstrap/img/button_plus.png" width="17">
-            </button>
-          </div>
-        </c:otherwise>
-      </c:choose>
-      <br>
 
-      <!-- Board Creation Input Box -->
-      <div class="col-sm-12">
-        <input type="text" class="form-control" id="board-input-box" style="display: none"
-               placeholder="보드 이름 입력 후 엔터 (최대 30자)" onkeyup="addBoard(this)">
-      </div>
     </li>
 
     <!-- Member Section -->
@@ -117,7 +116,8 @@
       }
 
       // URL(+ 파라미터) 만들기
-      let url = "/project/addboard?projectSeq=" + ${pdto.projectSeq} +"&boardName=" + encodeURIComponent(boardName);
+      let url = "/project/addboard?projectSeq=" + ${pdto.projectSeq}
+          + "&boardName=" + encodeURIComponent(boardName);
 
       // 연결 작업
       const xhttp = new XMLHttpRequest();
