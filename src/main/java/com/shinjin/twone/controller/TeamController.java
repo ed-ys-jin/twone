@@ -101,9 +101,16 @@ public class TeamController {
     String sdto = dto.toString().replaceAll("=",":") ;
     JSONObject json = (JSONObject)parser.parse(sdto);
 
+    // teamAllow 불러오기
+    int memSeq = (int) request.getSession().getAttribute("login");
+    TeamDTO teamDTO = new TeamDTO();
+    teamDTO.setProjectSeq(pSeq);
+    teamDTO.setMemSeq(memSeq);
+    teamDTO = teamService.getTeamDTO(teamDTO);
+
     /* Attr : boardList (프로젝트 사이드바 출력용) */
     List<BoardDTO> boardList = boardService.getBoardList(pSeq);
-    String blist = CommonMethod.boardListToHtmlCode(boardList, pSeq);
+    String blist = CommonMethod.boardListToHtmlCode(boardList, pSeq, teamDTO.getTeamAllow());
     request.setAttribute("blist", blist);
 
     request.setAttribute("teamList",teamlist);

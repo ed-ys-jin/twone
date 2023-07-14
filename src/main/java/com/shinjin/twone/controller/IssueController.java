@@ -71,7 +71,7 @@ public class IssueController {
     /* Attr : boardList(보드사이드바 출력용) */
     // 보드 리스트 문자열에 담기
     List<BoardDTO> boardList = boardService.getBoardList(projectSeq);
-    String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq);
+    String blist = CommonMethod.boardListToHtmlCode(boardList, projectSeq, teamAllow);
     request.setAttribute("blist", blist);
 
     /* Attr : 댓글 문자열 */
