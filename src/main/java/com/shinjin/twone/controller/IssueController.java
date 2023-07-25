@@ -624,7 +624,7 @@ public class IssueController {
       result += "</select>";
       result += "</div>";
 
-      result += "<div class=\"custom-font col-sm-2\" align=\"right\">";
+      result += "<div class=\"custom-font col-sm-2\">";
       result += "<button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-collection\"></i></button>";
       result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
       result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('up', '" + perSeq + "')\">위로 이동</a></li>";
@@ -665,7 +665,7 @@ public class IssueController {
       result += "<input id=\"" + datSeq + "-value\" type=\"date\" class=\"form-control\" value=\"" + datValue + "\" onchange=\"updateValue(this, '" + datSeq + "')\">";
       result += "</div>";
 
-      result += "<div class=\"custom-font col-sm-2\" align=\"right\">";
+      result += "<div class=\"custom-font col-sm-2\">";
       result += "<button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-collection\"></i></button>";
       result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
       result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('up', '" + datSeq + "')\">위로 이동</a></li>";
@@ -720,7 +720,7 @@ public class IssueController {
       result += "</select>";
       result += "</div>";
 
-      result += "<div class=\"custom-font col-sm-2\" align=\"right\">";
+      result += "<div class=\"custom-font col-sm-2\">";
       result += "<button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-collection\"></i></button>";
       result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
       result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('up', '" + priSeq + "')\">위로 이동</a></li>";
@@ -759,7 +759,7 @@ public class IssueController {
       result += "<input id=\"" + simSeq + "-value\" type=\"text\" class=\"form-control\" value=\"" + simDTO.getSimValue() + "\" onchange=\"updateValue(this, '" + simSeq + "')\">";
       result += "</div>";
 
-      result += "<div class=\"custom-font col-sm-2\" align=\"right\">";
+      result += "<div class=\"custom-font col-sm-2\">";
       result += "<button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"dropdown\"><i class=\"bi bi-collection\"></i></button>";
       result += "<ul class=\"dropdown-menu dropdown-menu-end dropdown-menu-arrow\">";
       result += "<li><a class=\"dropdown-item\" href=\"javascript:moveUpDown('up', '" + simSeq + "')\">위로 이동</a></li>";
