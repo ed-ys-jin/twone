@@ -169,20 +169,12 @@ button span,
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title"></h5>
-                <div class="pagetitle col-sm-5">
-                  <h5>세부 정보</h5>
-                </div><!-- End Card Title -->
 
                 <div class="row mb-3">
 
-                  <!-- IssueForm Creation Button -->
-                  <c:choose>
-                    <c:when test="${teamAllow != 3}">
-                      <button class="btn btn-primary btn-light col-sm-2" type="button" onclick="toggleSelect('issue-select-box')">
-                        <img src="../resources/bootstrap/img/button_plus.png" width="17">
-                      </button>
-                    </c:when>
-                  </c:choose>
+                  <label class="issue-label col-sm-2 col-form-label">
+                    <h5>세부 정보</h5>
+                  </label>
 
                   <!-- Board Creation Input Box -->
                   <div class="custom-font col-sm-8">
@@ -194,6 +186,18 @@ button span,
                       <option value="sim">간단한 텍스트</option>
                     </select>
                   </div>
+
+                  <!-- IssueForm Creation Button -->
+                  <div class="custom-font col-sm-2">
+                    <c:choose>
+                      <c:when test="${teamAllow != 3}">
+                        <button class="btn btn-secondary btn-light" type="button" onclick="toggleSelect('issue-select-box')">
+                          <img src="../resources/bootstrap/img/button_plus.png" width="17">
+                        </button>
+                      </c:when>
+                    </c:choose>
+                  </div>
+
                 </div>
 
                 <div id="issue-form-list">
